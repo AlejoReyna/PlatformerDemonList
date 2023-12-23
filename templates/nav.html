@@ -1,0 +1,42 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg fixed-top" id="main-navbar">
+    <div class="container">
+
+        <a class="navbar-brand pr-5" style="border-right: 1px solid #efefef;" href="{% url 'demonlist:list' %}">
+            <img src="{% static "img/demonlist.png" %}" height="45" class="d-inline-block align-top"/>
+        </a>
+
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item nav-icon">
+                    <a href="">
+                        <i class="bi bi-discord"></i>
+                    </a>
+                </li>
+
+                <li class="nav-item nav-icon">
+                    <a href="{% url 'demonlist:submit_record' %}">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                </li>
+
+                <li class="nav-item nav-icon">
+                    <a href="">
+                        <i class="fas fa-question-circle"></i>
+                    </a>
+                </li>
+
+                <li class="nav-item nav-icon">
+                    <form method="post" action="{% url 'users:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="custom-button" >
+                            <i class="fas fa-sign-out-alt" style="font-size: 22px;"></i>
+                        </button>
+                    </form>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>

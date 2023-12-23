@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block head_content %}{% endblock %}
+
+
+    {% load static %}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    
+</head>
+
+<style>
+
+    .custom-table {
+        background-color: #f8f9fa; /* Color de fondo de la tabla */
+        border: 1px solid #dee2e6; /* Borde de la tabla */
+        border-radius: 10px; /* Bordes redondeados */
+        overflow: hidden; /* Oculta los bordes redondeados en las esquinas */
+        margin-bottom: 10px; /* Espacio entre la tabla y otras filas */
+    }
+
+    /* Estilos de las celdas */
+    .custom-table th{
+        padding: 10px; /* Espaciado interno de las celdas */
+        border: 1px solid #dee2e6; /* Borde de las celdas */
+        background-color: #54a1f7; /* Color de fondo de las celdas (por defecto blanco) */
+        color: white;
+    }
+    .custom-table td {
+        padding: 10px; /* Espaciado interno de las celdas */
+        border: 1px solid #dee2e6; /* Borde de las celdas */
+        background-color: #dfe8f2; /* Color de fondo de las celdas (por defecto blanco) */
+    }
+
+    /* Estilos de los enlaces */
+    .custom-table .player-cell a {
+        color: black;
+    }
+
+    /* Estilos del botón */
+    .btn-primary {
+        background-color: #007bff; /* Color de fondo del botón */
+        color: #fff; /* Color del texto del botón */
+        border: none; /* Sin borde */
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3; /* Cambio de color al pasar el ratón sobre el botón */
+    }
+
+    button.custom-button {
+        margin-left: 15px;
+        margin-top: 8px;
+        border: none;
+        background: none;
+        cursor: pointer;
+        transition: color 0.3s; /* Agregar una transición para suavizar el cambio de color */
+    }
+
+    button.custom-button:hover {
+        color: #1D5E72; /* Cambiar el color al pasar el ratón sobre el botón */
+    }
+
+</style>
+
+<body>
+
+    {% include "nav.html" %}
+
+    <div class="container mt-5">
+        {% block container %}
+        {% endblock%}
+    </div>
+
+</body>
+</html>
