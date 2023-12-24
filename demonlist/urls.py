@@ -23,5 +23,14 @@ urlpatterns = [
         view=views.SubmitRecordView.as_view(),
         name='submit_record'
     ),
-
+    path(
+        route='check_records/',
+        view=views.CheckRecordsView.as_view(),
+        name='check_records'
+    ),
+    path(
+        route='stats_viewer/',
+        view=views.StatsViewerView.as_view(),
+        name='stats_viewer'
+    ),
 ]

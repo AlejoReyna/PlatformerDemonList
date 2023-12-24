@@ -23,4 +23,15 @@ urlpatterns = [
         view=views.SignupView.as_view(),
         name='signup'
     ),
+    path(
+        route='me/profile/',
+        view=views.UpdateProfileView.as_view(),
+        name='update'
+    ),
+    path(
+        route='<int:user>/',
+        view=views.UserDetailView.as_view(),
+        name='detail'
+    )
+
 ]

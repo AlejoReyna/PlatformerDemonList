@@ -19,6 +19,6 @@ class DemonAdmin(admin.ModelAdmin):
 class RecordAdmin(admin.ModelAdmin):
     """Record admin."""
 
-    list_display = ('id', 'demon', 'player')
+    list_display = ('id', 'demon', 'player', 'accepted')
     search_fields = ('demon', 'player')
     list_filter = ('datetime_submit', 'datetime_modified')

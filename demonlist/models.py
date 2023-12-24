@@ -14,11 +14,15 @@ class Demon(models.Model):
     creator = models.CharField(max_length=255)
     verificator = models.CharField(max_length=255)
     position = models.IntegerField()
-    min_percentage = models.IntegerField()
-    score_complete = models.FloatField()
-    score_min = models.FloatField()
+    list_points = models.FloatField()
     photo = models.ImageField(upload_to='demons/photos')
     verification_video = models.CharField(max_length=500)
+
+    level_password = models.BigIntegerField(blank=True, null=True)
+    level_id = models.BigIntegerField(blank=True, null=True)
+    object_count = models.BigIntegerField(blank=True, null=True)
+    demon_difficulty = models.CharField(max_length=50, blank=True, null=True)
+    update_created = models.CharField(max_length=5, blank=True, null=True)
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -32,10 +36,11 @@ class Record(models.Model):
 
     demon = models.ForeignKey(Demon, on_delete=models.CASCADE)
     player = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    percentage = models.IntegerField()
     video = models.CharField(max_length=500)
     raw_footage = models.CharField(max_length=500)
     notes = models.TextField(blank=True, null=True)
+    mod = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='mod', blank=True, null=True)
+    mod_notes = models.TextField(blank=True, null=True)
     
     accepted = models.BooleanField(blank=True, null=True)
 

@@ -13,19 +13,23 @@
                 <p  style="font-size: 20px; color: #454546;">by {{demon.creator}}</p>
                 <iframe style="width: 90%; margin: 15px 5%; height: 348.495px;" src="{{demon.verification_video}}" frameborder="0" allowfullscreen></iframe>
                 <div class="d-flex justify-content-center text-center">
-                    <span style="margin-right: 80px;"><b>Demonlist score (100%): </b><br>{{demon.score_complete}}</span>
-                    <span><b>Demonlist score ({{demon.min_percentage}}%): </b><br>{{demon.score_min}}</span>
+                    <span style="margin-right: 60px;"><b>Demonlist score: </b><br>{{demon.list_points}}</span>
+                    <span style="margin-right: 60px;"><b>Level Password: </b><br>{{demon.level_password}}</span>
+                    <span style="margin-right: 60px;"><b>Level ID: </b><br>{{demon.level_id}}</span>
+                </div>
+                <div class="d-flex justify-content-center text-center">
+                    <span style="margin-right: 60px;"><b>Object count: </b><br>{{demon.object_count}}</span>
+                    <span style="margin-right: 60px;"><b>Demon difficulty: </b><br>{{demon.demon_difficulty}}</span>
+                    <span style="margin-right: 60px;"><b>Created in: </b><br>{{demon.update_created}}</span>
                 </div>
             </div>
-            <div id="2" class="col-sm-12 col-md-8 offset-md-2 mt-1 p-0 post-container text-center">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-1 p-0 post-container text-center">
                 <p style="font-size: 28px; color: #454546; font-weight: bold;">Records</p>
-                <p style="font-size: 16px; color: #454546; font-weight: bold;">{{demon.min_percentage}}% or better required to qualify</p>
-                <p style="font-size: 16px; color: #454546; font-weight: bold;">{{records|length}} records registered, out of which {{records_complete|length}} are 100%</p>
+                <p style="font-size: 16px; color: #454546; font-weight: bold;">{{records|length}} records registered</p>
                 <table class="table custom-table">
                     <thead>
                         <tr>
                             <th>Record Holder</th>
-                            <th>Progress</th>
                             <th>Video Proof</th>
                         </tr>
                     </thead>
@@ -34,11 +38,10 @@
                         {% for record in records %}
                         <tr class="table-row">
                             <td class="player-cell">
-                                <a href="{{record.video}}" target="_blank">{{record.player}}</a>
+                                <a href="{% url 'users:detail' record.player.id %}" target="_blank">{{record.player}}</a>
                             </td>
-                            <td class="percentage-cell">{{record.percentage}}%</td>
                             <td class="video-link-cell">
-                                <a class="btn btn-primary" href="{{record.video}}" target="_blank">Ver en YouTube</a>
+                                <a class="btn btn-primary" href="{{record.video}}" target="_blank">YouTube</a>
                             </td>
                         </tr>
                         {% endfor %}

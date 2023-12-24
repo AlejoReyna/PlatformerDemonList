@@ -28,13 +28,6 @@
                     </div>
 
                     <div class="form-group">
-                        <input class="form-control {% if form.title.errors %}is-invalid{% endif %}" type="number" name="percentage" placeholder="Percentage">
-                        <div class="invalid-feedback">
-                            {% for error in form.title.errors %}{{ error }}{% endfor %}
-                        </div>
-                    </div>
-
-                    <div class="form-group">
                         <input class="form-control {% if form.title.errors %}is-invalid{% endif %}" type="text" name="video" placeholder="Video">
                         <div class="invalid-feedback">
                             {% for error in form.title.errors %}{{ error }}{% endfor %}
@@ -55,7 +48,7 @@
                         </div>
                     </div> 
 
-                    <button type="submit" class="btn btn-primary btn-block mt-5">Publish!</button>
+                    <button type="submit" class="btn btn-primary btn-block mt-5">Submit!</button>
                 </form>
             </div>
         </div>
