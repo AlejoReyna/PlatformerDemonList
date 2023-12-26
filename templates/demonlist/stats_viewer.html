@@ -44,7 +44,9 @@
                         <tr class="table-row">
                             <td class="position-cell">{{player.position}}</td>
                             <td class="country-cell">{{player.country}}</td>
-                            <td class="username-cell">{{player.user.username}}</td>
+                            <td class="player-cell">
+                                <a href="{% url 'users:detail' player.user.id %}" target="_blank">{{player.user.username}}</a>
+                            </td>
                             <td class="list_points-cell">{{player.list_points}}</td>
                         </tr>
                         {% endfor %}

@@ -62,7 +62,7 @@ class Changelog(models.Model):
                            ("Down", "Down"))
     change_type = models.CharField(max_length=500, choices=change_type_options, blank=True, null=True)
 
-    datetime = models.DateTimeField()
+    datetime = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         """Return changelog."""

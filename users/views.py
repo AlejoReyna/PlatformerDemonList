@@ -50,7 +50,6 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         profile = self.get_object()
         records = Record.objects.filter(player=profile)
-
         context["records"] = records
 
         return context

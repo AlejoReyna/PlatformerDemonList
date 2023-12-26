@@ -39,6 +39,17 @@
                     </select>
 
                     <div class="form-group">
+                        <label>Photo</label>
+                        <p class="form-control"><input type="file" id="photo" name="photo" required></p>
+                        
+                        {% for error in form.photo.errors %}
+                        <div class="alert alert-danger">
+                            <b>Photo: </b>{{error}}
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
                         <input class="form-control {% if form.title.errors %}is-invalid{% endif %}" type="number" id="position" name="position" placeholder="Position" required>
                         <div class="invalid-feedback">
                             {% for error in form.title.errors %}{{ error }}{% endfor %}

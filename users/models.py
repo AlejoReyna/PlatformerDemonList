@@ -10,8 +10,7 @@ class Profile(models.Model):
     phone = models.CharField(max_length=12, blank=True, null=True)
     picture = models.ImageField(upload_to="users/pictures", blank=True, null=True)
     country = models.CharField(max_length=50, blank=True, null=True)
-    list_points = models.FloatField(blank=True, null=True)
-
+    list_points = models.FloatField(default=0)
 
     followers = models.ManyToManyField('self', related_name='followings', blank=True, symmetrical=False)
     

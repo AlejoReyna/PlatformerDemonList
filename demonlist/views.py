@@ -108,7 +108,7 @@ class StatsViewerView(TemplateView):
         print(r)
 
         if r.get("player", None) or r.get("player", None) == "":
-            
+
             players_annotated = Profile.objects.annotate(
                 position=Window(expression=DenseRank(), order_by=F('list_points').desc())
             )
@@ -245,6 +245,10 @@ class CheckRecordsView(LoginRequiredMixin, ModeradorMixin, TemplateView):
             record.mod = self.request.user.profile
             record.save()
 
+            player = record.player
+            player.list_points += record.demon.list_points
+            player.save()
+
             return JsonResponse(record.id, safe=False)
         
         if r.get("cancel_id", None):
@@ -277,6 +281,7 @@ class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
 
         if r.get("option", None) == "Add":
             level = r.get("add_demon", None)
+            photo = request.FILES["photo"]
             position = r.get("position", None)
             creator = r.get("creator", None)
             verificator = r.get("verificator", None)
@@ -290,27 +295,27 @@ class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
             demons = Demon.objects.filter(position__gte=position)
             for demon in demons:
                 Changelog.objects.create(demon=demon,
-                            reason=f"{old_demon.level} was added above",
+                            reason=f"{level} was added above",
                             position=demon.position + 1,
                             change_number=1,
                             change_type="Down"
                             )
                 demon.position += 1
                 demon.save()
-        
 
             new_demon = Demon.objects.create(level=level,
-                                 position=position,
-                                 creator=creator,
-                                 verificator=verificator,
-                                 list_points=list_points,
-                                 verification_video=verification_video,
-                                 level_id=level_id,
-                                 object_count=object_count,
-                                 demon_difficulty=demon_difficulty,
-                                 update_created="2.2"
-                                 )
-            
+                                photo=photo,
+                                position=position,
+                                creator=creator,
+                                verificator=verificator,
+                                list_points=list_points,
+                                verification_video=verification_video,
+                                level_id=level_id,
+                                object_count=object_count,
+                                demon_difficulty=demon_difficulty,
+                                update_created="2.2"
+                                )
+
             if r.get("level_password", None):
                 new_demon.level_password = level_password
                 new_demon.save()
@@ -325,6 +330,7 @@ class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
         
         if r.get("option", None) == "Edit":
             level = r.get("edit_demon", None)
+            photo = request.FILES["photo"]
             position = r.get("position", None)
             creator = r.get("creator", None)
             verificator = r.get("verificator", None)
@@ -377,7 +383,7 @@ class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
                     demon.position -= 1
                     demon.save()
         
-            
+            old_demon.photo=photo
             old_demon.position=position
             old_demon.creator=creator
             old_demon.verificator=verificator
