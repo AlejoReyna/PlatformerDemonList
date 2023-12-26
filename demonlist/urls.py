@@ -24,13 +24,18 @@ urlpatterns = [
         name='submit_record'
     ),
     path(
+        route='stats_viewer/',
+        view=views.StatsViewerView.as_view(),
+        name='stats_viewer'
+    ),
+    path(
         route='check_records/',
         view=views.CheckRecordsView.as_view(),
         name='check_records'
     ),
     path(
-        route='stats_viewer/',
-        view=views.StatsViewerView.as_view(),
-        name='stats_viewer'
+        route='add_edit_demon/',
+        view=views.AddEditDemonView.as_view(),
+        name='add_edit_demon'
     ),
 ]

@@ -16,7 +16,7 @@ class ProfileAdmin(admin.ModelAdmin):
     list_filter = ("user__is_active", "user__is_staff", "created", "modified")
     fieldsets = (
         ("Profile", {"fields": ("user", "picture")}),
-        ("Extra info", {"fields": (("youtube_channel", "phone"), "bio", "country", "list_points")}),
+        ("Extra info", {"fields": (("youtube_channel", "phone"), "bio", "country", "list_points", "followers", "dark_mode")}),
         ("Metadata", {"fields": ("created", "modified")}))
     readonly_fields = ("created", "modified")
 

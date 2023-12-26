@@ -15,11 +15,17 @@
                 <p style="font-size: 28px; color: #454546; font-weight: bold;">Stats Viewer</p>
                 
                 <div style="display: flex; align-items: center; justify-content: center;">
-                    <select class="form-control mb-4" style="width: auto; margin-right: 10px;" id="status" name="status" onchange="update_table(this);">
+                    <select class="form-control mb-4" style="width: auto; margin-right: 10px;" id="status" name="status" onchange="update_table_status(this);">
                         <option value="Individual">Individual</option>
                         <option value="Nations">Nations</option>
                     </select>
                 
+                    <select class="form-control mb-4" style="width: auto; margin-right: 10px;" id="country" name="country" onchange="update_table_country(this);">
+                        <option value="" selected>-- Nation --</option>
+                        <option value="México">México</option>
+                        <option value="USA">USA</option>
+                    </select>
+
                     <input class="mb-4" type="text" id="search" placeholder="Search player..." oninput="search_player(this);">
                 </div>
 
@@ -122,7 +128,7 @@
 
 
 
-    function update_table(option)
+    function update_table_status(option)
     {
     console.log(option.value);
     data = {}
@@ -138,6 +144,7 @@
         $('#tablePlayers > tbody').empty();
         console.log(data.option )
         if (data.option == "Individual"){
+            $('#country').attr("hidden", false);
             $("#tablePlayers thead tr th:nth-child(1)").after("<th>Player</th>");
             $("#tablePlayers tbody tr td:nth-child(1)").after("<td>Nombre del Jugador</td>");
             $("#search").attr("placeholder", "Search player...");
@@ -151,6 +158,7 @@
                 })
         }
         else if (data.option == "Nations"){
+            $('#country').attr("hidden", true);
             var indiceColumnPlayer = $("#tablePlayers th:contains('Player')").index();
             $("#tablePlayers th, #tablePlayers td").filter(":nth-child(" + (indiceColumnPlayer + 1) + ")").remove();
             $("#search").attr("placeholder", "Search country...");
@@ -171,6 +179,44 @@
         }
     })
 }
+
+    function update_table_country(select_country)
+        {
+        console.log(select_country.value);
+        data = {}
+        data.select_country = select_country.value;
+
+        $.ajax({
+            type: "post", // "post" "get" "delete" "put"
+            data: data, // PREFERIBLEMENTE JSON
+            cache: false,
+            headers: {
+            "X-CSRFToken": Cookies.get("csrftoken")
+            },
+            success: function (response) {
+            $('#tablePlayers > tbody').empty();
+            console.log(data.select_country )
+            var indiceColumnPlayer = $("#tablePlayers th:contains('Player')").index();
+            $("#tablePlayers th, #tablePlayers td").filter(":nth-child(" + (indiceColumnPlayer + 1) + ")").remove();
+            $("#tablePlayers thead tr th:nth-child(1)").after("<th>Player</th>");
+            $("#tablePlayers tbody tr td:nth-child(1)").after("<td>Nombre del Jugador</td>");
+            $("#search").attr("placeholder", "Search player...");
+            $("#search").attr("oninput", "search_player(this);");
+            $(response).each(function (index, player) {
+                var fila=`<tr class="table-row"><td class="position-cell">` + player.position + `</td>`;
+                    fila+=`<td class="username-cell">` + player.user__username + `</td>`;
+                    fila+=`<td class="country-cell">` + player.country + `</td>`;
+                    fila+=`<td class="list_points-cell">` + player.list_points + `</td></tr>`;
+                    $('#tablePlayers > tbody').append(fila);
+                })
+            console.log(response.length)
+            if (response.length == 0){
+            var fila=`<tr class="table-row"><td colspan="4" class="player-cell">There have been no players yet</td></tr>`
+            $('#tablePlayers > tbody').append(fila);
+            }
+            }
+            })
+        }
 
     </script>
 {% endblock %}

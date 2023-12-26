@@ -40,7 +40,7 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
 
     template_name = 'users/update_profile.html'
     model = Profile
-    fields = ['country', 'youtube_channel']
+    fields = ['country', 'youtube_channel', 'picture']
 
     def get_object(self):
         # Return user's profile
@@ -57,8 +57,10 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         # Return to user's profile
-        username = self.object.user.username
-        return reverse('users:detail', kwargs={"user": self.object.user.profile.id})
+        user = self.object.user
+        user.username = self.request.POST.get("username")
+        user.save()
+        return reverse('users:detail', kwargs={"user": self.object.user.id})
     
 class UserDetailView(LoginRequiredMixin, DetailView):
     # User Detail View
@@ -73,5 +75,28 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         # Add user's records to context
         context = super().get_context_data(**kwargs)
         user = self.get_object()
+        following = self.request.user.profile.followings.all()
+        if user.profile in following:
+            following = True
+        else:
+            following = False
+        context["following"] = following
         context["records"] = Record.objects.filter(player=user.profile, accepted=True).order_by("-datetime_submit")
         return context
+    
+    def post(self, request, *args, **kwargs):
+        user = self.get_object()
+        
+        action = self.request.POST.get("action", None)
+
+        print(self.request.user)
+
+        if action == "follow":
+            self.get_object().profile.followers.add(self.request.user.profile)
+            self.request.user.profile.followings.add(user.profile)
+        else:
+            user.profile.followers.remove(Profile.objects.get(id=self.request.user.profile.id))
+            self.request.user.profile.followings.remove(Profile.objects.get(id=user.profile.id))
+
+        
+        return super().get(request, *args, **kwargs)

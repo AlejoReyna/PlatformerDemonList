@@ -18,11 +18,11 @@ class Demon(models.Model):
     photo = models.ImageField(upload_to='demons/photos')
     verification_video = models.CharField(max_length=500)
 
-    level_password = models.BigIntegerField(blank=True, null=True)
     level_id = models.BigIntegerField(blank=True, null=True)
     object_count = models.BigIntegerField(blank=True, null=True)
     demon_difficulty = models.CharField(max_length=50, blank=True, null=True)
     update_created = models.CharField(max_length=5, blank=True, null=True)
+    level_password = models.BigIntegerField(blank=True, null=True)
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -50,3 +50,21 @@ class Record(models.Model):
     def __str__(self):
         """Return record."""
         return '{}'.format(self.id)
+
+class Changelog(models.Model):
+    """Changelog model."""
+
+    demon = models.ForeignKey(Demon, on_delete=models.CASCADE)
+    reason = models.CharField(max_length=500)
+    position = models.IntegerField()
+    change_number = models.IntegerField(blank=True, null=True)
+    change_type_options = (("Up", "Up"),
+                           ("Down", "Down"))
+    change_type = models.CharField(max_length=500, choices=change_type_options, blank=True, null=True)
+
+    datetime = models.DateTimeField()
+
+    def __str__(self):
+        """Return changelog."""
+        return '{}'.format(self.id)
+

@@ -35,6 +35,34 @@
 
                 <hr><br>
 
+                {# Picture field #}
+                <div class="form-group">
+                    <label>Picture</label>
+                    <p class="form-control"><input type="file" name="picture"></p>
+                    
+                    {% for error in form.picture.errors %}
+                    <div class="alert alert-danger">
+                        <b>Picture: </b>{{error}}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {# Username field #}
+                <div class="form-group">
+                    <label>Username</label>
+                    <input 
+                        class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+                        type="text" 
+                        name="username" 
+                        placeholder="Username" 
+                        value="{% if form.errors %}{{form.username.value}}{% else %}{{user.username}}{% endif %}"/>
+                        {% for error in form.website.errors %}
+                            <div class="invalid-feedback">
+                                {{error}}
+                            </div>
+                        {% endfor %}
+                </div>
+
                 {# Youtube channel field #}
                 <div class="form-group">
                     <label>Youtube channel</label>

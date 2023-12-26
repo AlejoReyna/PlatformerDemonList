@@ -24,6 +24,32 @@
                 </div>
             </div>
             <div class="col-sm-12 col-md-8 offset-md-2 mt-1 p-0 post-container text-center">
+                    
+                <button id="toggleTable">
+                    <p style="font-size: 28px; color: #454546; font-weight: bold;">Changelog <i class="fas fa-chevron-down"></i></p>
+                </button>
+                <table class="table custom-table" id="changelogTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Change</th>
+                            <th>Position</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for change in changelog %}
+                        <tr class="table-row">
+                            <td class="date-cell">{{change.datetime}}</td>
+                            <td class="change_type-cell">{% if change.change_type == "Down" %}<i class="fas fa-chevron-down"></i>{% elif change.change_type == "Up" %}<i class="fas fa-chevron-up">{% else %}-{% endif %}{% if change.change_number %}{{change.change_number}}{% endif %}</td>
+                            <td class="position-cell">{{change.position}}</td>
+                            <td class="reason-cell">{{change.reason}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-1 p-0 post-container text-center">
                 <p style="font-size: 28px; color: #454546; font-weight: bold;">Records</p>
                 <p style="font-size: 16px; color: #454546; font-weight: bold;">{{records|length}} records registered</p>
                 <table class="table custom-table">
@@ -38,7 +64,7 @@
                         {% for record in records %}
                         <tr class="table-row">
                             <td class="player-cell">
-                                <a href="{% url 'users:detail' record.player.id %}" target="_blank">{{record.player}}</a>
+                                <a href="{% url 'users:detail' record.player.user.id %}" target="_blank">{{record.player}}</a>
                             </td>
                             <td class="video-link-cell">
                                 <a class="btn btn-primary" href="{{record.video}}" target="_blank">YouTube</a>
@@ -58,4 +84,15 @@
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+        $("#changelogTable").hide();
+
+        $("#toggleTable").click(function () {
+            $("#changelogTable").toggle();
+            $(this).find("i").toggleClass("fa-chevron-down fa-chevron-up");
+        });
+    });</script>
 {% endblock %}

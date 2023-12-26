@@ -13,7 +13,7 @@ from django.views.generic import CreateView, DetailView, ListView, TemplateView
 
 # Models
 from django.contrib.auth.models import User
-from demonlist.models import Demon, Record
+from demonlist.models import Demon, Record, Changelog
 from users.models import Profile, Country
 
 class ModeradorMixin(UserPassesTestMixin):
@@ -45,8 +45,10 @@ class DemonDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         demon = self.get_object()
+        changelog = Changelog.objects.filter(demon=demon)
         records = Record.objects.filter(demon=demon, accepted=True)
 
+        context["changelog"] = changelog
         context["records"] = records
 
         return context
@@ -86,57 +88,6 @@ class SubmitRecordView(LoginRequiredMixin, TemplateView):
                             )
         
         return HttpResponseRedirect(reverse_lazy('demonlist:list'))
-
-class CheckRecordsView(LoginRequiredMixin, ModeradorMixin, TemplateView):
-    # Return check records view
-    template_name = "demonlist/check_records.html"
-    success_url = reverse_lazy('demonlist:check_records')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        records = Record.objects.filter(accepted=None)
-
-        context["records"] = records
-
-        return context
-    
-    def post(self, request):
-        r = request.POST
-        
-        print(r)
-
-        if r.get("status", None):
-            if r.get("status", None) == "Pending":
-                records = Record.objects.filter(accepted=None)
-            elif r.get("status", None) == "Canceled":
-                records = Record.objects.filter(accepted=False)
-            elif r.get("status", None) == "Accepted":
-                records = Record.objects.filter(accepted=True)
-
-            records = list(records.values("id", "player__user__username", "demon__level", "video", "raw_footage", "mod_notes"))
-            return JsonResponse(records, safe=False)
-        
-        if r.get("accept_id", None):
-            record = Record.objects.get(id=r.get("accept_id", None))
-            mod_notes = r.get("mod_notes", None)
-
-            record.accepted = True
-            record.mod_notes = mod_notes
-            record.mod = self.request.user.profile
-            record.save()
-
-            return JsonResponse(record.id, safe=False)
-        
-        if r.get("cancel_id", None):
-            record = Record.objects.get(id=r.get("cancel_id", None))
-            mod_notes = r.get("mod_notes", None)
-
-            record.accepted = False
-            record.mod_notes = mod_notes
-            record.mod = self.request.user.profile
-            record.save()
-
-            return JsonResponse(record.id, safe=False)
         
 class StatsViewerView(TemplateView):
     # Return stats viewer view
@@ -222,3 +173,224 @@ class StatsViewerView(TemplateView):
                 players = list(players.values("id", "user__username", "list_points", "position", "country"))
 
                 return JsonResponse(players, safe=False)
+
+        if r.get("select_country", None) or r.get("select_country", None) == "":
+            
+            players_annotated = Profile.objects.annotate(
+                position=Window(expression=DenseRank(), order_by=F('list_points').desc())
+            )
+
+            if r.get("select_country", None):
+                players_filtered = players_annotated.filter(country=r.get("select_country", None))
+            else:
+                players_filtered = players_annotated
+
+            original_positions = {player.id: player.position for player in players_annotated}
+
+            players_final = sorted(players_filtered, key=lambda player: original_positions[player.id])
+
+            result_list = [
+                {
+                    'id': player.id,
+                    'user__username': player.user.username,
+                    'list_points': player.list_points,
+                    'position': original_positions[player.id],
+                    'country': player.country,
+                }
+                for player in players_final
+            ]
+
+            print(players_annotated)
+            print(players_filtered)
+            print(original_positions)
+            print(result_list)
+
+            return JsonResponse(result_list, safe=False)
+
+class CheckRecordsView(LoginRequiredMixin, ModeradorMixin, TemplateView):
+    # Return check records view
+    template_name = "demonlist/check_records.html"
+    success_url = reverse_lazy('demonlist:check_records')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        records = Record.objects.filter(accepted=None)
+
+        context["records"] = records
+
+        return context
+    
+    def post(self, request):
+        r = request.POST
+        
+        print(r)
+
+        if r.get("status", None):
+            if r.get("status", None) == "Pending":
+                records = Record.objects.filter(accepted=None)
+            elif r.get("status", None) == "Canceled":
+                records = Record.objects.filter(accepted=False)
+            elif r.get("status", None) == "Accepted":
+                records = Record.objects.filter(accepted=True)
+
+            records = list(records.values("id", "player__user__username", "demon__level", "video", "raw_footage", "mod_notes"))
+            return JsonResponse(records, safe=False)
+        
+        if r.get("accept_id", None):
+            record = Record.objects.get(id=r.get("accept_id", None))
+            mod_notes = r.get("mod_notes", None)
+
+            record.accepted = True
+            record.mod_notes = mod_notes
+            record.mod = self.request.user.profile
+            record.save()
+
+            return JsonResponse(record.id, safe=False)
+        
+        if r.get("cancel_id", None):
+            record = Record.objects.get(id=r.get("cancel_id", None))
+            mod_notes = r.get("mod_notes", None)
+
+            record.accepted = False
+            record.mod_notes = mod_notes
+            record.mod = self.request.user.profile
+            record.save()
+
+            return JsonResponse(record.id, safe=False)
+        
+class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
+    # Return add edit demon view
+    template_name = "demonlist/add_edit_demon.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        demons = Demon.objects.all()
+
+        context["demons"] = demons
+
+        return context
+    
+    def post(self, request):
+        r = request.POST
+        
+        print(r)
+
+        if r.get("option", None) == "Add":
+            level = r.get("add_demon", None)
+            position = r.get("position", None)
+            creator = r.get("creator", None)
+            verificator = r.get("verificator", None)
+            list_points = r.get("list_points", None)
+            verification_video = r.get("verification_video", None)
+            level_id = r.get("level_id", None)
+            object_count = r.get("object_count", None)
+            demon_difficulty = r.get("demon_difficulty", None)
+            level_password = r.get("level_password", None)
+
+            demons = Demon.objects.filter(position__gte=position)
+            for demon in demons:
+                Changelog.objects.create(demon=demon,
+                            reason=f"{old_demon.level} was added above",
+                            position=demon.position + 1,
+                            change_number=1,
+                            change_type="Down"
+                            )
+                demon.position += 1
+                demon.save()
+        
+
+            new_demon = Demon.objects.create(level=level,
+                                 position=position,
+                                 creator=creator,
+                                 verificator=verificator,
+                                 list_points=list_points,
+                                 verification_video=verification_video,
+                                 level_id=level_id,
+                                 object_count=object_count,
+                                 demon_difficulty=demon_difficulty,
+                                 update_created="2.2"
+                                 )
+            
+            if r.get("level_password", None):
+                new_demon.level_password = level_password
+                new_demon.save()
+
+            Changelog.objects.create(demon=new_demon,
+                                     reason="Added to list",
+                                     position=position,
+                                     )
+        
+
+            return HttpResponseRedirect(reverse_lazy('demonlist:list'))
+        
+        if r.get("option", None) == "Edit":
+            level = r.get("edit_demon", None)
+            position = r.get("position", None)
+            creator = r.get("creator", None)
+            verificator = r.get("verificator", None)
+            list_points = r.get("list_points", None)
+            verification_video = r.get("verification_video", None)
+            level_id = r.get("level_id", None)
+            object_count = r.get("object_count", None)
+            demon_difficulty = r.get("demon_difficulty", None)
+            level_password = r.get("level_password", None)
+
+            old_demon = Demon.objects.get(level=level)
+
+            old_position = old_demon.position
+
+            if old_position > position:
+                Changelog.objects.create(demon=old_demon,
+                                reason="Moved",
+                                position=position,
+                                change_number=old_position - position,
+                                change_type="Up"
+                                )
+            elif old_position < position:
+                Changelog.objects.create(demon=old_demon,
+                                reason="Moved",
+                                position=position,
+                                change_number=position - old_position,
+                                change_type="Down"
+                                )
+            
+            if old_position > position:
+                demons = Demon.objects.filter(position__lte=old_position, position__gte=position)
+                for demon in demons:
+                    Changelog.objects.create(demon=demon,
+                                reason=f"{old_demon.level} was moved up past this demon",
+                                position=demon.position + 1,
+                                change_number=1,
+                                change_type="Down"
+                                )
+                    demon.position += 1
+                    demon.save()
+            elif old_position < position:
+                demons = Demon.objects.filter(position__lte=position, position__gte=old_position)
+                for demon in demons:
+                    Changelog.objects.create(demon=demon,
+                                reason=f"{old_demon.level} was moved down past this demon",
+                                position=demon.position - 1,
+                                change_number=1,
+                                change_type="Up"
+                                )
+                    demon.position -= 1
+                    demon.save()
+        
+            
+            old_demon.position=position
+            old_demon.creator=creator
+            old_demon.verificator=verificator
+            old_demon.list_points=list_points
+            old_demon.verification_video=verification_video
+            old_demon.level_id=level_id
+            old_demon.object_count=object_count
+            old_demon.demon_difficulty=demon_difficulty
+            
+            if r.get("level_password", None):
+                old_demon.level_password = level_password
+            
+            old_demon.save()
+
+            return HttpResponseRedirect(reverse_lazy('demonlist:list'))
+        

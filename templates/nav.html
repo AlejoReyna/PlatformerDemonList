@@ -11,12 +11,19 @@
 
                 {% if user.id %}
                 <li class="nav-item">
-                    <a href="{% url "users:detail" user.id %}">
+                    <a href="{% url "users:detail" request.user.id %}">
                         {% if request.user.profile.picture %}
                             <img src="{{ request.user.profile.picture.url }}" width="35" height="35" class="d-inline-block align-top rounded-circle"/>
                         {% else %}
                             <img src="{% static 'img/default-profile.png' %}" width="35" height="35" class="d-inline-block align-top rounded-circle"/>
                         {% endif %}
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if user.groups.get|stringformat:"s" == "Mod" %}
+                <li class="nav-item nav-icon" >
+                    <a href="{% url 'demonlist:add_edit_demon' %}">Add/Edit demon
                     </a>
                 </li>
                 {% endif %}
@@ -69,3 +76,8 @@
         </div>
     </div>
 </nav>
+<script>
+    // Obtén el elemento con la clase "nav-icon"
+    function change_color(){
+    }
+</script>

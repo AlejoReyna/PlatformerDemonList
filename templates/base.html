@@ -15,9 +15,54 @@
 
 <style>
 
+    {% if request.user.profile.dark_mode %}
+    body{
+        background-color: #262626;
+        color: white; /* Cambiar el color del texto si es necesario */
+    }
+    
+    .navbar {
+        background-color: #262626 !important;
+        color: white; /* Cambiar el color del texto si es necesario */
+    }   
 
+    div {
+        background-color: #262626 !important; /* Usar !important para asegurar la prioridad */
+        color: white; /* Cambiar el color del texto si es necesario */
+    }
 
+    i {
+        background-color: #262626 !important; /* Usar !important para asegurar la prioridad */
+        color: white; /* Cambiar el color del texto si es necesario */
+    }
 
+    .navbar .nav-item.nav-icon a {
+        background-color: #262626 !important; /* Usar !important para asegurar la prioridad */
+        color: white !important;
+    }
+
+    .post-container {
+        background-color: #262626 !important; /* Usar !important para asegurar la prioridad */
+        color: white !important;
+    }
+
+    .post-container p {
+        background-color: #262626 !important; /* Usar !important para asegurar la prioridad */
+        color: white !important;
+    }
+
+    .title {
+        font-size: 28px;
+        color: white; /* Cambiar el color del texto si es necesario */
+        font-weight: bold;
+    }
+    {% endif %}
+
+    #toggleTable {
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
 
     .custom-table {
         background-color: #f8f9fa; /* Color de fondo de la tabla */
