@@ -58,6 +58,93 @@
     }
     {% endif %}
 
+    .hidden {
+        display: none !important;
+    }
+
+    .post-container-1 {
+        background-color: #ecf0f1;
+        border-radius: 10px;
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    #search {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    #search::placeholder {
+        color: #95a5a6;
+    }
+
+    #search:focus {
+        outline: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .footer {
+        background-color: #2c3e50;
+        color: white;
+        padding: 20px 0;
+        text-align: center;
+        bottom: 0;
+        width: 100%;
+    }
+
+    .footer a {
+        color: #3498db;
+        text-decoration: none;
+    }
+
+    .footer a:hover {
+        text-decoration: underline;
+    }
+
+    .footer p {
+        margin: 0;
+    }
+
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropbtn {
+        background-color: #3498db;
+        color: white;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #ddd;
+    }
+
+
     #toggleTable {
         border: none;
         background: none;
@@ -124,6 +211,10 @@
 
         {% block container %}
         {% endblock%}
+    </div>
+
+    <div class="footer">
+        <p>© 2023 Platform Demon List | Desarrollado por <a href="https://www.youtube.com/channel/UCD8KSXG99kYjx3yqR4aEZ4w" target="_blank">Chucky GD</a><a href="" style="margin-left: 100px;"><i class="fab fa-discord"></i> Discord</a></p>
     </div>
 
 </body>

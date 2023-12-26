@@ -1,4 +1,4 @@
-<div class="col-sm-12 col-md-8 offset-md-2 mt-4 p-4 d-flex post-container">
+<div class="col-sm-12 col-md-8 offset-md-2 mt-{% if forloop.first %}3{% else %}4{% endif %} p-4 d-flex post-container demon-item" id="{{demon.level}}">
     <img style="width: 30%;" src="{{ demon.photo.url }}" alt="{{ demon.level }}" class="float-left mr-3">
     
     <div>

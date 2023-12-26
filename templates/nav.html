@@ -29,49 +29,56 @@
                 {% endif %}
 
                 {% if user.groups.get|stringformat:"s" == "Mod" %}
-                <li class="nav-item nav-icon" >
+                <li class="nav-item nav-icon" style="margin-right: 30px;">
                     <a href="{% url 'demonlist:check_records' %}">Check records
                     </a>
                 </li>
                 {% endif %}
 
-                <li class="nav-item nav-icon">
-                    <a href="{% url 'demonlist:stats_viewer' %}">
-                        <i class="fas fa-chart-bar"></i>
-                    </a>
-                </li>
+                <div class="dropdown">
+                    <button class="dropbtn" id="menuBtn">
+                        <i class="fas fa-bars"></i> Menú
+                    </button>
+                    <div class="dropdown-content" id="menuContent">
+                        <a href="{% url 'demonlist:stats_viewer' %}">
+                            <i class="fas fa-chart-bar"></i> Stats viewer
+                        </a>
+                        <a href="{% url 'demonlist:submit_record' %}">
+                            <i class="fas fa-plus"></i> Submit record
+                        </a>
+                        <a href="{% url 'guidelines' %}">
+                            <i class="fas fa-question-circle"></i> Guidelines
+                        </a>
+                        <form method="post" action="{% url 'users:logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="custom-button">
+                                {% if request.user.id %}
+                                    <i class="fas fa-sign-out-alt" style="font-size: 22px;"></i> Logout
+                                {% else %}
+                                    <i class="fas fa-sign-in-alt" style="font-size: 22px;"></i> Login
+                                {% endif %}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-                <li class="nav-item nav-icon">
-                    <a href="">
-                        <i class="fab fa-discord"></i>
-                    </a>
-                </li>
-
-                <li class="nav-item nav-icon">
-                    <a href="{% url 'demonlist:submit_record' %}">
-                        <i class="fas fa-plus"></i>
-                    </a>
-                </li>
-
-                <li class="nav-item nav-icon">
-                    <a href="{% url 'guidelines' %}">
-                        <i class="fas fa-question-circle"></i>
-                    </a>
-                </li>
-
-                <li class="nav-item nav-icon">
-                    <form method="post" action="{% url 'users:logout' %}">
-                        {% csrf_token %}
-                        <button type="submit" class="custom-button" >
-                            {% if request.user.id %}
-                            <i class="fas fa-sign-out-alt" style="font-size: 22px;"></i>
-                            {% else %}
-                            <i class="fas fa-sign-in-alt" style="font-size: 22px;"></i>
-                            {% endif %}
-                        </button>
-                    </form>
-                </li>
-
+                <script>
+                    $("#menuContent").hide();
+                    $(document).ready(function () {
+                        $("#menuBtn").click(function () {
+                            $("#menuContent").toggle();
+                        });
+                
+                        // Oculta el menú si se hace clic fuera de él
+                        $(document).on("click", function (event) {
+                            if (!$(event.target).closest(".dropdown").length) {
+                                $("#menuContent").hide();
+                            }
+                        });
+                    });
+                </script>
             </ul>
         </div>
     </div>

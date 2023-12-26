@@ -8,9 +8,14 @@
 
     <div class="row">
         <div class="col-md-8">
-        {% for demon in demons %}
-            {% include "demonlist/demon_card.html" %}
-        {% endfor %}
+        
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-4 p-1 post-container-1">
+                <input class="mb-0" type="text" id="search" placeholder="Search demon..." oninput="search_demon(this);">
+            </div>
+
+            {% for demon in demons %}
+                {% include "demonlist/demon_card.html" %}
+            {% endfor %}
         </div>
         <div class="col-md-4">
             <div class="col-sm-12 col-md-8 offset-md-2 mt-5 p-3 post-container">
@@ -35,5 +40,23 @@
             </div>
         </div>
     </div>
+    <script>
+        function search_demon(demon)
+        {
+            $('.demon-item').each(function() {
+                var currentDemon = $(this);
+                console.log(currentDemon.attr("id"));
+                console.log(demon.value);
+
+                
+                if (!currentDemon.attr("id").toLowerCase().includes(demon.value.toLowerCase())) {
+                    currentDemon.addClass('hidden');
+                }
+                else {
+                    currentDemon.removeClass('hidden');
+                }
+            });
+    }
+    </script>
 
 {% endblock %}
