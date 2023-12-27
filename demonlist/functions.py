@@ -20,7 +20,7 @@ def update_players_list_points():
         player.save()
 
 def update_countries_list_points():
-    countries = Country.objects.filter(list_points__gte=1)
+    countries = Country.objects.all()
 
     for country in countries:
         demons = Record.objects.filter(player__country=country).values("demon").distinct().values("demon__list_points")

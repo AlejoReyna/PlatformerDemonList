@@ -160,6 +160,7 @@ class StatsViewerView(TemplateView):
             result_list = [
                 {
                     'id': player.id,
+                    'user__id': player.user.id,
                     'user__username': player.user.username,
                     'list_points': player.list_points,
                     'position': original_positions[player.id],
@@ -208,7 +209,7 @@ class StatsViewerView(TemplateView):
             elif r.get("option", None) == "Individual":
                 players = Profile.objects.filter(list_points__gte=1).annotate(position=Window(expression=DenseRank(), order_by=F('list_points').desc()))
 
-                players = list(players.values("id", "user__username", "list_points", "position", "country__picture"))
+                players = list(players.values("id", "user__id", "user__username", "list_points", "position", "country__picture"))
 
                 return JsonResponse(players, safe=False)
 
@@ -230,6 +231,7 @@ class StatsViewerView(TemplateView):
             result_list = [
                 {
                     'id': player.id,
+                    'user__id': player.user.id,
                     'user__username': player.user.username,
                     'list_points': player.list_points,
                     'position': original_positions[player.id],

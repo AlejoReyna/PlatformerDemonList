@@ -16,14 +16,14 @@
                 {% csrf_token %}
 
                 <div class='media'>
-                    {% if profile.picture %}
-                        <img src="{{profile.picture.url}}" class="rounded-circle" width="50" height="50"/>
+                    {% if request.user.profile.picture %}
+                        <img src="{{request.user.profile.picture.url}}" class="rounded-circle" width="50" height="50"/>
                     {% else %}
                         <img src="{% static 'img/default-profile.png' %}" class="rounded-circle" width="50" height="50"/>
                     {% endif %}
 
                     <div class="media-body">
-                        <h5 class="ml-4">{{ user.username }} | {{user.get_full_name}}</h5>
+                        <h5 class="ml-4">{{ request.user.username }} | {{request.user.get_full_name}}{{form}}</h5>
                         
                         {% for error in form.picture.errors %}
                         <div class="alert alert-danger">
@@ -55,12 +55,8 @@
                         type="text" 
                         name="username" 
                         placeholder="Username" 
-                        value="{% if form.errors %}{{form.username.value}}{% else %}{{user.username}}{% endif %}"/>
-                        {% for error in form.website.errors %}
-                            <div class="invalid-feedback">
-                                {{error}}
-                            </div>
-                        {% endfor %}
+                        value="{% if request.user.username %}{{request.user.username}}{% endif %}"/>
+                        {% if error_message %}<p><i class="fas fa-exclamation-triangle"></i>{{ error_message }}</p>{% endif %}
                 </div>
 
                 {# Youtube channel field #}
@@ -71,7 +67,7 @@
                         type="text" 
                         name="youtube_channel" 
                         placeholder="Youtube channel" 
-                        value="{% if form.errors %}{{form.youtube_channel.value}}{% else %}{{profile.youtube_channel}}{% endif %}"/>
+                        value="{% if request.user.profile.youtube_channel %}{{request.user.profile.youtube_channel}}{% endif %}"/>
                         {% for error in form.website.errors %}
                             <div class="invalid-feedback">
                                 {{error}}
@@ -85,7 +81,7 @@
                     <select class="form-control" id="country" name="country">
                         <option selected disabled="disabled" value="0">-- Country --</option>
                         {% for country in countries %}
-                        <option value="{{country}}" {% if profile.country == country %}selected{% endif %}>{{country}}</option>
+                        <option value="{{country}}" {% if request.user.profile.country == country %}selected{% endif %}>{{country}}</option>
                         {% endfor %}
                     </select>
                     {% for error in form.country.errors %}

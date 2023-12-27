@@ -2,10 +2,14 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.models import User
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
 from django.db.models import F, Window, Sum
 from django.db.models.functions import DenseRank
+from django.http import HttpResponse
+from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
-from django.views.generic import DetailView, FormView, UpdateView
+from django.views.generic import DetailView, FormView, UpdateView, TemplateView
 
 # Models
 from users.models import Profile, Country
@@ -13,6 +17,9 @@ from demonlist.models import Demon, Record
 
 # Forms
 from users.forms import SignupForm
+
+# Functions
+from demonlist import functions
 
 class LoginView(auth_views.LoginView):
     # Login View
@@ -37,12 +44,10 @@ class SignupView(FormView):
         form.save()
         return super().form_valid(form)
     
-class UpdateProfileView(LoginRequiredMixin, UpdateView):
+class UpdateProfileView(LoginRequiredMixin, TemplateView):
     # Update profile view
 
     template_name = 'users/update_profile.html'
-    model = Profile
-    fields = ['country', 'youtube_channel', 'picture']
 
     def get_object(self):
         # Return user's profile
@@ -58,12 +63,40 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
         context["records"] = records
         return context
 
-    def get_success_url(self):
+    def post(self, request, *args, **kwargs):
         # Return to user's profile
-        user = self.object.user
-        user.username = self.request.POST.get("username")
-        user.save()
-        return reverse('users:detail', kwargs={"user": self.object.user.id})
+        user = self.request.user
+        error_message = None
+        try:
+            u = User.objects.get(username=self.request.POST.get("username"))
+            error_message = "The username is already in use. Please choose another."
+        except:
+            user.username = self.request.POST.get("username")
+            user.save()
+        profile = user.profile
+        try:
+            picture = self.request.FILES["picture"]
+            file_path = default_storage.save(f"users/pictures/{profile.id}/{picture.name}", ContentFile(picture.read()))
+            profile.picture = file_path
+        except:
+            pass
+        try:
+            country = Country.objects.get(country=self.request.POST.get("country"))
+            profile.country = Country.objects.get(country=country)
+        except:
+            pass
+        profile.youtube_channel = self.request.POST.get("youtube_channel")
+        profile.save()
+
+        functions.update_countries_list_points()
+        countries = Country.objects.all().order_by("country")
+        records = Record.objects.filter(player=profile)
+
+        return render(
+        request,
+        'users/update_profile.html',
+        {'error_message': error_message, 'countries': countries, 'records': records}
+    )
     
 class UserDetailView(LoginRequiredMixin, DetailView):
     # User Detail View

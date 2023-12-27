@@ -88,7 +88,7 @@
             $(response).each(function (index, player) {
             var fila=`<tr class="table-row"><td class="position-cell">` + player.position + `</td>`;
                 fila+=`<td class="country-cell"><img src="` + player.country__picture + `" height="20" class="d-inline-block align-top"/></td>`;
-                fila+=`<td class="username-cell">` + player.user__username + `</td>`;
+                fila+=`<td class="player-cell"><a href="{% url 'users:detail' 1234 %}" target="_blank">`.replace(/1234/, player.user__id) + player.user__username + `</a></td>`;
                 fila+=`<td class="list_points-cell">` + player.list_points + `</td></tr>`;
                 $('#tablePlayers > tbody').append(fila);
             })
@@ -159,7 +159,7 @@
             $(response).each(function (index, player) {
                 var fila=`<tr class="table-row"><td class="position-cell">` + player.position + `</td>`;
                     fila+=`<td class="country-cell"><img src="/media/` + player.country__picture + `" height="20" class="d-inline-block align-top"/></td>`;
-                    fila+=`<td class="username-cell">` + player.user__username + `</td>`;
+                    fila+=`<td class="player-cell"><a href="{% url 'users:detail' 1234 %}" target="_blank">`.replace(/1234/, player.user__id) + player.user__username + `</a></td>`;
                     fila+=`<td class="list_points-cell">` + player.list_points + `</td></tr>`;
                     $('#tablePlayers > tbody').append(fila);
                 })
@@ -212,7 +212,7 @@
             $(response).each(function (index, player) {
                 var fila=`<tr class="table-row"><td class="position-cell">` + player.position + `</td>`;
                     fila+=`<td class="country-cell"><img src="` + player.country__picture + `" height="20" class="d-inline-block align-top"/></td>`;
-                    fila+=`<td class="username-cell">` + player.user__username + `</td>`;
+                    fila+=`<td class="player-cell"><a href="{% url 'users:detail' 1234 %}" target="_blank">`.replace(/1234/, player.user__id) + player.user__username + `</a></td>`;
                     fila+=`<td class="list_points-cell">` + player.list_points + `</td></tr>`;
                     $('#tablePlayers > tbody').append(fila);
                 })

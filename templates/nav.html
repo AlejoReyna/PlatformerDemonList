@@ -1,9 +1,13 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg fixed-top" id="main-navbar">
 
-        <a class="navbar-brand pr-5" style="border-right: 1px solid #efefef; margin-left: 80px;" href="{% url 'demonlist:list' %}">
+        <a class="navbar-brand" style="margin-left: 80px;" href="{% url 'demonlist:list' %}">
             <img src="{% static "img/demonlist.png" %}" height="45" class="d-inline-block align-top"/>
         </a>
+
+        <div class="navbar-brand" style="margin-bottom: 20px; ">
+            <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 20px; color: #3498db; position: absolute; display: inline-block; padding: 5px 10px; ">V 1.0</p>
+        </div>
 
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
