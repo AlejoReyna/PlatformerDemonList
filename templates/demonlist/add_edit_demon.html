@@ -71,13 +71,6 @@
                     </div> 
 
                     <div class="form-group">
-                        <input class="form-control {% if form.title.errors %}is-invalid{% endif %}" type="number" step="0.1" id="list_points" name="list_points" placeholder="List Points" required>
-                        <div class="invalid-feedback">
-                            {% for error in form.title.errors %}{{ error }}{% endfor %}
-                        </div>
-                    </div>
-
-                    <div class="form-group">
                         <input class="form-control {% if form.title.errors %}is-invalid{% endif %}" type="text" id="verification_video" name="verification_video" placeholder="Verification Video" required>
                         <div class="invalid-feedback">
                             {% for error in form.title.errors %}{{ error }}{% endfor %}
@@ -132,7 +125,6 @@
             $('#position').val("");
             $('#creator').val("");
             $('#verificator').val("");
-            $('#list_points').val("");
             $('#verification_video').val("");
             $('#level_id').val("");
             $('#object_count').val("");
@@ -153,7 +145,6 @@
             $('#position').val("");
             $('#creator').val("");
             $('#verificator').val("");
-            $('#list_points').val("");
             $('#verification_video').val("");
             $('#level_id').val("");
             $('#object_count').val("");
@@ -168,7 +159,6 @@
             $('#position').val({{demon.position}});
             $('#creator').val("{{demon.creator}}");
             $('#verificator').val("{{demon.verificator}}");
-            $('#list_points').val({{demon.list_points}});
             $('#verification_video').val("{{demon.verification_video}}");
             $('#level_id').val({{demon.level_id}});
             $('#object_count').val({{demon.object_count}});

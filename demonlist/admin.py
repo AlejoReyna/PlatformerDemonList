@@ -11,7 +11,7 @@ from demonlist.models import Demon, Record, Changelog
 class DemonAdmin(admin.ModelAdmin):
     """Demon admin."""
 
-    list_display = ('id', 'level', 'creator', "position")
+    list_display = ('id', 'level', 'creator', "position", "list_points")
     search_fields = ('level',)
     list_filter = ('created', 'modified')
 

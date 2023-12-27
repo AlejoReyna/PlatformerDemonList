@@ -41,6 +41,7 @@ admin.site.register(User, UserAdmin)
 class CountryAdmin(admin.ModelAdmin):
     """Country admin."""
 
-    list_display = ('id', 'country', 'list_points')
+    list_display = ('id', 'country', 'list_points', 'picture')
+    list_editable = ("picture",)
     search_fields = ('country',)
     list_filter = ('country',)

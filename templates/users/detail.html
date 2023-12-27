@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block head_content %}
 <title>{{ user.username }} | Platform Demon List</title>
@@ -11,7 +12,7 @@
 
             <div class="col-sm-4 d-flex justify-content-center">
                 <img
-                    src="{% if user.profile.picture %}{{ user.profile.picture.url }}{% endif %}"
+                    src="{% if user.profile.picture %}{{ user.profile.picture.url }}{% else %}{% static 'img/default-profile.png' %}{% endif %}"
                     alt="@{{ user.username}}"
                     class="rounded-circle"
                     width="200px"
@@ -39,7 +40,14 @@
                             <input type="hidden" name="action" value="follow">
                             <button type="submit" class="ml-5 btn btn-sm btn-primary">Follow</button>
                             {% endif %}
-                        </form>    
+                        </form>
+                    {% if request.user.groups.get|stringformat:"s" == "Mod" %}
+                        <form method="POST" style="display: inline-block;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="delete">
+                            <button type="submit" class="ml-5 btn btn-sm btn-danger">Delete Profile Picture</button>
+                        </form>
+                    {% endif %}
                     {% endif %}
                 </h2>
 
@@ -66,6 +74,14 @@
     <hr>
 
     <div class="container" id="user-records">
+        <div class="row mt-4">
+            <div class="d-flex justify-content-center text-center">
+                <span style="margin-right: 60px;"><b>Hardest: </b><br>{{hardest}}</span>
+                <span style="margin-right: 60px;"><b>Ranking: </b><br>{{ranking}}</span>
+                <span style="margin-right: 60px;"><b>List Points: </b><br>{{user.profile.list_points}}</span>
+                <span style="margin-right: 60px;"><b>Demons beaten: </b><br>{{records|length}}</span>
+            </div>
+        </div>
         <p style="font-size: 28px; color: #454546; font-weight: bold; text-align: center; margin-bottom: 10px;">Records</p>
         <div class="row mt-3">
             <table class="table custom-table" id="tablePlayers">
@@ -80,9 +96,9 @@
                     {% if records %}
                     {% for record in records %}
                     <tr class="table-row">
-                        <td class="demon-cell">{{record.demon}}</td>
-                        <td class="best-time-cell">{{record.best_time|date:"H"}}:{{record.best_time|date:"i"}}:{{record.best_time|date:"s"}}.{{record.best_time|date:"u"|slice:":3"}}</td>
-                        <td class="video-link-cell text-center align-middle">
+                        <td class="demon-cell" style="text-align: center;">{{record.demon}}</td>
+                        <td class="best-time-cell" style="text-align: center;">{{record.best_time|date:"H"}}:{{record.best_time|date:"i"}}:{{record.best_time|date:"s"}}.{{record.best_time|date:"u"|slice:":3"}}</td>
+                        <td class="video-link-cell text-center align-middle" style="text-align: center;">
                             <a class="btn btn-primary" href="{{record.video}}" target="_blank">YouTube</a>
                         </td>
                     </tr>

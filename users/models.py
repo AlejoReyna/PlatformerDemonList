@@ -25,7 +25,8 @@ class Profile(models.Model):
     
 class Country(models.Model):
     country = models.CharField(max_length=150, blank=True)
-    list_points = models.FloatField(max_length=200, blank=True)
+    list_points = models.FloatField(max_length=200, blank=True, default=0)
+    picture = models.FileField(upload_to="countries/pictures", blank=True, null=True)
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)

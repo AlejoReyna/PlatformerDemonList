@@ -84,9 +84,9 @@
                     <label>Country</label>
                     <select class="form-control" id="country" name="country">
                         <option selected disabled="disabled" value="0">-- Country --</option>
-                        <option value="México" {% if profile.country == "México" %}selected{% endif %}>México</option>
-                        <option value="USA" {% if profile.country == "USA" %}selected{% endif %}>USA</option>
-                        <option value="Canada" {% if profile.country == "Canada" %}selected{% endif %}>Canada</option>
+                        {% for country in countries %}
+                        <option value="{{country}}" {% if profile.country == country %}selected{% endif %}>{{country}}</option>
+                        {% endfor %}
                     </select>
                     {% for error in form.country.errors %}
                         <div class="invalid-feedback">

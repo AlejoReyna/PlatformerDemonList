@@ -14,7 +14,7 @@ urlpatterns = [
         name='list'
     ),
     path(
-        route='demons/<int:pk>/',
+        route='demons/<int:position>/',
         view=views.DemonDetailView.as_view(),
         name='detail'
     ),

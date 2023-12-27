@@ -1,15 +1,14 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg fixed-top" id="main-navbar">
-    <div class="container">
 
-        <a class="navbar-brand pr-5" style="border-right: 1px solid #efefef;" href="{% url 'demonlist:list' %}">
+        <a class="navbar-brand pr-5" style="border-right: 1px solid #efefef; margin-left: 80px;" href="{% url 'demonlist:list' %}">
             <img src="{% static "img/demonlist.png" %}" height="45" class="d-inline-block align-top"/>
         </a>
 
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
 
-                {% if user.id %}
+                {% if request.user.id %}
                 <li class="nav-item" style="margin-right: 30px;">
                     <a href="{% url "users:detail" request.user.id %}">
                         {% if request.user.profile.picture %}
@@ -21,14 +20,14 @@
                 </li>
                 {% endif %}
 
-                {% if user.groups.get|stringformat:"s" == "Mod" %}
+                {% if request.user.groups.get|stringformat:"s" == "Mod" %}
                 <li class="nav-item nav-icon" >
                     <a href="{% url 'demonlist:add_edit_demon' %}">Add/Edit demon
                     </a>
                 </li>
                 {% endif %}
 
-                {% if user.groups.get|stringformat:"s" == "Mod" %}
+                {% if request.user.groups.get|stringformat:"s" == "Mod" %}
                 <li class="nav-item nav-icon" style="margin-right: 30px;">
                     <a href="{% url 'demonlist:check_records' %}">Check records
                     </a>
@@ -36,7 +35,7 @@
                 {% endif %}
 
                 <div class="dropdown">
-                    <button class="dropbtn" id="menuBtn">
+                    <button class="dropbtn" id="menuBtn" style="margin-right: 80px;">
                         <i class="fas fa-bars"></i> Menú
                     </button>
                     <div class="dropdown-content" id="menuContent">
@@ -81,7 +80,6 @@
                 </script>
             </ul>
         </div>
-    </div>
 </nav>
 <script>
     // Obtén el elemento con la clase "nav-icon"
