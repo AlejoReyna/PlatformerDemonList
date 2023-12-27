@@ -13,7 +13,7 @@
             <div class="col-sm-4 d-flex justify-content-center">
                 <img
                     src="{% if user.profile.picture %}{{ user.profile.picture.url }}{% else %}{% static 'img/default-profile.png' %}{% endif %}"
-                    alt="@{{ user.username}}"
+                    alt="{{ user.username}}"
                     class="rounded-circle"
                     width="200px"
                     height="200px"
@@ -22,7 +22,7 @@
 
             <div class="col-sm-8">
                 <h2 style="font-weight: 100;">
-                    {{ user.username }}
+                    {{ user.username }} <img src="{{user.profile.country.picture.url}}" height="35" class="d-inline-block align-top" style="margin-left: 10px;"/>
                     {% if user == request.user %}
                         <a
                             href="{% url "users:update" %}"
@@ -63,9 +63,11 @@
                     </div>
                 </div>
                 <div class="row mt-4">
+                    {% if user.profile.bio %}
                     <div class="col-sm-12">
                         <p>{{ user.profile.bio }}</p>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -379,7 +379,7 @@ class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
         if r.get("option", None) == "Edit":
             level = r.get("edit_demon", None)
             photo = request.FILES["photo"]
-            position = r.get("position", None)
+            position = int(r.get("position", None))
             creator = r.get("creator", None)
             verificator = r.get("verificator", None)
             verification_video = r.get("verification_video", None)

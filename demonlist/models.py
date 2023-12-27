@@ -31,7 +31,7 @@ class Demon(models.Model):
     creator = models.CharField(max_length=255)
     verificator = models.CharField(max_length=255)
     position = models.IntegerField()
-    list_points = models.FloatField()
+    list_points = models.FloatField(blank=True, null=True)
     photo = models.ImageField(upload_to='demons/photos')
     verification_video = models.CharField(max_length=500)
 
