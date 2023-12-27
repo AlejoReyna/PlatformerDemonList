@@ -43,7 +43,7 @@
                         {% for player in players %}
                         <tr class="table-row">
                             <td class="position-cell">{{player.position}}</td>
-                            <td class="country-cell">{{player.country}}</td>
+                            <td class="country-cell">{{player.country.country}}</td>
                             <td class="player-cell">
                                 <a href="{% url 'users:detail' player.user.id %}" target="_blank">{{player.user.username}}</a>
                             </td>
@@ -82,7 +82,7 @@
             $('#tablePlayers > tbody').empty();
             $(response).each(function (index, player) {
             var fila=`<tr class="table-row"><td class="position-cell">` + player.position + `</td>`;
-                fila+=`<td class="country-cell">` + player.country + `</td>`;
+                fila+=`<td class="country-cell">` + player.country__country + `</td>`;
                 fila+=`<td class="username-cell">` + player.user__username + `</td>`;
                 fila+=`<td class="list_points-cell">` + player.list_points + `</td></tr>`;
                 $('#tablePlayers > tbody').append(fila);
@@ -154,7 +154,7 @@
             $(response).each(function (index, player) {
                 var fila=`<tr class="table-row"><td class="position-cell">` + player.position + `</td>`;
                     fila+=`<td class="username-cell">` + player.user__username + `</td>`;
-                    fila+=`<td class="country-cell">` + player.country + `</td>`;
+                    fila+=`<td class="country-cell">` + player.country__country + `</td>`;
                     fila+=`<td class="list_points-cell">` + player.list_points + `</td></tr>`;
                     $('#tablePlayers > tbody').append(fila);
                 })
@@ -207,7 +207,7 @@
             $(response).each(function (index, player) {
                 var fila=`<tr class="table-row"><td class="position-cell">` + player.position + `</td>`;
                     fila+=`<td class="username-cell">` + player.user__username + `</td>`;
-                    fila+=`<td class="country-cell">` + player.country + `</td>`;
+                    fila+=`<td class="country-cell">` + player.country__country + `</td>`;
                     fila+=`<td class="list_points-cell">` + player.list_points + `</td></tr>`;
                     $('#tablePlayers > tbody').append(fila);
                 })

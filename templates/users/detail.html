@@ -72,6 +72,7 @@
                 <thead>
                     <tr>
                         <th style="text-align: center;">Demon</th>
+                        <th style="text-align: center;">Best Time</th>
                         <th style="text-align: center;">Video Proof</th>
                     </tr>
                 </thead>
@@ -80,6 +81,7 @@
                     {% for record in records %}
                     <tr class="table-row">
                         <td class="demon-cell">{{record.demon}}</td>
+                        <td class="best-time-cell">{{record.best_time|date:"H"}}:{{record.best_time|date:"i"}}:{{record.best_time|date:"s"}}.{{record.best_time|date:"u"|slice:":3"}}</td>
                         <td class="video-link-cell text-center align-middle">
                             <a class="btn btn-primary" href="{{record.video}}" target="_blank">YouTube</a>
                         </td>

@@ -8,8 +8,8 @@
 
     <div class="container">
         <div class="row justify-content-md-center">
-            <div class="col-6 pt-3 pb-3" id="profile-box">
-                <h4 class="mb-4">Submit new record</h4>
+            <div class="col-md-8 pt-3 pb-3 mx-auto" id="profile-box">
+                <h4 class="mb-4" style="text-align: center;">Submit new record</h4>
 
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -25,6 +25,27 @@
                             {% endfor %}
                         </select>
                     </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="hours">Hours:</label>
+                                <input class="form-control" type="number" id="hours" name="hours" min="0" max="1000" placeholder="HH" oninput="limitInput(this, 2)" required>
+                            </div> 
+                            <div class="col-md-3">
+                                <label for="minutes">Minutes:</label>
+                                <input class="form-control" type="number" id="minutes" name="minutes" min="0" max="59" placeholder="MM" oninput="limitInput(this, 2)" required>
+                            </div> 
+                            <div class="col-md-3">
+                                <label for="seconds">Seconds:</label>
+                                <input class="form-control" type="number" id="seconds" name="seconds" min="0" max="59" placeholder="SS" oninput="limitInput(this, 2)" required>
+                            </div> 
+                            <div class="col-md-3">
+                                <label for="milliseconds">Milliseconds:</label>
+                                <input class="form-control" type="number" id="milliseconds" name="milliseconds" min="0" max="999" placeholder="MS" oninput="limitInput(this, 3)" required>
+                            </div> 
+                        </div> 
+                    </div> 
 
                     <div class="form-group">
                         <input class="form-control {% if form.title.errors %}is-invalid{% endif %}" type="text" name="video" placeholder="Video">
@@ -52,5 +73,13 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function limitInput(element, maxLength) {
+            if (element.value.length > maxLength) {
+                element.value = element.value.slice(0, maxLength);
+            }
+        }
+    </script>
 
 {% endblock %}

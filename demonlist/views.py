@@ -16,6 +16,9 @@ from django.contrib.auth.models import User
 from demonlist.models import Demon, Record, Changelog
 from users.models import Profile, Country
 
+# Utils
+import datetime 
+
 class ModeradorMixin(UserPassesTestMixin):
     def test_func(self):
 
@@ -53,6 +56,30 @@ class DemonDetailView(DetailView):
 
         return context
 
+
+    def post(self, request, pk):
+        r = request.POST
+        demon = self.get_object()
+        option = r.get("option", None)
+        print(option)
+
+        if option == "best_time":
+            records = Record.objects.filter(demon=demon, accepted=True).order_by("best_time")
+
+            records = list(records.values("player__user__username", "video", "best_time"))
+
+            print(records)
+
+            return JsonResponse(records, safe=False)
+        elif option == "order":
+            records = Record.objects.filter(demon=demon, accepted=True)
+
+            records = list(records.values("player__user__username", "video", "best_time"))
+            print(records)
+
+            return JsonResponse(records, safe=False)
+
+
 class SubmitRecordView(LoginRequiredMixin, TemplateView):
     """Submit a new record."""
 
@@ -73,14 +100,21 @@ class SubmitRecordView(LoginRequiredMixin, TemplateView):
     def post(self, request):
         r = request.POST
         demon = r.get("demon", None)
+        hours = r.get("hours", None)
+        minutes = r.get("minutes", None)
+        seconds = r.get("seconds", None)
+        milliseconds = r.get("milliseconds", None)
         profile = r.get("profile", None)
         video = r.get("video", None)
         raw_footage = r.get("raw_footage", None)
         notes = r.get("notes", None)
 
+        time = datetime.time(int(hours), int(minutes), int(seconds), int(milliseconds) * 1000)
+        
         print(r)
 
         Record.objects.create(demon=Demon.objects.get(level=demon),
+                            best_time=time,
                             player=Profile.objects.get(id=profile),
                             video=video,
                             raw_footage=raw_footage,
@@ -125,7 +159,7 @@ class StatsViewerView(TemplateView):
                     'user__username': player.user.username,
                     'list_points': player.list_points,
                     'position': original_positions[player.id],
-                    'country': player.country,
+                    'country__country': player.country.country,
                 }
                 for player in players_final
             ]
@@ -170,7 +204,7 @@ class StatsViewerView(TemplateView):
             elif r.get("option", None) == "Individual":
                 players = Profile.objects.annotate(position=Window(expression=DenseRank(), order_by=F('list_points').desc()))
 
-                players = list(players.values("id", "user__username", "list_points", "position", "country"))
+                players = list(players.values("id", "user__username", "list_points", "position", "country__country"))
 
                 return JsonResponse(players, safe=False)
 
@@ -181,7 +215,7 @@ class StatsViewerView(TemplateView):
             )
 
             if r.get("select_country", None):
-                players_filtered = players_annotated.filter(country=r.get("select_country", None))
+                players_filtered = players_annotated.filter(country__country=r.get("select_country", None))
             else:
                 players_filtered = players_annotated
 
@@ -195,7 +229,7 @@ class StatsViewerView(TemplateView):
                     'user__username': player.user.username,
                     'list_points': player.list_points,
                     'position': original_positions[player.id],
-                    'country': player.country,
+                    'country__country': player.country.country,
                 }
                 for player in players_final
             ]

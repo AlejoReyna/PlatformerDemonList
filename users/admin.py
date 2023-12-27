@@ -9,9 +9,9 @@ from users.models import Profile, Country
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     # Profile admin
-    list_display = ("pk", "user", "phone", "youtube_channel", "list_points")
+    list_display = ("pk", "user", "phone", "youtube_channel", "list_points", "country")
     list_display_links = ("pk", "user")
-    list_editable = ("phone", "youtube_channel", "list_points")
+    list_editable = ("phone", "youtube_channel", "list_points", "country")
     search_fields = ("user__username", "user__email", "user__first_name", "user__last_name", "phone")
     list_filter = ("user__is_active", "user__is_staff", "created", "modified")
     fieldsets = (

@@ -15,6 +15,14 @@
 
 <style>
 
+    body {
+        overflow-x: hidden;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+    }
+
     {% if request.user.profile.dark_mode %}
     body{
         background-color: #262626;
@@ -58,6 +66,23 @@
     }
     {% endif %}
 
+    .without_ampm::-webkit-datetime-edit-ampm-field {
+        display: none !important;
+      }
+
+    input[type=time]::-webkit-datetime-edit-ampm-field {
+    display: none !important;
+    }
+
+    input[type=time]::-webkit-clear-button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -o-appearance: none;
+        -ms-appearance:none;
+        appearance: none;
+        margin: -10px; 
+      }
+
     .hidden {
         display: none !important;
     }
@@ -87,13 +112,15 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
+    .content {
+        flex: 1;
+    }
+
     .footer {
         background-color: #2c3e50;
         color: white;
         padding: 20px 0;
         text-align: center;
-        bottom: 0;
-        width: 100%;
     }
 
     .footer a {
@@ -207,14 +234,17 @@
 
     {% include "nav.html" %}
 
-    <div class="mt-5">
+    <div class="mt-5" style="margin-bottom: 400px;">
 
         {% block container %}
         {% endblock%}
     </div>
 
     <div class="footer">
-        <p>© 2023 Platform Demon List | Desarrollado por <a href="https://www.youtube.com/channel/UCD8KSXG99kYjx3yqR4aEZ4w" target="_blank">Chucky GD</a><a href="" style="margin-left: 100px;"><i class="fab fa-discord"></i> Discord</a></p>
+        <p>© 2024 Platform Demon List | Developed by <a href="https://www.youtube.com/channel/UCD8KSXG99kYjx3yqR4aEZ4w" target="_blank">Chucky GD</a></p>
+        <p>© Copyright 2024 platformlist.com</p>
+        <p>All rights reserved</p>
+        <p>Platform Demon List are in no way affiliated with RobTopGames ®</p>
     </div>
 
 </body>

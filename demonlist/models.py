@@ -36,6 +36,7 @@ class Record(models.Model):
 
     demon = models.ForeignKey(Demon, on_delete=models.CASCADE)
     player = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    best_time = models.TimeField()
     video = models.CharField(max_length=500)
     raw_footage = models.CharField(max_length=500)
     notes = models.TextField(blank=True, null=True)
