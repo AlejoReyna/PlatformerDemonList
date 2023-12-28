@@ -6,62 +6,94 @@
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 {% endblock%}
 <!DOCTYPE html>
+<head>
+    <style>
+        .home {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .in-flex {
+            flex: 1;
+            min-width: 300px;
+        }
+        .in-flex:first-child {
+            flex: 2;
+            padding: 25px;
+            margin: 20px;
+            background-color: #dfdbdb;
+            margin-bottom: 0px;
+        }
+        .in-flex div {
+            padding: 25px;
+            background-color: #fff;
+            margin: 20px;
+        }
+
+    </style>
+</head>
 {% block container %}
 
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 col-md-10 offset-md-1 mt-5 p-0 post-container text-center">
+    <section class="home">
+        <div class="in-flex"></div>
+        <div class="in-flex mt-5">
+            
+                <div>
+                    <h2>Platformer List Guidelines</h2>
+                    <p><strong>Index:</strong></p>
+                    <ol>
+                        <li>What are the limitations?</li>
+                        <li>Are there any criteria for unrated levels?</li>
+                        <li>Prohibited hacks/exploits</li>
+                        <li>Miscellaneous levels (Boss fights and minigames)</li>
+                        <li>Level rankings</li>
+                        <li>Winners' rankings</li>
+                        <li>How do I submit an entry?</li>
+                    </ol>
 
-                <h2>Platformer List Guidelines</h2>
-                <p><strong>Index:</strong></p>
-                <ol>
-                    <li>What are the limitations?</li>
-                    <li>Are there any criteria for unrated levels?</li>
-                    <li>Prohibited hacks/exploits</li>
-                    <li>Miscellaneous levels (Boss fights and minigames)</li>
-                    <li>Level rankings</li>
-                    <li>Winners' rankings</li>
-                    <li>How do I submit an entry?</li>
-                </ol>
+                    <p><em>(Note: this is still a very early/amateur version of the guidelines, and there will likely be significant changes)</em></p>
+                </div>
+                <div >
+                    <p><strong>Do levels adhere to standards?</strong></p>
+                    <p>Rated levels automatically make the list, but for unrated levels, there's an assessment process. The list actively discourages spam-oriented levels, so levels must adhere to a 10 clicks-per-second cap. This applies to a single input; for example, 6 clicks per second on two keys simultaneously (such as left + right) is still acceptable, even though it totals 12 clicks per second cumulatively. Levels relying on random triggers or employing "luck" for difficulty would also be disqualified in most cases.</p>
+                </div>
+                <div >
+                    <p><strong>Prohibited hacks/exploits</strong></p>
+                    <p>Here's a current list of unacceptable hacks that will result in your record being rejected:</p>
+                    <ul>
+                        <li>Noclip</li>
+                        <li>Speed hacks</li>
+                        <li>Show hitboxes</li>
+                        <li>Hitbox multiplier</li>
+                        <li>Show layout</li>
+                        <li>No spikes</li>
+                        <li>No hitboxes</li>
+                        <li>Show trajectory</li>
+                        <li>Bots/Macros</li>
+                        <li>Pause countdown</li>
+                        <li>Nerfing levels</li>
+                        <li>Frame stepper</li>
+                        <li>No mirror</li>
+                        <li>No rotation</li>
+                        <li>Swiftclick shortcut</li>
+                        <li>Instant complete</li>
+                        <li>Autoing</li>
+                    </ul>
+                </div>
+                <div >
+                    <p><strong>Miscellaneous levels</strong></p>
+                    <p>Various levels like boss fights/minigames will have their own distinct categories since they differ significantly from typical platformers. This differentiation aims to prevent inaccuracies and difficulty in ordering the list.</p>
+                </div>
+                <div >
+                    <p><strong>Winners' rankings</strong></p>
+                    <p>For a given list level, there will be two separate records—one ordered by the date of completion and the other ordered by completion time (with the fastest completion at the top).</p>
+                </div>
+                <div >
+                    <p><strong>How do I submit a completion?</strong></p>
+                    <p>Submissions are made through our Discord server, and you must include raw footage with recorded clicks. If the level has checkpoints, you can also upload a spliced completion, but raw footage must be shared upon request.</p>
+                </div>
 
-                <p><em>(Note: this is still a very early/amateur version of the guidelines, and there will likely be significant changes)</em></p>
-
-                <p><strong>Do levels adhere to standards?</strong></p>
-                <p>Rated levels automatically make the list, but for unrated levels, there's an assessment process. The list actively discourages spam-oriented levels, so levels must adhere to a 10 clicks-per-second cap. This applies to a single input; for example, 6 clicks per second on two keys simultaneously (such as left + right) is still acceptable, even though it totals 12 clicks per second cumulatively. Levels relying on random triggers or employing "luck" for difficulty would also be disqualified in most cases.</p>
-
-                <p><strong>Prohibited hacks/exploits</strong></p>
-                <p>Here's a current list of unacceptable hacks that will result in your record being rejected:</p>
-                <ul>
-                    <li>Noclip</li>
-                    <li>Speed hacks</li>
-                    <li>Show hitboxes</li>
-                    <li>Hitbox multiplier</li>
-                    <li>Show layout</li>
-                    <li>No spikes</li>
-                    <li>No hitboxes</li>
-                    <li>Show trajectory</li>
-                    <li>Bots/Macros</li>
-                    <li>Pause countdown</li>
-                    <li>Nerfing levels</li>
-                    <li>Frame stepper</li>
-                    <li>No mirror</li>
-                    <li>No rotation</li>
-                    <li>Swiftclick shortcut</li>
-                    <li>Instant complete</li>
-                    <li>Autoing</li>
-                </ul>
-
-                <p><strong>Miscellaneous levels</strong></p>
-                <p>Various levels like boss fights/minigames will have their own distinct categories since they differ significantly from typical platformers. This differentiation aims to prevent inaccuracies and difficulty in ordering the list.</p>
-
-                <p><strong>Winners' rankings</strong></p>
-                <p>For a given list level, there will be two separate records—one ordered by the date of completion and the other ordered by completion time (with the fastest completion at the top).</p>
-
-                <p><strong>How do I submit a completion?</strong></p>
-                <p>Submissions are made through our Discord server, and you must include raw footage with recorded clicks. If the level has checkpoints, you can also upload a spliced completion, but raw footage must be shared upon request.</p>
-
-
-            </div>
         </div>
-    </div>
+        </div>
+    </section>
 {% endblock %}
+</html>
