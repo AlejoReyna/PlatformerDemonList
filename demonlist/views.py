@@ -57,17 +57,6 @@ class DemonDetailView(DetailView):
         changelog = Changelog.objects.filter(demon=demon)
         records = Record.objects.filter(demon=demon, accepted=True)
 
-        demons = Demon.objects.all()
-        for demon in demons:
-            parts = demon.verification_video_embed.split('/')
-            print("parts")
-            print(parts)
-            if len(parts) > 2:
-                demon.verification_video = 'https://www.youtube.com/watch?v=' + parts[4]
-            else:
-                demon.verification_video = ''
-            demon.save()
-
         context["changelog"] = changelog
         context["records"] = records
         return context
@@ -356,12 +345,15 @@ class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
                 demon.position += 1
                 demon.save()
 
+            verification_video_embed = 'https://www.youtube.com/embed/' + verification_video.split('=')[1]
+
             new_demon = Demon.objects.create(level=level,
                                 photo=photo,
                                 position=position,
                                 creator=creator,
                                 verificator=verificator,
                                 verification_video=verification_video,
+                                verification_video_embed=verification_video_embed,
                                 level_id=level_id,
                                 object_count=object_count,
                                 demon_difficulty=demon_difficulty,
@@ -435,11 +427,14 @@ class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
                     demon.position -= 1
                     demon.save()
         
+            verification_video_embed = 'https://www.youtube.com/embed/' + verification_video.split('=')[1]
+            
             old_demon.photo=photo
             old_demon.position=position
             old_demon.creator=creator
             old_demon.verificator=verificator
             old_demon.verification_video=verification_video
+            old_demon.verification_video_embed=verification_video_embed
             old_demon.level_id=level_id
             old_demon.object_count=object_count
             old_demon.demon_difficulty=demon_difficulty
