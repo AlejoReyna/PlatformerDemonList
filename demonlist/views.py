@@ -5,11 +5,12 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import user_passes_test
 from django.core.files.images import ImageFile
-from django.db.models import F, Window, Sum
+from django.db.models import F, Window, Sum, Case, When, CharField, Value, ExpressionWrapper, Func
 from django.db.models.functions import DenseRank
 from django.http import HttpResponseRedirect
 from django.http.response import JsonResponse
 from django.views.generic import CreateView, DetailView, ListView, TemplateView
+
 
 # Models
 from django.contrib.auth.models import User
@@ -20,7 +21,7 @@ from users.models import Profile, Country
 from demonlist import functions
 
 # Utils
-import datetime 
+import datetime
 
 class ModeradorMixin(UserPassesTestMixin):
     def test_func(self):
@@ -56,10 +57,16 @@ class DemonDetailView(DetailView):
         changelog = Changelog.objects.filter(demon=demon)
         records = Record.objects.filter(demon=demon, accepted=True)
 
-        functions.order_list_points()
-        functions.update_players_list_points()
-        functions.update_countries_list_points()
-
+        demons = Demon.objects.all()
+        for demon in demons:
+            parts = demon.verification_video_embed.split('/')
+            print("parts")
+            print(parts)
+            if len(parts) > 2:
+                demon.verification_video = 'https://www.youtube.com/watch?v=' + parts[4]
+            else:
+                demon.verification_video = ''
+            demon.save()
 
         context["changelog"] = changelog
         context["records"] = records

@@ -33,6 +33,7 @@ class Demon(models.Model):
     position = models.IntegerField()
     list_points = models.FloatField()
     photo = models.ImageField(upload_to='demons/photos')
+    verification_video_embed = models.CharField(max_length=500)
     verification_video = models.CharField(max_length=500)
 
     level_id = models.BigIntegerField(blank=True, null=True)

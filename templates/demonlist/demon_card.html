@@ -1,9 +1,15 @@
 <section class="container d-none d-md-block">
     <div class="row">
         <div class="col-sm-12 col-md-8 offset-md-2 p-4 d-flex post-container demon-item mt-{% if forloop.first %}3{% else %}4{% endif %}" id="{{demon.level}}">
-                <div class="mt-{% if forloop.first %}3{% else %}4{% endif %} ">
+            <div class="position-relative"> <!-- Contenedor relativo -->
+                <!-- Enlace de YouTube con icono gris y rojo al hacer hover -->
+                <a href="{{demon.verification_video}}" style="position: absolute; top: 50%; left: 48%; transform: translate(-50%, -50%);">
+                    <i class="fab fa-youtube youtube-icon"></i> <!-- Ajustado el tamaño del icono y agregado el cambio de color al hacer hover -->
+                </a>
+
+                <!-- Imagen del demonio -->
                 <img style="width: 80; height: 125px;" src="{{ demon.photo.url }}" alt="{{ demon.level }}" class="float-left mr-3">
-                </div>
+            </div>
             <div>
                 <p class="mt-1 ml-2">
                     <!--<a href="" style="color: #000; font-size: 20px;">
@@ -16,11 +22,11 @@
                 <p class="ml-2 mt-0 mb-2">
                     <b style="font-size: 15px; font-style: italic; color: #666666;">{{demon.creator}}</b>
                 </p>
-
             </div>
         </div>
     </div>
 </section>
+
 
 <section class="container d-block d-md-none">
     <div class="row">

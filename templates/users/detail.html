@@ -111,11 +111,11 @@
                 <tbody>
                     {% if records %}
                     {% for record in records %}
-                    <tr class="table-row">
+                    <tr>
                         <td class="demon-cell" style="text-align: center;">#{{record.demon.position}} {{record.demon}}</td>
                         <td class="best-time-cell" style="text-align: center;">{{record.best_time|date:"H"}}:{{record.best_time|date:"i"}}:{{record.best_time|date:"s"}}.{{record.best_time|date:"u"|slice:":3"}}</td>
-                        <td class="video-link-cell text-center align-middle" style="text-align: center;">
-                            <a class="btn btn-primary" href="{{record.video}}" target="_blank">YouTube</a>
+                        <td class="video-link-cell" style="text-align: center;">
+                            {% if record.video %}<a class="btn btn-primary" style="margin: 0 auto;" href="{{record.video}}" target="_blank">YouTube</a>{% else %}<br><br>{% endif %}
                         </td>
                     </tr>
                     {% endfor %}
