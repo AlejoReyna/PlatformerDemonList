@@ -24,6 +24,7 @@
                         <tr>
                             <th>Record Holder</th>
                             <th>Demon</th>
+                            <th>Best time</th>
                             <th>Video Proof</th>
                             <th>Raw Footage</th>
                             <th>Accept</th>
@@ -38,6 +39,12 @@
                                 <a href="{{record.video}}" target="_blank">{{record.player}}</a>
                             </td>
                             <td class="demon-cell">{{record.demon}}</td>
+                            <td class="best_time-cell">
+                                <input type="number" id="hours" name="hours" min="0" max="1000" placeholder="HH" oninput="limitInput(this, 2)" value="{{record.best_time|time:'H'}}">
+                                <input type="number" id="minutes" name="minutes" min="0" max="59" placeholder="MM" oninput="limitInput(this, 2)" value="{{record.best_time|time:'i'}}">
+                                <input type="number" id="seconds" name="seconds" min="0" max="59" placeholder="SS" oninput="limitInput(this, 2)" value="{{record.best_time|time:'s'}}">
+                                <input type="number" id="milliseconds" name="milliseconds" min="0" max="999" placeholder="MS" oninput="limitInput(this, 3)" value="{{record.best_time|time:'u'}}" maxlength="3">
+                            </td>
                             <td class="video-link-cell">
                                 <a class="btn btn-primary" href="{{record.video}}" target="_blank">YouTube</a>
                             </td>
@@ -66,6 +73,11 @@
         </div>
     </div>
     <script>
+        function limitInput(element, maxLength) {
+            if (element.value.length > maxLength) {
+                element.value = element.value.slice(0, maxLength);
+            }
+        }
         function update_table(status)
         {
         console.log(status.value);

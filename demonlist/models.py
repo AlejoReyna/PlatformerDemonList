@@ -7,6 +7,9 @@ from django.contrib.auth.models import User
 # Models
 from users.models import Profile
 
+# Utilities
+import re
+
 values_list_points = [
     250.00, 228.48, 210.06, 194.28, 180.78, 169.22, 159.32, 150.84, 143.58, 137.37,
     132.05, 127.50, 123.60, 120.26, 117.40, 114.96, 112.86, 111.07, 109.53, 108.22,
@@ -52,7 +55,6 @@ class Demon(models.Model):
         self.list_points = round(self.list_points, 2)
         super(Demon, self).save(*args, **kwargs)
 
-
 class Record(models.Model):
     """Record model."""
 
@@ -73,6 +75,17 @@ class Record(models.Model):
     def __str__(self):
         """Return record."""
         return '{}'.format(self.id)
+
+    def video_platform(self):
+        youtube_pattern = re.compile(r'(https?://)?(www\.)?(youtube|youtu)\.(com|be)/.+')
+        twitch_pattern = re.compile(r'(https?://)?(www\.)?twitch\.(tv|com)/.+')
+
+        if youtube_pattern.match(self.video):
+            return "YouTube"
+        elif twitch_pattern.match(self.video):
+            return "Twitch"
+        else:
+            return ""
 
 class Changelog(models.Model):
     """Changelog model."""

@@ -103,7 +103,8 @@
                             </td>
                             <td class="best-time-cell">{{record.best_time|date:"H"}}:{{record.best_time|date:"i"}}:{{record.best_time|date:"s"}}.{{record.best_time|date:"u"|slice:":3"}}</td>
                             <td class="video-link-cell">
-                                <a class="btn btn-primary" href="{{record.video}}" target="_blank">YouTube</a>
+                                {% if record.video %}<a class="btn btn-primary" style="margin: 0 auto;" href="{{record.video}}" target="_blank">{{record.video_platform}}</a>{% else %}<br><br>{% endif %}
+                            </td>
                             </td>
                         </tr>
                         {% endfor %}
@@ -152,10 +153,15 @@
             <img src="/media/` + record.player__country__picture + `" height="20" class="d-inline-block align-top" style="margin-right: 15px;"/>
         </td>`
             fila += `<td class="player-cell">
-                <a href="` + record.video + `" target="_blank">` + record.player__user__username + `</a>
+                <a href="{% url 'users:detail' 1234 %}"`.replace(/1234/, record.player__user__id) + ` target="_blank">` + record.player__user__username + `</a>
             </td>`;
             fila+=`<td class="best-time-cell">` + record.best_time + `</td>`
-            fila+=`<td class="video-link-cell"><a class="btn btn-primary" href="` + record.video + `" target="_blank">YouTube</a></td></tr>`;
+            if (record.video == '') {
+                fila+=`<td class="video-link-cell"></td></tr>`;
+            }
+            else {
+                fila+=`<td class="video-link-cell"><a class="btn btn-primary" href="` + record.video + `" target="_blank">` + record.video_platform + `</a></td></tr>`;
+            }
             $('#tableRecords > tbody').append(fila);
         })
         console.log(response.length)

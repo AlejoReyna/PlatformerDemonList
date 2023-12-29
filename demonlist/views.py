@@ -5,8 +5,8 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import user_passes_test
 from django.core.files.images import ImageFile
-from django.db.models import F, Window, Sum, Case, When, CharField, Value, ExpressionWrapper, Func
-from django.db.models.functions import DenseRank
+from django.db.models import F, Window, Sum, Case, When, CharField, Value, ExpressionWrapper, Func, IntegerField
+from django.db.models.functions import DenseRank, Cast
 from django.http import HttpResponseRedirect
 from django.http.response import JsonResponse
 from django.views.generic import CreateView, DetailView, ListView, TemplateView
@@ -65,21 +65,26 @@ class DemonDetailView(DetailView):
         r = request.POST
         demon = self.get_object()
         option = r.get("option", None)
-        print(option)
 
         if option == "best_time":
             records = Record.objects.filter(demon=demon, accepted=True).order_by("best_time")
 
-            records = list(records.values("player__user__username", "player__country__picture", "video", "best_time"))
-
-            print(records)
+            records = list(records.annotate(video_platform=Case(
+            When(video__regex=r'(https?://)?(www\.)?(youtube|youtu)\.(com|be)/.+', then=Value('YouTube')),
+            When(video__regex=r'(https?://)?(www\.)?twitch\.(tv|com)/.+', then=Value('Twitch')),
+            default=Value(''),
+            output_field=CharField())).values("player__user__id", "player__user__username", "player__country__picture", "video", "best_time", "video_platform"))
 
             return JsonResponse(records, safe=False)
+        
         elif option == "order":
             records = Record.objects.filter(demon=demon, accepted=True)
 
-            records = list(records.values("player__user__username", "player__country__picture", "video", "best_time"))
-            print(records)
+            records = list(records.annotate(video_platform=Case(
+            When(video__regex=r'(https?://)?(www\.)?(youtube|youtu)\.(com|be)/.+', then=Value('YouTube')),
+            When(video__regex=r'(https?://)?(www\.)?twitch\.(tv|com)/.+', then=Value('Twitch')),
+            default=Value(''),
+            output_field=CharField())).values("player__user__id", "player__user__username", "player__country__picture", "video", "best_time", "video_platform"))
 
             return JsonResponse(records, safe=False)
 
@@ -389,7 +394,7 @@ class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
 
             old_position = old_demon.position
 
-            if old_position > position:
+            if old_position > int(position):
                 Changelog.objects.create(demon=old_demon,
                                 reason="Moved",
                                 position=position,
