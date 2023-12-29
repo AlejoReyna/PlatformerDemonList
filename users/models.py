@@ -22,7 +22,10 @@ class Profile(models.Model):
     def __str__(self):
         # Return username
         return self.user.username
-    
+    def save(self, *args, **kwargs):
+        self.list_points = round(self.list_points, 2)
+        super(Profile, self).save(*args, **kwargs)
+
 class Country(models.Model):
     country = models.CharField(max_length=150, blank=True)
     list_points = models.FloatField(max_length=200, blank=True, default=0)
@@ -34,6 +37,9 @@ class Country(models.Model):
     def __str__(self):
         # Return country
         return self.country
-    
+    def save(self, *args, **kwargs):
+        self.list_points = round(self.list_points, 2)
+        super(Country, self).save(*args, **kwargs)
+
     class Meta:
         verbose_name_plural = "Countries"

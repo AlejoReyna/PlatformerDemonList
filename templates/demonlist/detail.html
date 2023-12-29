@@ -10,19 +10,41 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-sm-12 col-md-8 offset-md-2 mt-5 p-0 post-container text-center" style="border-bottom: 2px solid #ced4da; padding-bottom: 10px;">
+            <div class="col-sm-12 col-md-8 col-lg-8 offset-md-2 mt-5 p-0 post-container text-center" style="border-bottom: 2px solid #ced4da; padding-bottom: 10px;">
                 <h1 style="color: #454546; margin-top: 10px;">{{demon.level}}</h1>
-                <p  style="font-size: 20px; color: #454546;">by {{demon.creator}}, verified by {{demon.verificator}}</p>
-                <iframe style="width: 90%; margin: 15px 5%; height: 348.495px;" src="{{demon.verification_video}}" frameborder="0" allowfullscreen></iframe>
+                <p  style="font-size: 20px; color: #454546;">by {{demon.creator}} {% if not demon.verificator == demon.creator %}, verified by {{demon.verificator}}{% endif %}</p>
+                <div class="d-flex justify-content-center" style="margin: 15px 0;">
+                    <div class="embed-responsive embed-responsive-16by9" style="width: 80%;">
+                        <iframe class="embed-responsive-item" src="{{demon.verification_video}}" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
                 <div class="d-flex justify-content-center text-center">
-                    <span style="margin-right: 60px;"><b>Demonlist score: </b><br>{{demon.list_points}}</span>
-                    <span style="margin-right: 60px;"><b>Level Password: </b><br>{{demon.level_password}}</span>
-                    <span style="margin-right: 60px;"><b>Level ID: </b><br>{{demon.level_id}}</span>
+                    <table style="border: 1px solid  #98b9da; border-collapse: collapse;">
+                        <tr>
+                            <td style="border-right: 1px solid #64798f; padding: 5px;"><b>Demonlist score: </b></td>
+                            <td style="border-right: 1px solid #64798f; padding: 5px;"><b>Level Password: </b></td>
+                            <td style="padding: 5px;"><b>Level ID: </b></td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: 1px solid #64798f; padding: 5px;">{{demon.list_points}}</td>
+                            <td style="border-right: 1px solid #64798f; padding: 5px;">{{demon.level_password}}</td>
+                            <td style="padding: 5px;">{{demon.level_id}}</td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="d-flex justify-content-center text-center" style="margin-bottom: 10px;">
-                    <span style="margin-right: 60px;"><b>Object count: </b><br>{{demon.object_count}}</span>
-                    <span style="margin-right: 60px;"><b>Demon difficulty: </b><br>{{demon.demon_difficulty}}</span>
-                    <span style="margin-right: 60px;"><b>Created in: </b><br>{{demon.update_created}}</span>
+                    <table style="border: 1px solid #98b9da; border-collapse: collapse;">
+                        <tr>
+                            <td style="border-right: 0px solid #64798f; padding: 5px;"><b>Object count: </b></td>
+                            <td style="border-right: 0px solid #64798f; padding: 5px;"><b>Demon difficulty: </b></td>
+                            <td style="padding: 5px;"><b>Created in: </b></td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: 0px solid #64798f; padding: 5px;">{{demon.object_count}}</td>
+                            <td style="border-right: 0px solid #64798f; padding: 5px;">{{demon.demon_difficulty}}</td>
+                            <td style="padding: 5px;">{{demon.update_created}}</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
             <div class="col-sm-12 col-md-8 offset-md-2 mt-3 p-0 post-container text-center" style="border-bottom: 2px solid #ced4da; padding-bottom: 10px;">

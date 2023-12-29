@@ -1,4 +1,4 @@
-"""Platzigram middleware catalog."""
+"""Platformdemon list middleware catalog."""
 
 # Django
 from django.shortcuts import redirect
@@ -25,3 +25,4 @@ class ProfileCompletionMiddleware:
 
         response = self.get_response(request)
         return response
+

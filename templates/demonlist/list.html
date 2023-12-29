@@ -1,72 +1,105 @@
 {% extends "base.html" %}
 
 {% block head_content %}
-    <title>Platform Demon List</title>
+    <title>Platformer Demon List</title>
 {% endblock%}
 
 {% block container %}
 
     <div class="row">
         <div class="col-md-8">
-        
+            
             <div class="col-sm-12 col-md-8 offset-md-2 mt-5 p-1 post-container-1">
-                <input class="mb-0" type="text" id="search" placeholder="Search demon..." oninput="search_demon(this);">
+                <input class="mb-1" type="text" id="search" placeholder="Search demon..." oninput="search_demon(this);">
             </div>
 
             {% for demon in demons %}
                 {% include "demonlist/demon_card.html" %}
             {% endfor %}
         </div>
-                <div class="col-md-4">
-                    <div class="col-sm-12 col-md-8 offset-md-2 mt-5 p-3 post-container">
-                        <div class="underlined">
-                            <h2>Next Update v1.1</h2>
-                        </div>
-                        <ul style="line-height: 30px">
-                            <li>
-                                <p>Rate demons from 1 to 5 stars (categories: enjoyment, gameplay, decoration, balanced, atmosphere)</p>
-                            </li>
-                            <li>
-                                <p>Notification bell, where you can see every time someone you follow beats a demon</p>
-                            </li>
-                            <li>
-                                <p>Platform demon roulette</p>
-                            </li>
-                            <li>
-                                <p>Dark mode (for your eyes at night)</p>
-                            </li>
-                            <li>
-                                <p>More languages available</p>
-                            </li>
-                            <li>
-                                <p>Improved website design</p>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-12 col-md-8 offset-md-2 mt-5 p-3 post-container">
-                        <div class="underlined">
-                            <h2>List Helpers</h2>
-                        </div>
-                        <p>Contact these people if you have any questions regarding why a specific record was rejected. Do not needlessly bug them about checking submissions though!</p>
-                        <ul style="line-height: 30px">
-                            <li>
-                                <a target="_blank" href="https://www.youtube.com/channel/UCD8KSXG99kYjx3yqR4aEZ4w">ChuckyGD</a>
-                            </li>
-                            <li>
-                                <a target="_blank" href="https://www.youtube.com/@Hausty1">Hausty</a>
-                            </li>
-                            <li>
-                                <a target="_blank" href="https://www.youtube.com/@DoSh7t">DoSh7t</a>
-                            </li>
-                            <li>
-                                <a target="_blank" href="https://www.youtube.com/@DirisXD">Diris</a>
-                            </li>
-                            <li>
-                                <a target="_blank" href="https://mechabrandon.com/">Mechabrandon</a>
-                            </li>
-                        </ul>
-                    </div>
+        <div class="col-md-4">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-5 p-3 post-container">
+                <div class="underlined">
+                    <h2 style="text-align: center;">Next Update v1.1</h2>
                 </div>
+                <ul style="line-height: 30px">
+                    <li>
+                        <p>Rate demons from 1 to 5 stars (categories: enjoyment, gameplay, decoration, balanced, atmosphere)</p>
+                    </li>
+                    <li>
+                        <p>Notification bell, where you can see every time someone you follow beats a demon</p>
+                    </li>
+                    <li>
+                        <p>Platform demon roulette</p>
+                    </li>
+                    <li>
+                        <p>Dark mode (for your eyes at night)</p>
+                    </li>
+                    <li>
+                        <p>More languages available</p>
+                    </li>
+                    <li>
+                        <p>Improved website design</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-5 p-3 post-container">
+                <div class="underlined">
+                    <h2 style="text-align: center;">List Developer</h2>
+                </div>
+                <p style="text-align: center;">Developer of the Platformer Demon List website.</p>
+                <ul id="list-user" style="line-height: 30px; text-align: center;">
+                    <li>
+                        <a target="_blank" href="https://www.youtube.com/channel/UCD8KSXG99kYjx3yqR4aEZ4w">ChuckyGD</a>
+                    </li>
+                </ul>
+                <div class="underlined">
+                    <h2 style="text-align: center; margin-top: 15px;">List Leaders</h2>
+                </div>
+                <p style="text-align: center;">Leaders of the Platformer Demon List and its team.</p>
+                <ul id="list-user" style="line-height: 30px; text-align: center;">
+                    <li>
+                        <a target="_blank" href="https://www.youtube.com/channel/UCD8KSXG99kYjx3yqR4aEZ4w">ChuckyGD</a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="https://www.youtube.com/@DoSh7t">DoSh7t</a>
+                    </li>
+                </ul>
+                <ul id="list-user" style="line-height: 30px; text-align: center;">
+                    <li>
+                        <a target="_blank" href="https://mechabrandon.com/">Mechabrandon</a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="https://www.youtube.com/channel/UC4Z_6ajYPdfnsUXTPOTVNBw">Abr4h4M</a>
+                    </li>
+                </ul>
+                <ul id="list-user" style="line-height: 30px; text-align: center;">
+                    <li>
+                        <a target="_blank" href="https://www.youtube.com/@germaniglesario">German</a>
+                    </li>
+                </ul>
+                <div class="underlined">
+                    <h2 style="text-align: center; margin-top: 15px;">List Mods</h2>
+                </div>
+                <p style="text-align: center;">Contact these people if you have any questions or issues regarding the list or a record.</p>
+                <ul id="list-user" style="line-height: 30px; text-align: center;">
+                    <li>
+                        <a target="_blank" href="https://www.youtube.com/@Hausty1">Hausty</a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="https://www.youtube.com/@DoSh7t">Diris</a>
+                    </li>
+                </ul>
+                <!--
+                <div class="underlined">
+                    <h2 style="text-align: center; margin-top: 15px;">Project Helpers</h2>
+                </div>
+                <p style="text-align: center;">People who directly or indirectly help with the project, do not contact them for questions regarding the list.</p>
+                <ul id="list-user" style="line-height: 30px; text-align: center;">
+                </ul>
+                -->
+            </div>
+        </div>
     </div>
     <script>
         function search_demon(demon)

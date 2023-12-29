@@ -56,6 +56,11 @@ class DemonDetailView(DetailView):
         changelog = Changelog.objects.filter(demon=demon)
         records = Record.objects.filter(demon=demon, accepted=True)
 
+        functions.order_list_points()
+        functions.update_players_list_points()
+        functions.update_countries_list_points()
+
+
         context["changelog"] = changelog
         context["records"] = records
         return context
@@ -160,7 +165,6 @@ class StatsViewerView(TemplateView):
             result_list = [
                 {
                     'id': player.id,
-                    'user__id': player.user.id,
                     'user__username': player.user.username,
                     'list_points': player.list_points,
                     'position': original_positions[player.id],
@@ -209,7 +213,7 @@ class StatsViewerView(TemplateView):
             elif r.get("option", None) == "Individual":
                 players = Profile.objects.filter(list_points__gte=1).annotate(position=Window(expression=DenseRank(), order_by=F('list_points').desc()))
 
-                players = list(players.values("id", "user__id", "user__username", "list_points", "position", "country__picture"))
+                players = list(players.values("id", "user__username", "list_points", "position", "country__picture"))
 
                 return JsonResponse(players, safe=False)
 
@@ -231,7 +235,6 @@ class StatsViewerView(TemplateView):
             result_list = [
                 {
                     'id': player.id,
-                    'user__id': player.user.id,
                     'user__username': player.user.username,
                     'list_points': player.list_points,
                     'position': original_positions[player.id],
@@ -285,10 +288,7 @@ class CheckRecordsView(LoginRequiredMixin, ModeradorMixin, TemplateView):
             record.mod = self.request.user.profile
             record.save()
 
-            player = record.player
-            player.list_points += record.demon.list_points
-            player.save()
-
+            functions.update_players_list_points()
             functions.update_countries_list_points()
 
             return JsonResponse(record.id, safe=False)
@@ -298,10 +298,8 @@ class CheckRecordsView(LoginRequiredMixin, ModeradorMixin, TemplateView):
             mod_notes = r.get("mod_notes", None)
 
             if record.accepted:
-                player = record.player
-                player.list_points -= record.demon.list_points
-                player.save()
 
+                functions.update_players_list_points()
                 functions.update_countries_list_points()
 
             record.accepted = False
@@ -379,7 +377,7 @@ class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
         if r.get("option", None) == "Edit":
             level = r.get("edit_demon", None)
             photo = request.FILES["photo"]
-            position = int(r.get("position", None))
+            position = r.get("position", None)
             creator = r.get("creator", None)
             verificator = r.get("verificator", None)
             verification_video = r.get("verification_video", None)
