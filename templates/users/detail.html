@@ -22,7 +22,8 @@
 
             <div class="col-sm-8">
                 <h2 style="font-weight: 100;">
-                    {{ user.username }}
+                    <img src="{{user.profile.country.picture.url}}" height="35" class="d-inline-block align-top" style="margin-right: 15px;"/>{{ user.username }}{% if user.profile.verified %}<i class="fas fa-check-circle" style="margin-left: 10px; color: #4169E1;"></i>{% endif %}
+
                     {% if user == request.user %}
                         <a
                             href="{% url "users:update" %}"
@@ -134,3 +135,4 @@
     </div>
 
 {% endblock %}
+{% block footer_margin %}100{% endblock  %}

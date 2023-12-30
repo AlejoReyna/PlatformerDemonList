@@ -6,6 +6,7 @@ class Profile(models.Model):
     # Proxy model that extends the base data with other information
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     youtube_channel = models.URLField(max_length=200, blank=True, null=True)
+    discord = models.CharField(max_length=200, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
     phone = models.CharField(max_length=12, blank=True, null=True)
     picture = models.ImageField(upload_to="users/pictures", blank=True, null=True)
@@ -16,6 +17,8 @@ class Profile(models.Model):
     
     dark_mode = models.BooleanField(default=False)
 
+    verified = models.BooleanField(blank=True, null=True)
+    
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 

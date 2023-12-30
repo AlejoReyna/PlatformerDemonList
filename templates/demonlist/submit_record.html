@@ -11,11 +11,21 @@
             <div class="col-sm-10 col-md-10 col-lg-8 pt-3 pb-3 mx-auto" id="profile-box">
                 <h4 class="mb-4" style="text-align: center;">Submit new record</h4>
 
+                {% if request.user.profile %}
+                    {% if not request.user.profile.verified %}
+                    <p style="text-align: center;"><i class="fas fa-exclamation-triangle" style="color: #FFA500; font-size: 18px; margin-right: 5px;"></i>To submit a record, you must <a href="{% url "users:update" %}">verify</a> your account.</p>
+                    {% endif %}
+                {% else %}
+                <p style="text-align: center;"><i class="fas fa-exclamation-triangle" style="color: #FFA500; font-size: 18px; margin-right: 5px;"></i>To submit a record, you must <a href="{% url "users:signup" %}">register</a> an account.</p>
+                {% endif %}
+
+                {% if user.profile.verified %}
+
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
 
                     <input type="hidden" name="user" value="{{ user.pk}}" />
-                    <input type="hidden" name="profile" value="{{ profile.pk }}" />
+                    <input type="hidden" name="profile" value="{{ user.profile.pk }}" />
 
                     <div class="form-group">
                         <select class="form-control" style="border: 2px solid #ced4da;" id="demon" name="demon">
@@ -70,6 +80,7 @@
 
                     <button type="submit" class="btn btn-primary btn-block mt-5">Submit!</button>
                 </form>
+                {% endif %}
             </div>
         </div>
     </section>
@@ -83,3 +94,5 @@
     </script>
 
 {% endblock %}
+
+{% block footer_margin %}600{% endblock  %}

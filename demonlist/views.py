@@ -89,7 +89,7 @@ class DemonDetailView(DetailView):
             return JsonResponse(records, safe=False)
 
 
-class SubmitRecordView(LoginRequiredMixin, TemplateView):
+class SubmitRecordView(TemplateView):
     """Submit a new record."""
 
     template_name = 'demonlist/submit_record.html'
@@ -100,9 +100,7 @@ class SubmitRecordView(LoginRequiredMixin, TemplateView):
 
         demons = Demon.objects.all()
 
-
         context['user'] = self.request.user
-        context['profile'] = self.request.user.profile
         context['demons'] = demons
         return context
 
@@ -310,6 +308,51 @@ class CheckRecordsView(LoginRequiredMixin, ModeradorMixin, TemplateView):
 
             return JsonResponse(record.id, safe=False)
         
+class CheckVerificationsView(LoginRequiredMixin, ModeradorMixin, TemplateView):
+    # Return check verifications view
+    template_name = "demonlist/check_verifications.html"
+    success_url = reverse_lazy('demonlist:check_verifications')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profiles = Profile.objects.filter(discord__isnull=False, verified=None)
+
+        context["profiles"] = profiles
+
+        return context
+    
+    def post(self, request):
+        r = request.POST
+        
+        print(r)
+
+        if r.get("status", None):
+            if r.get("status", None) == "Pending":
+                profiles = Profile.objects.filter(discord__isnull=False, verified=None)
+            elif r.get("status", None) == "Canceled":
+                profiles = Profile.objects.filter(discord__isnull=False, verified=False)
+            elif r.get("status", None) == "Verified":
+                profiles = Profile.objects.filter(discord__isnull=False, verified=True)
+
+            profiles = list(profiles.values("id", "user__username", "discord"))
+            return JsonResponse(profiles, safe=False)
+        
+        if r.get("accept_id", None):
+            profile = Profile.objects.get(id=r.get("accept_id", None))
+
+            profile.verified = True
+            profile.save()
+
+            return JsonResponse(profile.id, safe=False)
+        
+        if r.get("cancel_id", None):
+            profile = Profile.objects.get(id=r.get("cancel_id", None))
+
+            profile.verified = False
+            profile.save()
+
+            return JsonResponse(profile.id, safe=False)
+
 class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
     # Return add edit demon view
     template_name = "demonlist/add_edit_demon.html"
@@ -420,7 +463,7 @@ class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
                                 )
                     demon.position += 1
                     demon.save()
-            elif old_position < position:
+            elif old_position < int(position):
                 demons = Demon.objects.filter(position__lte=position, position__gt=old_position)
                 for demon in demons:
                     Changelog.objects.create(demon=demon,

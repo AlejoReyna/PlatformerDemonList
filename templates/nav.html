@@ -93,11 +93,14 @@
                             <a href="{% url 'demonlist:add_edit_demon' %}">Add/Edit demon
                             </a>
                         </li>
-                        {% endif %}
-            
-                        {% if request.user.groups.get|stringformat:"s" == "Mod" %}
+
                         <li class="nav-item nav-icon" style="margin-right: 30px;">
                             <a href="{% url 'demonlist:check_records' %}">Check records
+                            </a>
+                        </li>
+
+                        <li class="nav-item nav-icon" style="margin-right: 30px;">
+                            <a href="{% url 'demonlist:check_verifications' %}">Check verifications
                             </a>
                         </li>
                         {% endif %}

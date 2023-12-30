@@ -34,6 +34,11 @@ urlpatterns = [
         name='check_records'
     ),
     path(
+        route='check_verifications/',
+        view=views.CheckVerificationsView.as_view(),
+        name='check_verifications'
+    ),
+    path(
         route='add_edit_demon/',
         view=views.AddEditDemonView.as_view(),
         name='add_edit_demon'

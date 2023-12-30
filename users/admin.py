@@ -9,14 +9,14 @@ from users.models import Profile, Country
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     # Profile admin
-    list_display = ("pk", "user", "phone", "youtube_channel", "list_points", "country")
+    list_display = ("pk", "user", "verified", "list_points", "country")
     list_display_links = ("pk", "user")
-    list_editable = ("phone", "youtube_channel", "list_points", "country")
+    list_editable = ("list_points", "country")
     search_fields = ("user__username", "user__email", "user__first_name", "user__last_name", "phone")
     list_filter = ("user__is_active", "user__is_staff", "created", "modified")
     fieldsets = (
         ("Profile", {"fields": ("user", "picture")}),
-        ("Extra info", {"fields": (("youtube_channel", "phone"), "bio", "country", "list_points", "followers", "dark_mode")}),
+        ("Extra info", {"fields": (("youtube_channel", "phone"), "bio", "country", "list_points", "followers", "dark_mode", "verified", "discord")}),
         ("Metadata", {"fields": ("created", "modified")}))
     readonly_fields = ("created", "modified")
 
@@ -29,7 +29,7 @@ class ProfileInline(admin.StackedInline):
 class UserAdmin(BaseUserAdmin):
     # Agrega el Profile admin al User admin
     inlines = (ProfileInline,)
-    list_display = ("username", "email", "is_active", "display_groups")
+    list_display = ("id", "username", "email", "is_active", "display_groups")
 
     def display_groups(self, obj):
         return ", ".join([group.name for group in obj.groups.all()])

@@ -89,6 +89,8 @@ class UpdateProfileView(LoginRequiredMixin, TemplateView):
         except:
             pass
         profile.youtube_channel = self.request.POST.get("youtube_channel")
+        if self.request.POST.get("discord") != '' and self.request.POST.get("discord"):
+            profile.discord = self.request.POST.get("discord")
         profile.save()
 
         functions.update_countries_list_points()
