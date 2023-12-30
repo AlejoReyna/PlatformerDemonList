@@ -1,18 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
-            /* Add CSS styles for mobile devices */
-            @media (max-width: 767px) {
-                .form-group {
-                    width: 100%;
-                }
-            }
-        </style>
-    </head>
-
-
 {% extends "users/base.html" %}
 
 {% block head_content %}
@@ -29,6 +14,10 @@
         <button class="btn btn-primary btn-block mt-5" type="submit">Register!</button>
 
     </form>
-{% endblock  %}
+    <script>
 
-</html>
+        function without_space(e){
+            e.value = e.value.replace(/ /g, '')
+        }
+    </script>
+{% endblock  %}

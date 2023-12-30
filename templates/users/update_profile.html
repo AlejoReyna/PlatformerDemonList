@@ -38,7 +38,7 @@
                     {% if request.user.profile.verified %}
                         <p style="margin-left: 15px; margin-top: 10px;"><i class="fas fa-check-circle" style="margin-left: 10px; color: #4169E1; margin-right: 5px;"></i>Your account have been verified.</a></p>
                     {% elif request.user.profile.verified is none %}
-                        <p style="margin-left: 15px; margin-top: 10px;"><i class="fas fa-clock" style="font-size: 18px; color: gray; margin-right: 5px;"></i>We are verifying your account, wait.</a></p>
+                        <p style="margin-left: 15px; margin-top: 10px;"><i class="fas fa-clock" style="font-size: 18px; color: gray; margin-right: 5px;"></i>Your account is being verified, please wait for our response.</a></p>
                     {% else %}
                         <p style="margin-left: 15px; margin-top: 10px;"><i class="fas fa-times-circle" style="font-size: 18px; color: red; margin-right: 5px;"></i>The verification of your account has been rejected.</a></p>
                     {% endif %}

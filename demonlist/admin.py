@@ -21,7 +21,7 @@ class RecordAdmin(admin.ModelAdmin):
 
     list_display = ('id', 'demon', 'player', 'accepted')
     search_fields = ('demon', 'player')
-    list_filter = ('datetime_submit', 'datetime_modified')
+    list_filter = ("accepted", 'datetime_submit', 'datetime_modified')
 
 @admin.register(Changelog)
 class ChangelogAdmin(admin.ModelAdmin):

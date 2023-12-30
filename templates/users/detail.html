@@ -46,7 +46,7 @@
                         <form method="POST" style="display: inline-block;">
                             {% csrf_token %}
                             <input type="hidden" name="action" value="delete">
-                            <button type="submit" class="ml-5 btn btn-sm btn-danger">Delete Profile Picture</button>
+                            <button type="submit" class="ml-5 btn btn-sm btn-danger" style="background-color: red;">Delete Profile Picture</button>
                         </form>
                     {% endif %}
                     {% endif %}

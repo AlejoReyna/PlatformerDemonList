@@ -4,6 +4,7 @@
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import user_passes_test
+from django.core.files.base import ContentFile
 from django.core.files.images import ImageFile
 from django.db.models import F, Window, Sum, Case, When, CharField, Value, ExpressionWrapper, Func, IntegerField
 from django.db.models.functions import DenseRank, Cast
@@ -22,6 +23,7 @@ from demonlist import functions
 
 # Utils
 import datetime
+import os
 
 class ModeradorMixin(UserPassesTestMixin):
     def test_func(self):
@@ -56,6 +58,44 @@ class DemonDetailView(DetailView):
         demon = self.get_object()
         changelog = Changelog.objects.filter(demon=demon)
         records = Record.objects.filter(demon=demon, accepted=True)
+
+        archivos_en_carpeta = [
+            "Albania.svg", "Algeria.svg", "Argentina.svg", "Armenia.svg", "Aruba.svg", "Australia.svg", "Austria.svg", "Azerbaijan.svg", "Bahrain.svg",
+            "Bangladesh.svg", "Belarus.svg", "Belgium.svg", "Bolivia.svg", "Bosnia and Herzegovina.svg", "Brazil.svg", "Bulgaria.svg", "Cambodia.svg",
+            "Canada.svg", "Chile.svg", "China.svg", "Colombia.svg", "Costa Rica.svg", "Croatia.svg", "Cuba.svg", "Czech Republic.svg", "Denmark.svg",
+            "Dominican Republic.svg", "Ecuador.svg", "Egypt.svg", "El Salvador.svg", "Estonia.svg", "Finland.svg", "France.svg", "Georgia.svg", "Germany.svg",
+            "Greece.svg", "Guatemala.svg", "Guernsey.svg", "Guyana.svg", "Haiti.svg", "Honduras.svg", "Hong Kong.svg", "Hungary.svg", "Iceland.svg", "India.svg",
+            "Indonesia.svg", "Iran.svg", "Iraq.svg", "Ireland.svg", "Israel.svg", "Italy.svg", "Jamaica.svg", "Japan.svg", "Kazakhstan.svg", "Korea.svg", "Kuwait.svg",
+            "Lao People's Democratic Republic.svg", "Latvia.svg", "Lebanon.svg", "Lithuania.svg", "Malaysia.svg", "Malta.svg", "Mexico.svg", "Moldova.svg",
+            "Montenegro.svg", "Morocco.svg", "Netherlands.svg", "New Zealand.svg", "Norway.svg", "Oman.svg", "Pakistan.svg", "Palestine.svg", "Panama.svg",
+            "Paraguay.svg", "Peru.svg", "Philippines.svg", "Poland.svg", "Portugal.svg", "Puerto Rico.svg", "Romania.svg", "Russia.svg",
+            "Saint Vincent and the Grenadines.svg", "Serbia.svg", "Singapore.svg", "Slovakia.svg", "Slovenia.svg", "Somalia.svg", "South Africa.svg",
+            "Spain.svg", "Sweden.svg", "Switzerland.svg", "Taiwan.svg", "Thailand.svg", "Trinidad and Tobago.svg", "Tunisia.svg", "Turkey.svg", "Turkmenistan.svg",
+            "Ukraine.svg", "United Arab Emirates.svg", "United Kingdom.svg", "United States.svg", "Uruguay.svg", "Uzbekistan.svg", "Venezuela.svg",
+            "Vietnam.svg"
+        ]
+
+        carpeta_path = r"C:\Users\Elias\Downloads\Banderas\Banderas 4x3"
+
+        for archivo in archivos_en_carpeta:
+            ruta_completa = os.path.join(carpeta_path, archivo)
+            nombre_pais = os.path.splitext(os.path.basename(archivo))[0]
+            print(ruta_completa)
+            print(nombre_pais)
+
+            try:
+                country = Country.objects.get(country=nombre_pais)
+                with open(ruta_completa, 'rb') as archivo_svg:
+                    contenido_svg = archivo_svg.read()
+                    nombre_archivo = os.path.basename(ruta_completa)
+                    country.picture.save(nombre_archivo, ContentFile(contenido_svg), save=True)
+            except:
+                country = Country.objects.create(country=nombre_pais)
+                with open(ruta_completa, 'rb') as archivo_svg:
+                    contenido_svg = archivo_svg.read()
+                    nombre_archivo = os.path.basename(ruta_completa)
+                    country.picture.save(nombre_archivo, ContentFile(contenido_svg), save=True)
+
 
         context["changelog"] = changelog
         context["records"] = records
@@ -275,17 +315,35 @@ class CheckRecordsView(LoginRequiredMixin, ModeradorMixin, TemplateView):
             elif r.get("status", None) == "Accepted":
                 records = Record.objects.filter(accepted=True)
 
-            records = list(records.values("id", "player__user__username", "demon__level", "video", "raw_footage", "mod_notes"))
+            records = list(records.values("id", "best_time", "player__user__username", "demon__level", "video", "raw_footage", "mod_notes"))
             return JsonResponse(records, safe=False)
         
         if r.get("accept_id", None):
             record = Record.objects.get(id=r.get("accept_id", None))
             mod_notes = r.get("mod_notes", None)
+            hours = r.get("hours", None)
+            minutes = r.get("minutes", None)
+            seconds = r.get("seconds", None)
+            milliseconds = r.get("milliseconds", None)
 
-            record.accepted = True
-            record.mod_notes = mod_notes
-            record.mod = self.request.user.profile
-            record.save()
+            time = datetime.time(int(hours), int(minutes), int(seconds), int(milliseconds[3]) * 1000)
+
+            try:
+                old_record = Record.objects.get(demon=record.demon, player=record.player, accepted=True)
+                old_record.best_time = time
+                old_record.video = record.video
+                old_record.raw_footage = record.raw_footage
+                old_record.notes = record.notes
+                old_record.mod_notes = mod_notes
+                old_record.mod = self.request.user.profile
+                old_record.save()
+                record.delete()
+            except:
+                record.best_time = time
+                record.accepted = True
+                record.mod_notes = mod_notes
+                record.mod = self.request.user.profile
+                record.save()
 
             functions.update_players_list_points()
             functions.update_countries_list_points()

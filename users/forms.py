@@ -5,9 +5,12 @@ from django import forms
 from django.contrib.auth.models import User
 from users.models import Profile
 
+# Utils
+import re
+
 class SignupForm(forms.Form):
     # Signup Form
-    username = forms.CharField(label=False, min_length=4, max_length=50, widget = forms.TextInput(attrs={'placeholder':'Username','class': 'form-control'}))
+    username = forms.CharField(label=False, min_length=4, max_length=50, widget = forms.TextInput(attrs={'placeholder':'Username','class': 'form-control', 'onkeyup': 'without_space(this);'}))
     password = forms.CharField(label=False, max_length=70, widget = forms.PasswordInput(attrs={'placeholder':'Password','class': 'form-control'}))
     password_confirmation = forms.CharField(label=False, max_length=70, widget = forms.PasswordInput(attrs={'placeholder':'Password confirmation','class': 'form-control'}))
     email = forms.CharField(label=False, min_length=6, max_length=70, widget = forms.EmailInput(attrs={'placeholder':'Email','class': 'form-control'}))
@@ -29,6 +32,16 @@ class SignupForm(forms.Form):
 
         if password != password_confirmation:
             raise forms.ValidationError("Passwords do not match")
+        
+        if len(password) < 8:
+            raise forms.ValidationError("Password must be at least 8 characters long and include at least one digit and one uppercase letter.")
+
+        if not re.search(r'\d', password):
+            raise forms.ValidationError("Password must be at least 8 characters long and include at least one digit and one uppercase letter.")
+
+        if not re.search(r'[A-Z]', password):
+            raise forms.ValidationError("Password must be at least 8 characters long and include at least one digit and one uppercase letter.")
+
         return data
 
     def save(self):

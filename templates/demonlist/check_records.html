@@ -36,14 +36,14 @@
                         {% for record in records %}
                         <tr class="table-row">
                             <td class="player-cell">
-                                <a href="{{record.video}}" target="_blank">{{record.player}}</a>
+                                <a href="{% url 'users:detail' record.player.user.id %}" target="_blank">{{record.player}}</a>
                             </td>
                             <td class="demon-cell">{{record.demon}}</td>
                             <td class="best_time-cell">
-                                <input type="number" id="hours" name="hours" min="0" max="1000" placeholder="HH" oninput="limitInput(this, 2)" value="{{record.best_time|time:'H'}}">
-                                <input type="number" id="minutes" name="minutes" min="0" max="59" placeholder="MM" oninput="limitInput(this, 2)" value="{{record.best_time|time:'i'}}">
-                                <input type="number" id="seconds" name="seconds" min="0" max="59" placeholder="SS" oninput="limitInput(this, 2)" value="{{record.best_time|time:'s'}}">
-                                <input type="number" id="milliseconds" name="milliseconds" min="0" max="999" placeholder="MS" oninput="limitInput(this, 3)" value="{{record.best_time|time:'u'}}" maxlength="3">
+                                <input type="number" id="hours_{{record.id}}" min="0" max="1000" placeholder="HH" oninput="limitInput(this, 2)" value="{{record.best_time|time:'H'}}">
+                                <input type="number" id="minutes_{{record.id}}" min="0" max="59" placeholder="MM" oninput="limitInput(this, 2)" value="{{record.best_time|time:'i'}}">
+                                <input type="number" id="seconds_{{record.id}}" min="0" max="59" placeholder="SS" oninput="limitInput(this, 2)" value="{{record.best_time|time:'s'}}">
+                                <input type="number" id="milliseconds_{{record.id}}" min="0" max="999" placeholder="MS" oninput="limitInput(this, 3)" value="{{record.best_time|time:'u'}}" maxlength="3">
                             </td>
                             <td class="video-link-cell">
                                 <a class="btn btn-primary" href="{{record.video}}" target="_blank">YouTube</a>
@@ -93,10 +93,25 @@
             success: function (response) {
             $('#tableRecords > tbody').empty();
             $(response).each(function (index, record) {
+            console.log(record.best_time)
+            var hours = record.best_time.substring(0, 2)
+            var minutes = record.best_time.substring(3, 5)
+            var seconds = record.best_time.substring(6, 8)
+            var milliseconds = record.best_time.substring(9, 12)
+            if (!milliseconds){
+                milliseconds = "000"
+            }
+            console.log(milliseconds)
             var fila=`<tr class="table-row"><td class="player-cell">
                     <a href="` + record.video + `" target="_blank">` + record.player__user__username + `</a>
                 </td>`;
                 fila+=`<td class="demon-cell">` + record.demon__level + `</td>`;
+                fila+=`<td class="best_time-cell">
+                    <input type="number" id="hours_` + record.id + `" min="0" max="1000" placeholder="HH" oninput="limitInput(this, 2)" value="` + hours + `">
+                    <input type="number" id="minutes_` + record.id + `" min="0" max="59" placeholder="MM" oninput="limitInput(this, 2)" value="` + minutes + `">
+                    <input type="number" id="seconds_` + record.id + `" min="0" max="59" placeholder="SS" oninput="limitInput(this, 2)" value="` + seconds + `">
+                    <input type="number" id="milliseconds_` + record.id + `" min="0" max="999" placeholder="MS" oninput="limitInput(this, 3)" value="` + milliseconds + `" maxlength="3">
+                </td>`;
                 fila+=`<td class="video-link-cell"><a class="btn btn-primary" href="` + record.video + `" target="_blank">YouTube</a></td>`;
                 fila+=`<td class="raw_footage-link-cell"><a class="btn btn-primary" href="` + record.raw_footage + `" target="_blank">Raw Footage</a></td>`;
                 fila+=`<td>
@@ -121,6 +136,10 @@
         console.log(document.getElementById("mod_notes_" + id).value);
         data = {}
         data.accept_id = id;
+        data.hours = document.getElementById("hours_" + id).value;;
+        data.minutes = document.getElementById("minutes_" + id).value;;
+        data.seconds = document.getElementById("seconds_" + id).value;;
+        data.milliseconds = document.getElementById("milliseconds_" + id).value;;
         data.mod_notes = document.getElementById("mod_notes_" + id).value;
         $.ajax({
             type: "post", // "post" "get" "delete" "put"
