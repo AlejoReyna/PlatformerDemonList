@@ -27,8 +27,26 @@
 
 <style>
 
+    table {
+        border-collapse: collapse;
+        border: none;
+    }
+
+    table, th, td {
+        border: none;
+    }
+
     .container {
         max-width: none; 
+    }
+
+    .table-no-bg {
+        border-spacing: 0.5em;
+        background-color: transparent; /* Puedes cambiar "transparent" por "white" u otro color si lo deseas */
+    }
+
+    .table-no-bg th, td {
+        padding: 0.5em; /* Agrega algún espacio interno a las celdas si lo deseas */
     }
 
     @media (max-width: 576px) {
