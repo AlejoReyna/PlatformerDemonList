@@ -397,20 +397,20 @@ class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
             if old_position > int(position):
                 Changelog.objects.create(demon=old_demon,
                                 reason="Moved",
-                                position=position,
-                                change_number=old_position - position,
+                                position=int(position),
+                                change_number=old_position - int(position),
                                 change_type="Up"
                                 )
-            elif old_position < position:
+            elif old_position < int(position):
                 Changelog.objects.create(demon=old_demon,
                                 reason="Moved",
-                                position=position,
-                                change_number=position - old_position,
+                                position=int(position),
+                                change_number=int(position) - old_position,
                                 change_type="Down"
                                 )
             
-            if old_position > position:
-                demons = Demon.objects.filter(position__lte=old_position, position__gte=position)
+            if old_position > int(position):
+                demons = Demon.objects.filter(position__lt=old_position, position__gte=int(position))
                 for demon in demons:
                     Changelog.objects.create(demon=demon,
                                 reason=f"{old_demon.level} was moved up past this demon",
@@ -421,7 +421,7 @@ class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
                     demon.position += 1
                     demon.save()
             elif old_position < position:
-                demons = Demon.objects.filter(position__lte=position, position__gte=old_position)
+                demons = Demon.objects.filter(position__lte=position, position__gt=old_position)
                 for demon in demons:
                     Changelog.objects.create(demon=demon,
                                 reason=f"{old_demon.level} was moved down past this demon",
@@ -435,7 +435,7 @@ class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
             verification_video_embed = 'https://www.youtube.com/embed/' + verification_video.split('=')[1]
             
             old_demon.photo=photo
-            old_demon.position=position
+            old_demon.position=int(position)
             old_demon.creator=creator
             old_demon.verificator=verificator
             old_demon.verification_video=verification_video
