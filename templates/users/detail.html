@@ -324,8 +324,8 @@
                     {% if records %}
                     {% for record in records %}
                     <tr>
-                        <td class="demon-cell" style="text-align: center;">#{{record.demon.position}} {{record.demon}}</td>
-                        <td class="best-time-cell" style="text-align: center;">{{record.best_time|date:"H"}}:{{record.best_time|date:"i"}}:{{record.best_time|date:"s"}}.{{record.best_time|date:"u"|slice:":3"}}</td>
+                        <td class="demon-cell" style="text-align: center;"><a href="{% url 'demonlist:detail' record.demon.position %}" style="color: black;">#{{record.demon.position}} {{record.demon}}</a></td>
+                        <td class="best-time-cell" style="text-align: center;">{{record.best_time|date:"H"}}:{{record.best_time|date:"i"}}:{{record.best_time|date:"s"}}.{{record.best_time|date:"u"|slice:":3"}} (Top {{record.top_best_time}})</td>
                         <td class="video-link-cell" style="text-align: center;">
                             {% if record.video %}<a class="btn btn-primary" style="margin: 0 auto;" href="{{record.video}}" target="_blank">{{record.video_platform}}</a>{% else %}<br><br>{% endif %}
                         </td>

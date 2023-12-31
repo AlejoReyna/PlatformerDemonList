@@ -31,3 +31,12 @@ def update_countries_list_points():
 
         country.list_points = list_points
         country.save()
+
+def update_top_best_time(demon):
+    records = Record.objects.filter(demon=demon, accepted=True).order_by("best_time")
+    top_best_time = 1
+
+    for record in records:
+        record.top_best_time = top_best_time
+        record.save()
+        top_best_time += 1

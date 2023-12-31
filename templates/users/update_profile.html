@@ -195,7 +195,7 @@
                     {% for record in records %}
                     <tr class="table-row">
                         <td class="player-cell text-center align-middle">
-                            <a href="{{record.video}}" target="_blank">{{record.demon}}</a>
+                            <a href="{% url 'demonlist:detail' record.demon.id %}" target="_blank">{{record.demon}}</a>
                         </td>
                         <td class="video-link-cell text-center align-middle">
                             <a class="btn btn-primary" href="{{record.video}}" target="_blank">YouTube</a>

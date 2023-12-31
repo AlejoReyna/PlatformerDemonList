@@ -32,6 +32,11 @@ urlpatterns = [
         route='<int:user>/',
         view=views.UserDetailView.as_view(),
         name='detail'
+    ),
+    path(
+        route='<str:username>/',
+        view=views.UserDetailView2.as_view(),
+        name='detail2'
     )
 
 ]

@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.core.files.base import ContentFile
 from django.core.files.images import ImageFile
 from django.db.models import F, Window, Sum, Case, When, CharField, Value, ExpressionWrapper, Func, IntegerField
-from django.db.models.functions import DenseRank, Cast
+from django.db.models.functions import Rank, Cast
 from django.http import HttpResponseRedirect
 from django.http.response import JsonResponse
 from django.views.generic import CreateView, DetailView, ListView, TemplateView
@@ -58,6 +58,8 @@ class DemonDetailView(DetailView):
         demon = self.get_object()
         changelog = Changelog.objects.filter(demon=demon)
         records = Record.objects.filter(demon=demon, accepted=True)
+
+        functions.update_top_best_time(demon)
 
         context["changelog"] = changelog
         context["records"] = records
@@ -146,7 +148,7 @@ class StatsViewerView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        players = Profile.objects.filter(list_points__gte=1).annotate(position=Window(expression=DenseRank(), order_by=F('list_points').desc()))
+        players = Profile.objects.filter(list_points__gte=1).annotate(position=Window(expression=Rank(), order_by=F('list_points').desc()))
         countries = Country.objects.all().order_by("country")
 
         context["countries"] = countries
@@ -163,7 +165,7 @@ class StatsViewerView(TemplateView):
             print(r.get("player", None))
 
             players_annotated = Profile.objects.filter(list_points__gte=1).annotate(
-                position=Window(expression=DenseRank(), order_by=F('list_points').desc())
+                position=Window(expression=Rank(), order_by=F('list_points').desc())
             )
 
             players_filtered = players_annotated.filter(user__username__icontains=r.get("player", None))
@@ -201,7 +203,7 @@ class StatsViewerView(TemplateView):
         if r.get("country", None) or r.get("country", None) == "":
             
             countries_annotated = Country.objects.filter(list_points__gte=1).annotate(
-                position=Window(expression=DenseRank(), order_by=F('list_points').desc())
+                position=Window(expression=Rank(), order_by=F('list_points').desc())
             )
 
             countries_filtered = countries_annotated.filter(country__icontains=r.get("country", None))
@@ -227,14 +229,14 @@ class StatsViewerView(TemplateView):
             
             if r.get("option", None) == "Nations":
 
-                countries = Country.objects.filter(list_points__gte=1).annotate(position=Window(expression=DenseRank(), order_by=F('list_points').desc()))
+                countries = Country.objects.filter(list_points__gte=1).annotate(position=Window(expression=Rank(), order_by=F('list_points').desc()))
 
                 countries = list(countries.values("id", "picture", "list_points", "position", "country"))
 
                 return JsonResponse(countries, safe=False)
             
             elif r.get("option", None) == "Individual":
-                players = Profile.objects.filter(list_points__gte=1).annotate(position=Window(expression=DenseRank(), order_by=F('list_points').desc()))
+                players = Profile.objects.filter(list_points__gte=1).annotate(position=Window(expression=Rank(), order_by=F('list_points').desc()))
 
                 players = list(players.values("id", "user__id", "user__username", "list_points", "position", "country__picture", "country__country"))
 
@@ -243,7 +245,7 @@ class StatsViewerView(TemplateView):
         if r.get("select_country", None) or r.get("select_country", None) == "":
             
             players_annotated = Profile.objects.filter(list_points__gte=1).annotate(
-                position=Window(expression=DenseRank(), order_by=F('list_points').desc())
+                position=Window(expression=Rank(), order_by=F('list_points').desc())
             )
 
             if r.get("select_country", None):
@@ -337,6 +339,7 @@ class CheckRecordsView(LoginRequiredMixin, ModeradorMixin, TemplateView):
                 record.mod = self.request.user.profile
                 record.save()
 
+            functions.update_top_best_time(record.demon)
             functions.update_players_list_points()
             functions.update_countries_list_points()
 
@@ -348,6 +351,7 @@ class CheckRecordsView(LoginRequiredMixin, ModeradorMixin, TemplateView):
 
             if record.accepted:
 
+                functions.update_top_best_time(record.demon)
                 functions.update_players_list_points()
                 functions.update_countries_list_points()
 
@@ -468,6 +472,8 @@ class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
                                      )
             
             functions.order_list_points()
+            functions.update_players_list_points()
+            functions.update_countries_list_points()
 
             return HttpResponseRedirect(reverse_lazy('demonlist:list'))
         

@@ -22,8 +22,8 @@ class ProfileModFilter(admin.SimpleListFilter):
         )
 
     def queryset(self, request, queryset):
-        return queryset.filter(mod__user__username=self.value())
-
+        if (self.value()):
+            return queryset.filter(mod__user__username=self.value())
 
 @admin.register(Demon)
 class DemonAdmin(admin.ModelAdmin):
@@ -37,7 +37,7 @@ class DemonAdmin(admin.ModelAdmin):
 class RecordAdmin(admin.ModelAdmin):
     """Record admin."""
 
-    list_display = ('id', 'demon', 'player', 'accepted')
+    list_display = ('id', 'demon', 'player', 'accepted', 'top_best_time')
     search_fields = ('player__user__username',)
     list_filter = ("demon", "accepted", ProfileModFilter, 'datetime_submit', 'datetime_modified')
 

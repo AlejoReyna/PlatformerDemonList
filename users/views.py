@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.db.models import F, Window, Sum
-from django.db.models.functions import DenseRank
+from django.db.models.functions import Rank
 from django.http.response import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
@@ -143,7 +143,94 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         
         try:
             players_annotated = Profile.objects.filter(list_points__gte=1).annotate(
-                position=Window(expression=DenseRank(), order_by=F('list_points').desc())
+                position=Window(expression=Rank(), order_by=F('list_points').desc())
+            )
+
+            players_filtered = players_annotated.filter(user__username=user.profile)
+
+            original_positions = {player.id: player.position for player in players_annotated}
+
+            players_final = sorted(players_filtered, key=lambda player: original_positions[player.id])
+
+            ranking = original_positions[players_final[0].id]
+        
+        except:
+            ranking = "-"
+
+        try:    
+            hardest = records.order_by("demon__position")[0].demon.level
+        except:
+            hardest = "-"
+
+        context["following"] = following
+        context["hardest"] = hardest
+        context["ranking"] = ranking
+        context["records"] = records
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        user = self.get_object()
+        
+        action = self.request.POST.get("action", None)
+        search_user = self.request.POST.get("user", None)
+        option = self.request.POST.get("option", None)
+
+
+        if action:
+            if action == "follow":
+                self.get_object().profile.followers.add(self.request.user.profile)
+                self.request.user.profile.followings.add(user.profile)
+            elif action == "unfollow":
+                user.profile.followers.remove(Profile.objects.get(id=self.request.user.profile.id))
+                self.request.user.profile.followings.remove(Profile.objects.get(id=user.profile.id))
+            elif action == "delete":
+                user.profile.picture.delete()
+            return super().get(request, *args, **kwargs)
+        elif user:
+            print(search_user)
+            print(option)
+            print(user.profile.followings.all())
+            if search_user == "":
+                if option == "followers":
+                    users = user.profile.followers.all()
+                elif option == "following":
+                    users = user.profile.followings.all()
+                print(users)
+                users = list(users.values("user__id", "picture", "user__username"))
+            else:
+                if option == "followers":
+                    users = user.profile.followers.filter(user__username__icontains=search_user)
+                elif option == "following":
+                    users = user.profile.followings.filter(user__username__icontains=search_user)
+                print(users)
+                users = list(users.values("user__id", "picture", "user__username"))
+                print(users)
+            return JsonResponse(users, safe=False)
+        
+class UserDetailView2(LoginRequiredMixin, DetailView):
+    # User Detail View with username in the URL
+
+    template_name = "users/detail.html"
+    slug_field = "username"
+    slug_url_kwarg = "username"
+    queryset = User.objects.all()
+    context_object_name = "user"
+
+    def get_context_data(self, **kwargs):
+        # Add user's records to context
+        context = super().get_context_data(**kwargs)
+        user = self.get_object()
+        following = self.request.user.profile.followings.all()
+        if user.profile in following:
+            following = True
+        else:
+            following = False
+
+        records = Record.objects.filter(player=user.profile, accepted=True).order_by("demon__position")
+        
+        try:
+            players_annotated = Profile.objects.filter(list_points__gte=1).annotate(
+                position=Window(expression=Rank(), order_by=F('list_points').desc())
             )
 
             players_filtered = players_annotated.filter(user__username=user.profile)
