@@ -88,8 +88,10 @@ class UpdateProfileView(LoginRequiredMixin, TemplateView):
             profile.country = Country.objects.get(country=country)
         except:
             pass
-        if not(self.request.POST.get("youtube_channel") == "https://www.youtube.com/channel/"):
+        if not(self.request.POST.get("youtube_channel") == "https://www.youtube.com/@"):
             profile.youtube_channel = self.request.POST.get("youtube_channel")
+        if not(self.request.POST.get("twitter") == "https://twitter.com/"):
+            profile.twitter = self.request.POST.get("twitter")
         if self.request.POST.get("discord") != '' and self.request.POST.get("discord") != profile.discord:
             profile.discord = self.request.POST.get("discord")
             profile.verified = None
@@ -148,7 +150,6 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         except:
             hardest = "-"
 
-
         context["following"] = following
         context["hardest"] = hardest
         context["ranking"] = ranking
@@ -170,6 +171,5 @@ class UserDetailView(LoginRequiredMixin, DetailView):
             self.request.user.profile.followings.remove(Profile.objects.get(id=user.profile.id))
         elif action == "delete":
             user.profile.picture.delete()
-
         
         return super().get(request, *args, **kwargs)

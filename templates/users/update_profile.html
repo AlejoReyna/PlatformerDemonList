@@ -96,9 +96,26 @@
                         class="form-control {% if form.youtube_channel.errors %}is-invalid{% endif %}"
                         type="text" 
                         name="youtube_channel" 
-                        placeholder="Youtube channel" 
-                        value="{% if form.errors %}{{form.youtube_channel.value}}{% else %}{% if request.user.profile.youtube_channel %}{{request.user.profile.youtube_channel}}{% else %}https://www.youtube.com/channel/{% endif %}{% endif %}"
+                        placeholder="Youtube channel"
+                        value="{% if form.errors %}{{form.youtube_channel.value}}{% else %}{% if request.user.profile.youtube_channel %}{{request.user.profile.youtube_channel}}{% else %}https://www.youtube.com/@{% endif %}{% endif %}"
                         oninput="updateYoutubeValue(this)"/>
+                        {% for error in form.website.errors %}
+                            <div class="invalid-feedback">
+                                {{error}}
+                            </div>
+                        {% endfor %}
+                </div>
+
+                {# Twitter field #}
+                <div class="form-group">
+                    <label>Twitter</label>
+                    <input 
+                        class="form-control {% if form.twitter.errors %}is-invalid{% endif %}"
+                        type="text" 
+                        name="twitter" 
+                        placeholder="Twitter"
+                        value="{% if form.errors %}{{form.twitter.value}}{% else %}{% if request.user.profile.twitter %}{{request.user.profile.twitter}}{% else %}https://twitter.com/{% endif %}{% endif %}"
+                        oninput="updateTwitterValue(this)"/>
                         {% for error in form.website.errors %}
                             <div class="invalid-feedback">
                                 {{error}}
@@ -175,9 +192,14 @@
 </div>
 <script>
     function updateYoutubeValue(input) {
-        const userValue = input.value.substring("https://www.youtube.com/channel/".length);
+        const userValue = input.value.substring("https://www.youtube.com/@".length);
     
-        input.value = "https://www.youtube.com/channel/" + userValue;
+        input.value = "https://www.youtube.com/@" + userValue;
+      }
+      function updateTwitterValue(input) {
+        const userValue = input.value.substring("https://twitter.com/".length);
+    
+        input.value = "https://twitter.com/" + userValue;
       }
 </script>
 {% endblock %}
