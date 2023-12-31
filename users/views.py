@@ -6,6 +6,7 @@ from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.db.models import F, Window, Sum
 from django.db.models.functions import DenseRank
+from django.http.response import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, FormView, UpdateView, TemplateView
@@ -90,8 +91,20 @@ class UpdateProfileView(LoginRequiredMixin, TemplateView):
             pass
         if not(self.request.POST.get("youtube_channel") == "https://www.youtube.com/@"):
             profile.youtube_channel = self.request.POST.get("youtube_channel")
+        else:
+            profile.youtube_channel = ""
         if not(self.request.POST.get("twitter") == "https://twitter.com/"):
             profile.twitter = self.request.POST.get("twitter")
+        else:
+            profile.twitter = ""
+        if not(self.request.POST.get("twitch") == "https://twitch.tv/"):
+            profile.twitch = self.request.POST.get("twitch")
+        else:
+            profile.twitch = ""
+        if not(self.request.POST.get("facebook") == "https://facebook.com/"):
+            profile.facebook = self.request.POST.get("facebook")
+        else:
+            profile.facebook = ""
         if self.request.POST.get("discord") != '' and self.request.POST.get("discord") != profile.discord:
             profile.discord = self.request.POST.get("discord")
             profile.verified = None
@@ -144,7 +157,6 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         except:
             ranking = "-"
 
-
         try:    
             hardest = records.order_by("demon__position")[0].demon.level
         except:
@@ -160,16 +172,38 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         user = self.get_object()
         
         action = self.request.POST.get("action", None)
+        search_user = self.request.POST.get("user", None)
+        option = self.request.POST.get("option", None)
 
-        print(self.request.user)
 
-        if action == "follow":
-            self.get_object().profile.followers.add(self.request.user.profile)
-            self.request.user.profile.followings.add(user.profile)
-        elif action == "unfollow":
-            user.profile.followers.remove(Profile.objects.get(id=self.request.user.profile.id))
-            self.request.user.profile.followings.remove(Profile.objects.get(id=user.profile.id))
-        elif action == "delete":
-            user.profile.picture.delete()
+        if action:
+            if action == "follow":
+                self.get_object().profile.followers.add(self.request.user.profile)
+                self.request.user.profile.followings.add(user.profile)
+            elif action == "unfollow":
+                user.profile.followers.remove(Profile.objects.get(id=self.request.user.profile.id))
+                self.request.user.profile.followings.remove(Profile.objects.get(id=user.profile.id))
+            elif action == "delete":
+                user.profile.picture.delete()
+            return super().get(request, *args, **kwargs)
+        elif user:
+            print(search_user)
+            print(option)
+            print(user.profile.followings.all())
+            if search_user == "":
+                if option == "followers":
+                    users = user.profile.followers.all()
+                elif option == "following":
+                    users = user.profile.followings.all()
+                print(users)
+                users = list(users.values("user__id", "picture", "user__username"))
+            else:
+                if option == "followers":
+                    users = user.profile.followers.filter(user__username__icontains=search_user)
+                elif option == "following":
+                    users = user.profile.followings.filter(user__username__icontains=search_user)
+                print(users)
+                users = list(users.values("user__id", "picture", "user__username"))
+                print(users)
+            return JsonResponse(users, safe=False)
         
-        return super().get(request, *args, **kwargs)

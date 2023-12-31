@@ -72,10 +72,14 @@ class DemonDetailView(DetailView):
             records = Record.objects.filter(demon=demon, accepted=True).order_by("best_time")
 
             records = list(records.annotate(video_platform=Case(
-            When(video__regex=r'(https?://)?(www\.)?(youtube|youtu)\.(com|be)/.+', then=Value('YouTube')),
-            When(video__regex=r'(https?://)?(www\.)?twitch\.(tv|com)/.+', then=Value('Twitch')),
+                When(video__regex=r'(https?://)?(www\.)?(youtube|youtu)\.(com|be)/.+', then=Value('YouTube')),
+                When(video__regex=r'(https?://)?(www\.)?twitch\.(tv|com)/.+', then=Value('Twitch')),
+                When(video__regex=r'(https?://)?clips\.twitch\.tv/.+', then=Value('Twitch')),
+                When(video__regex=r'(https?://)?(www\.)?facebook\.(com)/.+', then=Value('Facebook')),
+                When(video__regex=r'(https?://)?drive\.google\.com/.+', then=Value('Drive')),
+
             default=Value(''),
-            output_field=CharField())).values("player__user__id", "player__user__username", "player__country__picture", "video", "best_time", "video_platform"))
+            output_field=CharField())).values("player__user__id", "player__user__username", "player__country__picture", "player__country__country", "video", "best_time", "video_platform"))
 
             return JsonResponse(records, safe=False)
         
@@ -85,8 +89,11 @@ class DemonDetailView(DetailView):
             records = list(records.annotate(video_platform=Case(
             When(video__regex=r'(https?://)?(www\.)?(youtube|youtu)\.(com|be)/.+', then=Value('YouTube')),
             When(video__regex=r'(https?://)?(www\.)?twitch\.(tv|com)/.+', then=Value('Twitch')),
+            When(video__regex=r'(https?://)?clips\.twitch\.tv/.+', then=Value('Twitch')),
+            When(video__regex=r'(https?://)?(www\.)?facebook\.(com)/.+', then=Value('Facebook')),
+            When(video__regex=r'(https?://)?drive\.google\.com/.+', then=Value('Drive')),
             default=Value(''),
-            output_field=CharField())).values("player__user__id", "player__user__username", "player__country__picture", "video", "best_time", "video_platform"))
+            output_field=CharField())).values("player__user__id", "player__user__username", "player__country__picture", "player__country__country", "video", "best_time", "video_platform"))
 
             return JsonResponse(records, safe=False)
 
@@ -173,8 +180,10 @@ class StatsViewerView(TemplateView):
             for player in players_final:
                 if player.country:
                     picture_url = player.country.picture.url
+                    country = player.country.country
                 else:
                     picture_url = ""
+                    country = ""
                 result_list.append({
                     'id': player.id,
                     'user__id': player.user.id,
@@ -182,6 +191,7 @@ class StatsViewerView(TemplateView):
                     'list_points': player.list_points,
                     'position': original_positions[player.id],
                     'country__picture': picture_url,
+                    'country__country': country
                 })
                     
             print(result_list)
@@ -226,7 +236,7 @@ class StatsViewerView(TemplateView):
             elif r.get("option", None) == "Individual":
                 players = Profile.objects.filter(list_points__gte=1).annotate(position=Window(expression=DenseRank(), order_by=F('list_points').desc()))
 
-                players = list(players.values("id", "user__id", "user__username", "list_points", "position", "country__picture"))
+                players = list(players.values("id", "user__id", "user__username", "list_points", "position", "country__picture", "country__country"))
 
                 return JsonResponse(players, safe=False)
 
@@ -245,17 +255,24 @@ class StatsViewerView(TemplateView):
 
             players_final = sorted(players_filtered, key=lambda player: original_positions[player.id])
 
-            result_list = [
-                {
-                    'id': player.id,
-                    'user__id': player.user.id,
-                    'user__username': player.user.username,
-                    'list_points': player.list_points,
-                    'position': original_positions[player.id],
-                    'country__picture': player.country.picture.url,
-                }
-                for player in players_final
-            ]
+            result_list = []
+            for player in players_final:
+                if player.country:
+                    picture_url = player.country.picture.url
+                    country = player.country.country
+                else:
+                    picture_url = ""
+                    country = ""
+
+                result_list.append({
+                        'id': player.id,
+                        'user__id': player.user.id,
+                        'user__username': player.user.username,
+                        'list_points': player.list_points,
+                        'position': original_positions[player.id],
+                        'country__picture': picture_url,
+                        'country__country': country,
+                    })
 
             print(players_annotated)
             print(players_filtered)
@@ -290,7 +307,7 @@ class CheckRecordsView(LoginRequiredMixin, ModeradorMixin, TemplateView):
             elif r.get("status", None) == "Accepted":
                 records = Record.objects.filter(accepted=True)
 
-            records = list(records.values("id", "best_time", "player__user__username", "player__user__id", "demon__level", "video", "raw_footage", "mod_notes"))
+            records = list(records.values("id", "best_time", "player__user__username", "player__user__id", "demon__level", "video", "raw_footage", "notes", "mod_notes"))
             return JsonResponse(records, safe=False)
         
         if r.get("accept_id", None):

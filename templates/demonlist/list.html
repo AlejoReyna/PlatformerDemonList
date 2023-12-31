@@ -2,6 +2,9 @@
 
 {% block head_content %}
     <title>Platformer Demon List</title>
+    <meta name="og:title" content="Platformer Demon List">
+    <meta name="description" content="The Official Platformer Demonlist. Check it out!">
+    <meta name="og:description" content="The Official Platformer Demonlist. Check it out!">
 {% endblock%}
 
 {% block container %}
@@ -44,7 +47,7 @@
                 </ul>
             </div>
             <div class="col-sm-12 col-md-8 offset-md-2 mt-2 p-3">
-                <iframe src="https://discord.com/widget?id=1189387080980234240&theme=light" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+                <iframe src="https://discord.com/widget?id=1189387080980234240&theme=light" id="discord_widget" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
             </div>
 
             <div class="col-sm-12 col-md-8 offset-md-2 mt-2 p-3 post-container">
@@ -54,7 +57,7 @@
                 <p style="text-align: center;">Developer of the Platformer Demon List website.</p>
                 <ul id="list-user" style="line-height: 30px; text-align: center;">
                     <li>
-                        <a target="_blank" href="https://www.youtube.com/channel/UCD8KSXG99kYjx3yqR4aEZ4w">ChuckyGD</a>
+                        <a target="_blank" href="{% url 'users:detail' 1 %}">ChuckyGD</a>
                     </li>
                 </ul>
                 <div class="underlined">
@@ -63,35 +66,23 @@
                 <p style="text-align: center;">Leaders of the Platformer Demon List and its team.</p>
                 <ul id="list-user" style="line-height: 30px; text-align: center;">
                     <li>
-                        <a target="_blank" href="https://www.youtube.com/channel/UCD8KSXG99kYjx3yqR4aEZ4w">ChuckyGD</a>
+                        <a target="_blank" href="{% url 'users:detail' 1 %}">ChuckyGD</a>
                     </li>
                     <li>
-                        <a target="_blank" href="https://www.youtube.com/@DoSh7t">DoSh7t</a>
-                    </li>
-                </ul>
-                <ul id="list-user" style="line-height: 30px; text-align: center;">
-                    <li>
-                        <a target="_blank" href="https://mechabrandon.com/">Mechabrandon</a>
-                    </li>
-                    <li>
-                        <a target="_blank" href="https://www.youtube.com/channel/UC4Z_6ajYPdfnsUXTPOTVNBw">Abr4h4M</a>
+                        <a target="_blank" href="{% url 'users:detail' 18 %}">DoSh7t</a>
                     </li>
                 </ul>
                 <ul id="list-user" style="line-height: 30px; text-align: center;">
                     <li>
-                        <a target="_blank" href="https://www.youtube.com/@germaniglesario">German</a>
+                        <a target="_blank" href="{% url 'users:detail' 4 %}">Mechabrandon</a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="{% url 'users:detail' 5 %}">Abr4h4M</a>
                     </li>
                 </ul>
-                <div class="underlined">
-                    <h2 style="text-align: center; margin-top: 15px;">List Mods</h2>
-                </div>
-                <p style="text-align: center;">Contact these people if you have any questions or issues regarding the list or a record.</p>
                 <ul id="list-user" style="line-height: 30px; text-align: center;">
                     <li>
-                        <a target="_blank" href="https://www.youtube.com/@Hausty1">Hausty</a>
-                    </li>
-                    <li>
-                        <a target="_blank" href="https://www.youtube.com/@DirisXD">Diris</a>
+                        <a target="_blank" href="{% url 'users:detail' 19 %}">German</a>
                     </li>
                 </ul>
                 <!--

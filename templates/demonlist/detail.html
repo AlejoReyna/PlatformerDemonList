@@ -96,14 +96,14 @@
                         {% for record in records %}
                         <tr class="table-row">
                             <td class="player-cell">
-                                <img src="{{record.player.country.picture.url}}" height="20" class="d-inline-block align-top" style="margin-right: 15px;"/>
+                                {% if record.player.country.picture.url %}<img src="{{record.player.country.picture.url}}" title="{{record.player.country}}" height="20" class="d-inline-block align-top" style="margin-right: 15px;"/>{% endif %}
                             </td>
                             <td class="player-cell">
                                 <a href="{% url 'users:detail' record.player.user.id %}" target="_blank">{{record.player}}</a>
                             </td>
                             <td class="best-time-cell">{{record.best_time|date:"H"}}:{{record.best_time|date:"i"}}:{{record.best_time|date:"s"}}.{{record.best_time|date:"u"|slice:":3"}}</td>
                             <td class="video-link-cell">
-                                {% if record.video %}<a class="btn btn-primary" style="margin: 0 auto;" href="{{record.video}}" target="_blank">{{record.video_platform}}</a>{% else %}<br><br>{% endif %}
+                                {% if record.video_platform %}<a class="btn btn-primary" style="margin: 0 auto;" href="{{record.video}}" target="_blank">{{record.video_platform}}</a>{% else %}<br><br>{% endif %}
                             </td>
                             </td>
                         </tr>
@@ -149,9 +149,15 @@
         success: function (response) {
         $('#tableRecords > tbody').empty();
         $(response).each(function (index, record) {
-        var fila=`<tr class="table-row"><td class="player-cell">
-            <img src="/media/` + record.player__country__picture + `" height="20" class="d-inline-block align-top" style="margin-right: 15px;"/>
-        </td>`
+            if (record.player__country__picture) {
+                var fila=`<tr class="table-row"><td class="player-cell">
+                    <img src="/media/` + record.player__country__picture + `" title="` + record.player__country__country + `" height="20" class="d-inline-block align-top" style="margin-right: 15px;"/>
+                </td>`
+            }
+            else {
+                var fila=`<tr class="table-row"><td class="player-cell"></td>`
+            }
+
             fila += `<td class="player-cell">
                 <a href="{% url 'users:detail' 1234 %}"`.replace(/1234/, record.player__user__id) + ` target="_blank">` + record.player__user__username + `</a>
             </td>`;

@@ -79,11 +79,20 @@ class Record(models.Model):
     def video_platform(self):
         youtube_pattern = re.compile(r'(https?://)?(www\.)?(youtube|youtu)\.(com|be)/.+')
         twitch_pattern = re.compile(r'(https?://)?(www\.)?twitch\.(tv|com)/.+')
+        twitch_clips_pattern = re.compile(r'(https?://)?clips\.twitch\.tv/.+')
+        facebook_pattern = re.compile(r'(https?://)?(www\.)?facebook\.(com)/.+')
+        google_drive_pattern = re.compile(r'(https?://)?drive\.google\.com/.+')
 
         if youtube_pattern.match(self.video):
             return "YouTube"
         elif twitch_pattern.match(self.video):
             return "Twitch"
+        elif twitch_clips_pattern.match(self.video):
+            return "Twitch"
+        elif facebook_pattern.match(self.video):
+            return "Facebook"
+        elif google_drive_pattern.match(self.video):
+            return "Drive"
         else:
             return ""
 

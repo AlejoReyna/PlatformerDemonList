@@ -2,9 +2,27 @@
 
 # Django
 from django.contrib import admin
+from django.contrib.auth.models import Group
 
 # Models
 from demonlist.models import Demon, Record, Changelog
+
+class ProfileModFilter(admin.SimpleListFilter):
+    title = 'Profile Mod'
+    parameter_name = 'profile_mod'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('chucky_gd', 'chucky_gd'),
+            ('Abr4h4M', 'Abr4h4M'),
+            ('DoSh7t', 'DoSh7t'),
+            ('GermánIglesario', 'GermánIglesario'),
+            ('MSGUS', 'MSGUS'),
+            ('Mechabrandon', 'Mechabrandon'),
+        )
+
+    def queryset(self, request, queryset):
+        return queryset.filter(mod__user__username=self.value())
 
 
 @admin.register(Demon)
@@ -21,7 +39,7 @@ class RecordAdmin(admin.ModelAdmin):
 
     list_display = ('id', 'demon', 'player', 'accepted')
     search_fields = ('player__user__username',)
-    list_filter = ("demon", "accepted", 'datetime_submit', 'datetime_modified')
+    list_filter = ("demon", "accepted", ProfileModFilter, 'datetime_submit', 'datetime_modified')
 
 @admin.register(Changelog)
 class ChangelogAdmin(admin.ModelAdmin):
@@ -29,4 +47,4 @@ class ChangelogAdmin(admin.ModelAdmin):
 
     list_display = ('id', 'demon', 'reason', 'position')
     search_fields = ('level',)
-    list_filter = ('datetime',)
+    list_filter = ("demon", 'datetime',)

@@ -7,6 +7,8 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     youtube_channel = models.URLField(max_length=200, blank=True, null=True)
     twitter = models.URLField(max_length=200, blank=True, null=True)
+    twitch = models.URLField(max_length=200, blank=True, null=True)
+    facebook = models.URLField(max_length=200, blank=True, null=True)
     discord = models.CharField(max_length=200, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
     phone = models.CharField(max_length=12, blank=True, null=True)

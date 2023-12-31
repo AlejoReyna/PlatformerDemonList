@@ -116,7 +116,41 @@
                         placeholder="Twitter"
                         value="{% if form.errors %}{{form.twitter.value}}{% else %}{% if request.user.profile.twitter %}{{request.user.profile.twitter}}{% else %}https://twitter.com/{% endif %}{% endif %}"
                         oninput="updateTwitterValue(this)"/>
-                        {% for error in form.website.errors %}
+                        {% for error in form.twitter.errors %}
+                            <div class="invalid-feedback">
+                                {{error}}
+                            </div>
+                        {% endfor %}
+                </div>
+
+                {# Twitch field #}
+                <div class="form-group">
+                    <label>Twitch</label>
+                    <input 
+                        class="form-control {% if form.twitch.errors %}is-invalid{% endif %}"
+                        type="text" 
+                        name="twitch" 
+                        placeholder="Twitch"
+                        value="{% if form.errors %}{{form.twitch.value}}{% else %}{% if request.user.profile.twitch %}{{request.user.profile.twitch}}{% else %}https://twitch.tv/{% endif %}{% endif %}"
+                        oninput="updateTwitchValue(this)"/>
+                        {% for error in form.twitch.errors %}
+                            <div class="invalid-feedback">
+                                {{error}}
+                            </div>
+                        {% endfor %}
+                </div>
+
+                {# Facebook field #}
+                <div class="form-group">
+                    <label>Facebook</label>
+                    <input 
+                        class="form-control {% if form.facebook.errors %}is-invalid{% endif %}"
+                        type="text" 
+                        name="facebook" 
+                        placeholder="Facebook"
+                        value="{% if form.errors %}{{form.facebook.value}}{% else %}{% if request.user.profile.facebook %}{{request.user.profile.facebook}}{% else %}https://facebook.com/{% endif %}{% endif %}"
+                        oninput="updateFacebookValue(this)"/>
+                        {% for error in form.facebook.errors %}
                             <div class="invalid-feedback">
                                 {{error}}
                             </div>
@@ -200,6 +234,16 @@
         const userValue = input.value.substring("https://twitter.com/".length);
     
         input.value = "https://twitter.com/" + userValue;
+      }
+      function updateTwitchValue(input) {
+        const userValue = input.value.substring("https://twitch.tv/".length);
+    
+        input.value = "https://twitch.tv/" + userValue;
+      }
+      function updateFacebookValue(input) {
+        const userValue = input.value.substring("https://facebook.com/".length);
+    
+        input.value = "https://facebook.com/" + userValue;
       }
 </script>
 {% endblock %}

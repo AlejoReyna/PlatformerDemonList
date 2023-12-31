@@ -28,6 +28,7 @@
                             <th>Video Proof</th>
                             <th>Raw Footage</th>
                             <th>Accept</th>
+                            <th>Notes</th>
                             <th>Mod notes</th>
                         </tr>
                     </thead>
@@ -55,7 +56,10 @@
                                 <button onclick="accept_record({{record.id}});"><i class="fas fa-check-circle" style="font-size: 22px; color: green;"></i></button>
                                 <button onclick="cancel_record({{record.id}});"><i class="fas fa-times-circle" style="font-size: 22px; color: red;"></i></button>
                             </td>
-                            <td class="raw_footage-link-cell">
+                            <td class="notes-link-cell">
+                                <input type="textarea" value="{{record.notes}}">
+                            </td>
+                            <td class="mod_notes-link-cell">
                                 <input type="textarea" id="mod_notes_{{record.id}}" value="{{record.mod_notes}}">
                             </td>
                         </tr>
@@ -118,7 +122,8 @@
                     <button onclick="accept_record(` + record.id + `);"><i class="fas fa-check-circle" style="font-size: 22px; color: green;"></i></button>
                     <button onclick="cancel_record(` + record.id + `);"><i class="fas fa-times-circle" style="font-size: 22px; color: red;"></i></button>
                 </td>`;
-                fila+=`<td class="raw_footage-link-cell"><input type="textarea" id="mod_notes_` + record.id + `" value="` + record.mod_notes + `"></td></tr>`;
+                fila+=`<td class="notes-link-cell"><input type="textarea" value="` + record.notes + `"></td>`
+                fila+=`<td class="mod_notes-link-cell"><input type="textarea" id="mod_notes_` + record.id + `" value="` + record.mod_notes + `"></td></tr>`;
                 $('#tableRecords > tbody').append(fila);
             })
             console.log(response.length)
