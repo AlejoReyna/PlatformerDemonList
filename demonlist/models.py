@@ -34,7 +34,7 @@ class Demon(models.Model):
     creator = models.CharField(max_length=255)
     verificator = models.CharField(max_length=255)
     position = models.IntegerField()
-    list_points = models.FloatField()
+    list_points = models.FloatField(default=0)
     photo = models.ImageField(upload_to='demons/photos')
     verification_video_embed = models.CharField(max_length=500)
     verification_video = models.CharField(max_length=500)
@@ -52,7 +52,8 @@ class Demon(models.Model):
         """Return level."""
         return '{}'.format(self.level)
     def save(self, *args, **kwargs):
-        self.list_points = round(self.list_points, 2)
+        if self.list_points:
+            self.list_points = round(self.list_points, 2)
         super(Demon, self).save(*args, **kwargs)
 
 class Record(models.Model):
