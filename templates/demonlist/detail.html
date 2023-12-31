@@ -64,7 +64,7 @@
                         {% for change in changelog %}
                         <tr class="table-row">
                             <td class="date-cell">{{change.datetime|date}}</td>
-                            <td class="change_type-cell">{% if change.change_type == "Down" %}<i class="fas fa-chevron-down"></i>{% elif change.change_type == "Up" %}<i class="fas fa-chevron-up">{% else %}-{% endif %}{% if change.change_number %}{{change.change_number}}{% endif %}</td>
+                            <td class="change_type-cell">{% if change.change_type == "Down" %}<i class="fas fa-chevron-down"></i>{% elif change.change_type == "Up" %}<i class="fas fa-chevron-up"></i>{% else %}-{% endif %}{% if change.change_number %}{{change.change_number}}{% endif %}</td>
                             <td class="position-cell">{{change.position}}</td>
                             <td class="reason-cell">{{change.reason}}</td>
                         </tr>

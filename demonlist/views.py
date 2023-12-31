@@ -59,44 +59,6 @@ class DemonDetailView(DetailView):
         changelog = Changelog.objects.filter(demon=demon)
         records = Record.objects.filter(demon=demon, accepted=True)
 
-        archivos_en_carpeta = [
-            "Albania.svg", "Algeria.svg", "Argentina.svg", "Armenia.svg", "Aruba.svg", "Australia.svg", "Austria.svg", "Azerbaijan.svg", "Bahrain.svg",
-            "Bangladesh.svg", "Belarus.svg", "Belgium.svg", "Bolivia.svg", "Bosnia and Herzegovina.svg", "Brazil.svg", "Bulgaria.svg", "Cambodia.svg",
-            "Canada.svg", "Chile.svg", "China.svg", "Colombia.svg", "Costa Rica.svg", "Croatia.svg", "Cuba.svg", "Czech Republic.svg", "Denmark.svg",
-            "Dominican Republic.svg", "Ecuador.svg", "Egypt.svg", "El Salvador.svg", "Estonia.svg", "Finland.svg", "France.svg", "Georgia.svg", "Germany.svg",
-            "Greece.svg", "Guatemala.svg", "Guernsey.svg", "Guyana.svg", "Haiti.svg", "Honduras.svg", "Hong Kong.svg", "Hungary.svg", "Iceland.svg", "India.svg",
-            "Indonesia.svg", "Iran.svg", "Iraq.svg", "Ireland.svg", "Israel.svg", "Italy.svg", "Jamaica.svg", "Japan.svg", "Kazakhstan.svg", "Korea.svg", "Kuwait.svg",
-            "Lao People's Democratic Republic.svg", "Latvia.svg", "Lebanon.svg", "Lithuania.svg", "Malaysia.svg", "Malta.svg", "Mexico.svg", "Moldova.svg",
-            "Montenegro.svg", "Morocco.svg", "Netherlands.svg", "New Zealand.svg", "Norway.svg", "Oman.svg", "Pakistan.svg", "Palestine.svg", "Panama.svg",
-            "Paraguay.svg", "Peru.svg", "Philippines.svg", "Poland.svg", "Portugal.svg", "Puerto Rico.svg", "Romania.svg", "Russia.svg",
-            "Saint Vincent and the Grenadines.svg", "Serbia.svg", "Singapore.svg", "Slovakia.svg", "Slovenia.svg", "Somalia.svg", "South Africa.svg",
-            "Spain.svg", "Sweden.svg", "Switzerland.svg", "Taiwan.svg", "Thailand.svg", "Trinidad and Tobago.svg", "Tunisia.svg", "Turkey.svg", "Turkmenistan.svg",
-            "Ukraine.svg", "United Arab Emirates.svg", "United Kingdom.svg", "United States.svg", "Uruguay.svg", "Uzbekistan.svg", "Venezuela.svg",
-            "Vietnam.svg"
-        ]
-
-        carpeta_path = r"C:\Users\Elias\Downloads\Banderas\Banderas 4x3"
-
-        for archivo in archivos_en_carpeta:
-            ruta_completa = os.path.join(carpeta_path, archivo)
-            nombre_pais = os.path.splitext(os.path.basename(archivo))[0]
-            print(ruta_completa)
-            print(nombre_pais)
-
-            try:
-                country = Country.objects.get(country=nombre_pais)
-                with open(ruta_completa, 'rb') as archivo_svg:
-                    contenido_svg = archivo_svg.read()
-                    nombre_archivo = os.path.basename(ruta_completa)
-                    country.picture.save(nombre_archivo, ContentFile(contenido_svg), save=True)
-            except:
-                country = Country.objects.create(country=nombre_pais)
-                with open(ruta_completa, 'rb') as archivo_svg:
-                    contenido_svg = archivo_svg.read()
-                    nombre_archivo = os.path.basename(ruta_completa)
-                    country.picture.save(nombre_archivo, ContentFile(contenido_svg), save=True)
-
-
         context["changelog"] = changelog
         context["records"] = records
         return context
@@ -191,26 +153,38 @@ class StatsViewerView(TemplateView):
 
         if r.get("player", None) or r.get("player", None) == "":
 
+            print(r.get("player", None))
+
             players_annotated = Profile.objects.filter(list_points__gte=1).annotate(
                 position=Window(expression=DenseRank(), order_by=F('list_points').desc())
             )
 
             players_filtered = players_annotated.filter(user__username__icontains=r.get("player", None))
 
+            print(players_filtered)
+
             original_positions = {player.id: player.position for player in players_annotated}
 
             players_final = sorted(players_filtered, key=lambda player: original_positions[player.id])
+            print(players_final)
+                
+            result_list = []
 
-            result_list = [
-                {
+            for player in players_final:
+                if player.country:
+                    picture_url = player.country.picture.url
+                else:
+                    picture_url = ""
+                result_list.append({
                     'id': player.id,
+                    'user__id': player.user.id,
                     'user__username': player.user.username,
                     'list_points': player.list_points,
                     'position': original_positions[player.id],
-                    'country__picture': player.country.picture.url,
-                }
-                for player in players_final
-            ]
+                    'country__picture': picture_url,
+                })
+                    
+            print(result_list)
 
             return JsonResponse(result_list, safe=False)
         
@@ -252,7 +226,7 @@ class StatsViewerView(TemplateView):
             elif r.get("option", None) == "Individual":
                 players = Profile.objects.filter(list_points__gte=1).annotate(position=Window(expression=DenseRank(), order_by=F('list_points').desc()))
 
-                players = list(players.values("id", "user__username", "list_points", "position", "country__picture"))
+                players = list(players.values("id", "user__id", "user__username", "list_points", "position", "country__picture"))
 
                 return JsonResponse(players, safe=False)
 
@@ -274,6 +248,7 @@ class StatsViewerView(TemplateView):
             result_list = [
                 {
                     'id': player.id,
+                    'user__id': player.user.id,
                     'user__username': player.user.username,
                     'list_points': player.list_points,
                     'position': original_positions[player.id],
@@ -315,7 +290,7 @@ class CheckRecordsView(LoginRequiredMixin, ModeradorMixin, TemplateView):
             elif r.get("status", None) == "Accepted":
                 records = Record.objects.filter(accepted=True)
 
-            records = list(records.values("id", "best_time", "player__user__username", "demon__level", "video", "raw_footage", "mod_notes"))
+            records = list(records.values("id", "best_time", "player__user__username", "player__user__id", "demon__level", "video", "raw_footage", "mod_notes"))
             return JsonResponse(records, safe=False)
         
         if r.get("accept_id", None):
@@ -326,7 +301,7 @@ class CheckRecordsView(LoginRequiredMixin, ModeradorMixin, TemplateView):
             seconds = r.get("seconds", None)
             milliseconds = r.get("milliseconds", None)
 
-            time = datetime.time(int(hours), int(minutes), int(seconds), int(milliseconds[3]) * 1000)
+            time = datetime.time(int(hours), int(minutes), int(seconds), int(milliseconds[:3]) * 1000)
 
             try:
                 old_record = Record.objects.get(demon=record.demon, player=record.player, accepted=True)

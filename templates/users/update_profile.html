@@ -36,7 +36,7 @@
                 <hr>
                 {% if request.user.profile.discord %}
                     {% if request.user.profile.verified %}
-                        <p style="margin-left: 15px; margin-top: 10px;"><i class="fas fa-check-circle" style="margin-left: 10px; color: #4169E1; margin-right: 5px;"></i>Your account have been verified.</a></p>
+                        <p style="margin-left: 15px; margin-top: 10px;"><i class="fas fa-check-circle" style="margin-left: 10px; color: #4169E1; margin-right: 5px;"></i>Your account has been verified.</a></p>
                     {% elif request.user.profile.verified is none %}
                         <p style="margin-left: 15px; margin-top: 10px;"><i class="fas fa-clock" style="font-size: 18px; color: gray; margin-right: 5px;"></i>Your account is being verified, please wait for our response.</a></p>
                     {% else %}
@@ -97,7 +97,8 @@
                         type="text" 
                         name="youtube_channel" 
                         placeholder="Youtube channel" 
-                        value="{% if form.errors %}{{form.youtube_channel.value}}{% else %}{{request.user.profile.youtube_channel}}{% endif %}"/>
+                        value="{% if form.errors %}{{form.youtube_channel.value}}{% else %}{% if request.user.profile.youtube_channel %}{{request.user.profile.youtube_channel}}{% else %}https://www.youtube.com/channel/{% endif %}{% endif %}"
+                        oninput="updateYoutubeValue(this)"/>
                         {% for error in form.website.errors %}
                             <div class="invalid-feedback">
                                 {{error}}
@@ -172,6 +173,13 @@
         </div>
     </div>
 </div>
+<script>
+    function updateYoutubeValue(input) {
+        const userValue = input.value.substring("https://www.youtube.com/channel/".length);
+    
+        input.value = "https://www.youtube.com/channel/" + userValue;
+      }
+</script>
 {% endblock %}
 
 {% block footer_margin %}100{% endblock %}

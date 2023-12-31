@@ -88,7 +88,8 @@ class UpdateProfileView(LoginRequiredMixin, TemplateView):
             profile.country = Country.objects.get(country=country)
         except:
             pass
-        profile.youtube_channel = self.request.POST.get("youtube_channel")
+        if not(self.request.POST.get("youtube_channel") == "https://www.youtube.com/channel/"):
+            profile.youtube_channel = self.request.POST.get("youtube_channel")
         if self.request.POST.get("discord") != '' and self.request.POST.get("discord") != profile.discord:
             profile.discord = self.request.POST.get("discord")
             profile.verified = None
