@@ -27,14 +27,17 @@ import os
 
 class ModeradorMixin(UserPassesTestMixin):
     def test_func(self):
-
-        print(self.request.user.groups.get())
+        is_mod = False
         if str(self.request.user.groups.get()) == "Mod":
             is_mod = True
-        else:
-            is_mod = False
         return self.request.user.is_authenticated and is_mod
 
+class ListHelperMixin(UserPassesTestMixin):
+    def test_func(self):
+        is_helper = False
+        if str(self.request.user.groups.get()) == "Mod" or str(self.request.user.groups.get()) == "List Helper":
+            is_helper = True
+        return self.request.user.is_authenticated and is_helper
 
 class DemonListView(ListView):
     """Return all list demons."""
@@ -58,8 +61,6 @@ class DemonDetailView(DetailView):
         demon = self.get_object()
         changelog = Changelog.objects.filter(demon=demon)
         records = Record.objects.filter(demon=demon, accepted=True)
-
-        functions.update_top_best_time(demon)
 
         context["changelog"] = changelog
         context["records"] = records
@@ -283,17 +284,19 @@ class StatsViewerView(TemplateView):
 
             return JsonResponse(result_list, safe=False)
 
-class CheckRecordsView(LoginRequiredMixin, ModeradorMixin, TemplateView):
+class CheckRecordsView(LoginRequiredMixin, ListHelperMixin, TemplateView):
     # Return check records view
     template_name = "demonlist/check_records.html"
     success_url = reverse_lazy('demonlist:check_records')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        records = Record.objects.filter(accepted=None)
 
+        if self.request.user.groups.get() == "List Helper":
+            records = Record.objects.filter(accepted=None).exclude(player="GuitarHeroStyles")
+        else:
+            records = Record.objects.filter(accepted=None)
         context["records"] = records
-
         return context
     
     def post(self, request):
@@ -308,6 +311,10 @@ class CheckRecordsView(LoginRequiredMixin, ModeradorMixin, TemplateView):
                 records = Record.objects.filter(accepted=False)
             elif r.get("status", None) == "Accepted":
                 records = Record.objects.filter(accepted=True)
+            if self.request.user.groups.get() == "List Helper":
+                records = records.filter(accepted=None).exclude(player="GuitarHeroStyles")
+            else:
+                records = records.filter(accepted=None)
 
             records = list(records.values("id", "best_time", "player__user__username", "player__user__id", "demon__level", "video", "raw_footage", "notes", "mod_notes"))
             return JsonResponse(records, safe=False)
@@ -339,6 +346,7 @@ class CheckRecordsView(LoginRequiredMixin, ModeradorMixin, TemplateView):
                 record.mod = self.request.user.profile
                 record.save()
 
+            functions.update_top_order(record.demon)
             functions.update_top_best_time(record.demon)
             functions.update_players_list_points()
             functions.update_countries_list_points()
@@ -351,6 +359,7 @@ class CheckRecordsView(LoginRequiredMixin, ModeradorMixin, TemplateView):
 
             if record.accepted:
 
+                functions.update_top_order(record.demon)
                 functions.update_top_best_time(record.demon)
                 functions.update_players_list_points()
                 functions.update_countries_list_points()

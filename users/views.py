@@ -119,6 +119,23 @@ class UpdateProfileView(LoginRequiredMixin, TemplateView):
         'users/update_profile.html',
         {'error_message': error_message, 'countries': countries, 'records': records}
     )
+
+class RecordsStatusView(LoginRequiredMixin, TemplateView):
+    # Records status view
+
+    template_name = 'users/records_status.html'
+
+    def get_object(self):
+        # Return user's profile
+        return self.request.user.profile
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = self.get_object()
+        records = Record.objects.filter(player=profile)
+
+        context["records"] = records
+        return context
     
 class UserDetailView(LoginRequiredMixin, DetailView):
     # User Detail View

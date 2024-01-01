@@ -70,6 +70,7 @@ class Record(models.Model):
     
     accepted = models.BooleanField(blank=True, null=True)
 
+    top_order = models.IntegerField(blank=True, null=True)
     top_best_time = models.IntegerField(blank=True, null=True)
 
     datetime_submit = models.DateTimeField(auto_now_add=True)

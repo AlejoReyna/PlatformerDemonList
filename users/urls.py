@@ -29,6 +29,11 @@ urlpatterns = [
         name='update'
     ),
     path(
+        route='me/records_status/',
+        view=views.RecordsStatusView.as_view(),
+        name='records_status'
+    ),
+    path(
         route='<int:user>/',
         view=views.UserDetailView.as_view(),
         name='detail'

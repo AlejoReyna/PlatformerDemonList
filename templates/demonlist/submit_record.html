@@ -28,8 +28,8 @@
                     <input type="hidden" name="profile" value="{{ user.profile.pk }}" />
 
                     <div class="form-group">
-                        <select class="form-control" style="border: 2px solid #ced4da;" id="demon" name="demon">
-                            <option selected disabled="disabled" value="0">-- Demon --</option>
+                        <select class="form-control" style="border: 2px solid #ced4da;" id="demon" name="demon" required>
+                            <option selected disabled="disabled" value="">-- Demon --</option>
                             {% for demon in demons %}
                             <option value="{{demon.level}}">{{demon.level}}</option>
                             {% endfor %}

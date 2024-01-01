@@ -177,52 +177,6 @@
             </form>
         </div>
     </div>
-    <div class="row justify-content-md-center">
-
-        <div id="record-section" class="col-6 p-4 align-items-center" id="profile-box">
-            <p style="font-size: 28px; color: #454546; font-weight: bold; text-align: center; margin-bottom: 10px;">Records</p>
-            <table class="table custom-table">
-                <thead>
-                    <tr>
-                        <th class="text-center align-middle">Demon</th>
-                        <th class="text-center align-middle">Video Proof</th>
-                        <th class="text-center align-middle">Status</th>
-                        <th class="text-center align-middle">Mod Notes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if records %}
-                    {% for record in records %}
-                    <tr class="table-row">
-                        <td class="player-cell text-center align-middle">
-                            <a href="{% url 'demonlist:detail' record.demon.id %}" target="_blank">{{record.demon}}</a>
-                        </td>
-                        <td class="video-link-cell text-center align-middle">
-                            <a class="btn btn-primary" href="{{record.video}}" target="_blank">YouTube</a>
-                        </td>
-                        <td class="accepted-cell text-center align-middle">
-                            {% if record.accepted %}
-                            <i class="fas fa-check-circle" style="font-size: 22px; color: green;"></i>
-                            {% elif record.accepted is none %}
-                            <i class="fas fa-clock" style="font-size: 22px; color: gray;"></i>
-                            {% else %}
-                            <i class="fas fa-times-circle" style="font-size: 22px; color: red;"></i>
-                            {% endif %}
-                        </td>
-                        <td class="mod_notes-cell text-center align-middle">{% if record.mod_notes %}{{record.mod_notes}}{% else %}-{% endif %}</td>
-                    </tr>
-                    {% endfor %}
-                    {% else %}
-                    <tr class="table-row">
-                        <td colspan="4" class="player-cell">
-                            There have been no records yet
-                        </td>
-                    </tr>
-                    {% endif %}
-                </tbody>
-            </table>
-        </div>
-    </div>
 </div>
 <script>
     function updateYoutubeValue(input) {
@@ -248,4 +202,4 @@
 </script>
 {% endblock %}
 
-{% block footer_margin %}100{% endblock %}
+{% block footer_margin %}150{% endblock %}

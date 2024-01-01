@@ -40,3 +40,32 @@ def update_top_best_time(demon):
         record.top_best_time = top_best_time
         record.save()
         top_best_time += 1
+
+def update_top_order(demon):
+    records = Record.objects.filter(demon=demon, accepted=True)
+    top_order = 1
+
+    for record in records:
+        record.top_order = top_order
+        record.save()
+        top_order += 1
+
+
+def update_top_all():
+    demons = Demon.objects.all()
+    for demon in demons:
+        records = Record.objects.filter(demon=demon, accepted=True).order_by("best_time")
+        top_best_time = 1
+
+        for record in records:
+            record.top_best_time = top_best_time
+            record.save()
+            top_best_time += 1
+
+        records = Record.objects.filter(demon=demon, accepted=True)
+        top_order = 1
+
+        for record in records:
+            record.top_order = top_order
+            record.save()
+            top_order += 1
