@@ -81,7 +81,7 @@
                         type="text" 
                         name="discord" 
                         placeholder="Discord username" 
-                        value="{% if form.errors %}{{form.errors}}{% else %}{{request.user.profile.discord}}{% endif %}"/>
+                        value="{% if form.errors %}{{form.errors}}{% else %}{% if request.user.profile.discord %}{{request.user.profile.discord}}{% endif %}{% endif %}"/>
                         {% for error in form.discord.errors %}
                             <div class="invalid-feedback">
                                 {{error}}

@@ -19,6 +19,10 @@ class ProfileModFilter(admin.SimpleListFilter):
             ('GermánIglesario', 'GermánIglesario'),
             ('MSGUS', 'MSGUS'),
             ('Mechabrandon', 'Mechabrandon'),
+            ('Ryexus', 'Ryexus'),
+            ('IvanCrafter026', 'IvanCrafter026'),
+            ('DiegoLix', 'DiegoLix'),
+            ('Lunnagd', 'Lunnagd'),
         )
 
     def queryset(self, request, queryset):
@@ -37,9 +41,9 @@ class DemonAdmin(admin.ModelAdmin):
 class RecordAdmin(admin.ModelAdmin):
     """Record admin."""
 
-    list_display = ('id', 'demon', 'player', 'accepted', "mod", "datetime_submit", "datetime_modified")
+    list_display = ('id', 'demon', 'player', 'accepted', "mod", "datetime_accepted")
     search_fields = ('player__user__username',)
-    list_filter = ("demon", "accepted", ProfileModFilter, 'datetime_submit', 'datetime_modified')
+    list_filter = ("demon", "accepted", ProfileModFilter, 'datetime_submit', 'datetime_accepted')
 
 @admin.register(Changelog)
 class ChangelogAdmin(admin.ModelAdmin):

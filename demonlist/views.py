@@ -12,7 +12,6 @@ from django.http import HttpResponseRedirect
 from django.http.response import JsonResponse
 from django.views.generic import CreateView, DetailView, ListView, TemplateView
 
-
 # Models
 from django.contrib.auth.models import User
 from demonlist.models import Demon, Record, Changelog
@@ -292,8 +291,9 @@ class CheckRecordsView(LoginRequiredMixin, ListHelperMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        if self.request.user.groups.get() == "List Helper":
-            records = Record.objects.filter(accepted=None).exclude(player="GuitarHeroStyles")
+        print(self.request.user.groups.get())
+        if str(self.request.user.groups.get()) == "List Helper":
+            records = Record.objects.filter(accepted=None).exclude(player__user__username="GuitarHeroStyles")
         else:
             records = Record.objects.filter(accepted=None)
         context["records"] = records
@@ -311,10 +311,9 @@ class CheckRecordsView(LoginRequiredMixin, ListHelperMixin, TemplateView):
                 records = Record.objects.filter(accepted=False)
             elif r.get("status", None) == "Accepted":
                 records = Record.objects.filter(accepted=True)
-            if self.request.user.groups.get() == "List Helper":
-                records = records.filter(accepted=None).exclude(player="GuitarHeroStyles")
-            else:
-                records = records.filter(accepted=None)
+
+            if str(self.request.user.groups.get()) == "List Helper":
+                records = records.exclude(player__user__username="GuitarHeroStyles")
 
             records = list(records.values("id", "best_time", "player__user__username", "player__user__id", "demon__level", "video", "raw_footage", "notes", "mod_notes"))
             return JsonResponse(records, safe=False)
@@ -337,19 +336,22 @@ class CheckRecordsView(LoginRequiredMixin, ListHelperMixin, TemplateView):
                 old_record.notes = record.notes
                 old_record.mod_notes = mod_notes
                 old_record.mod = self.request.user.profile
+                old_record.datetime_accepted = datetime.datetime.now()
                 old_record.save()
-                record.delete()
+                if record.accepted == None:
+                    record.delete()
             except:
                 record.best_time = time
                 record.accepted = True
                 record.mod_notes = mod_notes
                 record.mod = self.request.user.profile
+                record.datetime_accepted = datetime.datetime.now()
                 record.save()
 
             functions.update_top_order(record.demon)
             functions.update_top_best_time(record.demon)
-            functions.update_players_list_points()
-            functions.update_countries_list_points()
+            functions.update_players_list_points(record.player)
+            functions.update_countries_list_points(record.player.country)
 
             return JsonResponse(record.id, safe=False)
         
@@ -361,8 +363,8 @@ class CheckRecordsView(LoginRequiredMixin, ListHelperMixin, TemplateView):
 
                 functions.update_top_order(record.demon)
                 functions.update_top_best_time(record.demon)
-                functions.update_players_list_points()
-                functions.update_countries_list_points()
+                functions.update_players_list_points(record.player)
+                functions.update_countries_list_points(record.player.country)
 
             record.accepted = False
             record.mod_notes = mod_notes
@@ -456,7 +458,10 @@ class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
                 demon.position += 1
                 demon.save()
 
-            verification_video_embed = 'https://www.youtube.com/embed/' + verification_video.split('=')[1]
+            if verification_video[:16] == "https://youtu.be":
+                verification_video_embed = 'https://www.youtube.com/embed/' + verification_video.split('/')[3]
+            else:
+                verification_video_embed = 'https://www.youtube.com/embed/' + verification_video.split('=')[1]
 
             new_demon = Demon.objects.create(level=level,
                                 photo=photo,
@@ -481,8 +486,8 @@ class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
                                      )
             
             functions.order_list_points()
-            functions.update_players_list_points()
-            functions.update_countries_list_points()
+            functions.update_players_list_points_all()
+            functions.update_countries_list_points_all()
 
             return HttpResponseRedirect(reverse_lazy('demonlist:list'))
         
@@ -539,9 +544,12 @@ class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
                                 )
                     demon.position -= 1
                     demon.save()
+
+            if verification_video[:16] == "https://youtu.be":
+                verification_video_embed = 'https://www.youtube.com/embed/' + verification_video.split('/')[3]
+            else:
+                verification_video_embed = 'https://www.youtube.com/embed/' + verification_video.split('=')[1]
         
-            verification_video_embed = 'https://www.youtube.com/embed/' + verification_video.split('=')[1]
-            
             old_demon.photo=photo
             old_demon.position=int(position)
             old_demon.creator=creator
@@ -558,8 +566,8 @@ class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
             old_demon.save()
 
             functions.order_list_points()
-            functions.update_players_list_points()
-            functions.update_countries_list_points()
+            functions.update_players_list_points_all()
+            functions.update_countries_list_points_all()
 
             return HttpResponseRedirect(reverse_lazy('demonlist:list'))
         

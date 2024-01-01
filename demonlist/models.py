@@ -75,6 +75,7 @@ class Record(models.Model):
 
     datetime_submit = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
+    datetime_accepted = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         """Return record."""
