@@ -47,7 +47,7 @@
                                     <input type="number" id="milliseconds_{{record.id}}" min="0" max="999" placeholder="MS" oninput="limitInput(this, 3)" value="{{record.best_time|time:'u'}}" maxlength="3">
                                 </td>
                                 <td class="video-link-cell">
-                                    <a class="btn btn-primary" href="{{record.video}}" target="_blank">YouTube</a>
+                                    <a class="btn btn-primary" href="{{record.video}}" title="{{record.video}}" target="_blank">YouTube</a>
                                 </td>
                                 <td class="raw_footage-link-cell">
                                     <a class="btn btn-primary" href="{{record.raw_footage}}" target="_blank">Raw Footage</a>
@@ -116,7 +116,7 @@
                     <input type="number" id="seconds_` + record.id + `" min="0" max="59" placeholder="SS" oninput="limitInput(this, 2)" value="` + seconds + `">
                     <input type="number" id="milliseconds_` + record.id + `" min="0" max="999" placeholder="MS" oninput="limitInput(this, 3)" value="` + milliseconds + `" maxlength="3">
                 </td>`;
-                fila+=`<td class="video-link-cell"><a class="btn btn-primary" href="` + record.video + `" target="_blank">YouTube</a></td>`;
+                fila+=`<td class="video-link-cell"><a class="btn btn-primary" href="` + record.video + `" title="` + record.video + `" target="_blank">YouTube</a></td>`;
                 fila+=`<td class="raw_footage-link-cell"><a class="btn btn-primary" href="` + record.raw_footage + `" target="_blank">Raw Footage</a></td>`;
                 fila+=`<td>
                     <button onclick="accept_record(` + record.id + `);"><i class="fas fa-check-circle" style="font-size: 22px; color: green;"></i></button>

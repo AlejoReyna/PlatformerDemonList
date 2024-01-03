@@ -14,9 +14,13 @@
                 <h1 style="color: #454546; margin-top: 10px;">{{demon.level}}</h1>
                 <p  style="font-size: 20px; color: #454546;">by {{demon.creator}} {% if not demon.verificator == demon.creator %}, verified by {{demon.verificator}}{% endif %}</p>
                 <div class="d-flex justify-content-center" style="margin: 15px 0;">
+                    {% if demon.verification_video_embed %}
                     <div class="embed-responsive embed-responsive-16by9" style="width: 80%;">
                         <iframe class="embed-responsive-item" src="{{demon.verification_video_embed}}" frameborder="0" allowfullscreen></iframe>
                     </div>
+                    {% else %}
+                    {{demon.verification_video|safe}}
+                    {% endif %}
                 </div>
                 <div class="d-flex justify-content-center text-center">
                     <table>

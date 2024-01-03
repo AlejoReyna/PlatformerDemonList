@@ -21,6 +21,8 @@ class Profile(models.Model):
     dark_mode = models.BooleanField(default=False)
 
     verified = models.BooleanField(blank=True, null=True)
+
+    ranking = models.IntegerField(blank=True, null=True)
     
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)

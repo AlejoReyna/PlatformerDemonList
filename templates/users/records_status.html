@@ -27,7 +27,7 @@
                     {% for record in records %}
                     <tr class="table-row">
                         <td class="player-cell text-center align-middle">
-                            <a href="{% url 'demonlist:detail' record.demon.id %}" target="_blank">{{record.demon}}</a>
+                            <a href="{% url 'demonlist:detail' record.demon.position %}" target="_blank">{{record.demon}}</a>
                         </td>
                         <td class="video-link-cell text-center align-middle">
                             {% if record.video %}<a class="btn btn-primary" style="margin: 0 auto;" href="{{record.video}}" target="_blank">{{record.video_platform}}</a>{% else %}<br><br>{% endif %}

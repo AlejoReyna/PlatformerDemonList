@@ -151,8 +151,15 @@ class StatsViewerView(TemplateView):
         players = Profile.objects.filter(list_points__gte=1).annotate(position=Window(expression=Rank(), order_by=F('list_points').desc()))
         countries = Country.objects.all().order_by("country")
 
+        if (players.count() % 50) == 0:
+            pages_records_max = players.count() // 50
+        else:
+            pages_records_max = players.count() // 50 + 1
+
         context["countries"] = countries
-        context["players"] = players
+        context["pages_records"] = 1
+        context["pages_records_max"] = pages_records_max
+        context["players"] = players[:50]
         return context
     
     def post(self, request):
@@ -162,41 +169,56 @@ class StatsViewerView(TemplateView):
 
         if r.get("player", None) or r.get("player", None) == "":
 
-            print(r.get("player", None))
+            print("aver esto")
 
             players_annotated = Profile.objects.filter(list_points__gte=1).annotate(
                 position=Window(expression=Rank(), order_by=F('list_points').desc())
             )
 
-            players_filtered = players_annotated.filter(user__username__icontains=r.get("player", None))
+            if r.get("select_country", None):
+                players_filtered = players_annotated.filter(user__username__icontains=r.get("player", None), country__country=r.get("select_country", None))
+            else:
+                players_filtered = players_annotated.filter(user__username__icontains=r.get("player", None))
 
-            print(players_filtered)
+            print("aver esto2")
 
             original_positions = {player.id: player.position for player in players_annotated}
 
-            players_final = sorted(players_filtered, key=lambda player: original_positions[player.id])
-            print(players_final)
-                
-            result_list = []
+            print("aver esto3")
 
-            for player in players_final:
-                if player.country:
-                    picture_url = player.country.picture.url
-                    country = player.country.country
-                else:
-                    picture_url = ""
-                    country = ""
-                result_list.append({
+            players_final = sorted(players_filtered, key=lambda player: original_positions[player.id])
+            print("aver esto4")
+                
+            result_list = [
+                {
                     'id': player.id,
                     'user__id': player.user.id,
                     'user__username': player.user.username,
                     'list_points': player.list_points,
                     'position': original_positions[player.id],
-                    'country__picture': picture_url,
-                    'country__country': country
-                })
+                    'country__picture': player.country.picture.url if player.country else "",
+                    'country__country': player.country.country if player.country else ""
+                }
+                for player in players_final
+            ]
+            print("aver esto5")
+
+            if (len(result_list) % 50) == 0:
+                pages_records_max = len(result_list) // 50
+            else:
+                pages_records_max = len(result_list) // 50 + 1
                     
-            print(result_list)
+            if r.get("pages_records"):
+                page_min = (int(request.POST.get("pages_records")) - 1) * 50
+                page_max = int(request.POST.get("pages_records")) * 50
+                result_list = result_list[page_min:page_max]
+                reset_pages = False
+            else:
+                result_list = result_list[:50]
+                reset_pages = True
+
+            result_list = [result_list, reset_pages, pages_records_max]
+            print("aver esto6")
 
             return JsonResponse(result_list, safe=False)
         
@@ -223,6 +245,22 @@ class StatsViewerView(TemplateView):
                 for country in countries_final
             ]
 
+            if (len(result_list) % 50) == 0:
+                pages_records_max = len(result_list) // 50
+            else:
+                pages_records_max = len(result_list) // 50 + 1
+
+            if r.get("pages_records"):
+                page_min = (int(request.POST.get("pages_records")) - 1) * 50
+                page_max = int(request.POST.get("pages_records")) * 50
+                result_list = result_list[page_min:page_max]
+                reset_pages = False
+            else:
+                result_list = result_list[:50]
+                reset_pages = True
+
+            result_list = [result_list, reset_pages, pages_records_max]
+
             return JsonResponse(result_list, safe=False)
         
         if r.get("option", None):
@@ -231,14 +269,42 @@ class StatsViewerView(TemplateView):
 
                 countries = Country.objects.filter(list_points__gte=1).annotate(position=Window(expression=Rank(), order_by=F('list_points').desc()))
 
-                countries = list(countries.values("id", "picture", "list_points", "position", "country"))
+                if (len(countries) % 50) == 0:
+                    pages_records_max = len(countries) // 50
+                else:
+                    pages_records_max = len(countries) // 50 + 1
+
+                if r.get("pages_records"):
+                    page_min = (int(request.POST.get("pages_records")) - 1) * 50
+                    page_max = int(request.POST.get("pages_records")) * 50
+                    countries = list(countries.values("id", "picture", "list_points", "position", "country"))[page_min:page_max]
+                    reset_pages = False
+                else:
+                    countries = list(countries.values("id", "picture", "list_points", "position", "country"))[:50]
+                    reset_pages = True
+
+                countries = [countries, reset_pages, pages_records_max]
 
                 return JsonResponse(countries, safe=False)
             
             elif r.get("option", None) == "Individual":
                 players = Profile.objects.filter(list_points__gte=1).annotate(position=Window(expression=Rank(), order_by=F('list_points').desc()))
 
-                players = list(players.values("id", "user__id", "user__username", "list_points", "position", "country__picture", "country__country"))
+                if (len(players) % 50) == 0:
+                    pages_records_max = len(players) // 50
+                else:
+                    pages_records_max = len(players) // 50 + 1
+
+                if r.get("pages_records"):
+                    page_min = (int(request.POST.get("pages_records")) - 1) * 50
+                    page_max = int(request.POST.get("pages_records")) * 50
+                    players = list(players.values("id", "user__id", "user__username", "list_points", "position", "country__picture", "country__country"))[page_min:page_max]
+                    reset_pages = False
+                else:
+                    players = list(players.values("id", "user__id", "user__username", "list_points", "position", "country__picture", "country__country"))[:50]
+                    reset_pages = True
+
+                players = [players, reset_pages, pages_records_max]
 
                 return JsonResponse(players, safe=False)
 
@@ -276,10 +342,24 @@ class StatsViewerView(TemplateView):
                         'country__country': country,
                     })
 
-            print(players_annotated)
-            print(players_filtered)
-            print(original_positions)
+            if (len(result_list) % 50) == 0:
+                pages_records_max = len(result_list) // 50
+            else:
+                pages_records_max = len(result_list) // 50 + 1
+
+            if r.get("pages_records"):
+                page_min = (int(request.POST.get("pages_records")) - 1) * 50
+                page_max = int(request.POST.get("pages_records")) * 50
+                result_list = result_list[page_min:page_max]
+                reset_pages = False
+            else:
+                result_list = result_list[:50]
+                reset_pages = True
+
             print(result_list)
+            result_list = [result_list, reset_pages, pages_records_max]
+
+            print(pages_records_max)
 
             return JsonResponse(result_list, safe=False)
 
@@ -460,8 +540,10 @@ class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
 
             if verification_video[:16] == "https://youtu.be":
                 verification_video_embed = 'https://www.youtube.com/embed/' + verification_video.split('/')[3]
-            else:
+            elif verification_video[:29] == "https://www.youtube.com/watch":
                 verification_video_embed = 'https://www.youtube.com/embed/' + verification_video.split('=')[1]
+            else:
+                verification_video_embed = None
 
             new_demon = Demon.objects.create(level=level,
                                 photo=photo,
@@ -547,8 +629,10 @@ class AddEditDemonView(LoginRequiredMixin, ModeradorMixin, TemplateView):
 
             if verification_video[:16] == "https://youtu.be":
                 verification_video_embed = 'https://www.youtube.com/embed/' + verification_video.split('/')[3]
-            else:
+            elif verification_video[:29] == "https://www.youtube.com/watch":
                 verification_video_embed = 'https://www.youtube.com/embed/' + verification_video.split('=')[1]
+            else:
+                verification_video_embed = None
         
             old_demon.photo=photo
             old_demon.position=int(position)

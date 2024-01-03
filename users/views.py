@@ -110,7 +110,7 @@ class UpdateProfileView(LoginRequiredMixin, TemplateView):
             profile.verified = None
         profile.save()
 
-        functions.update_countries_list_points()
+        functions.update_countries_list_points(profile.country)
         countries = Country.objects.all().order_by("country")
         records = Record.objects.filter(player=profile)
 

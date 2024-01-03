@@ -56,17 +56,503 @@
                             {% else %}
                             <tr class="table-row">
                                 <td colspan="4" class="player-cell">
-                                    There have been no players yet
+                                    There are no players
                                 </td>
                             </tr>
                             {% endif %}
                         </tbody>
                     </table>
                 </div>
+                <div class="float-right pagination" style="margin-top: 20px; vertical-align: top; display: inline-block;">
+                    <ul class="pagination">
+                        <li class="page-item disabled" id="button_retrasar_records">
+                            <button class="page-link" aria-label="" onclick="retrasar_paginas_records();">‹</button>
+                        </li>
+                        <li name="li_1" id="page{{pages_records}}_records" class="page-item active">
+                            <button class="page-link" aria-label="to page 1" name="button_1" id="button{{pages_records}}_records" onclick="cambiar_pagina_records({{pages_records}});">{{pages_records}}</button>
+                        </li>
+                        <li name="li_2" id="page{{pages_records|add:1}}_records" class="page-item">
+                            <button class="page-link" aria-label="" name="button_2" id="button{{pages_records|add:1}}_records" onclick="cambiar_pagina_records({{pages_records|add:1}});">{{pages_records|add:1}}</button>
+                        </li>
+                        <li name="li_3" id="page{{pages_records|add:2}}_records" class="page-item">
+                            <button class="page-link" aria-label="" name="button_3" id="button{{pages_records|add:2}}_records" onclick="cambiar_pagina_records({{pages_records|add:2}});">{{pages_records|add:2}}</button>
+                        </li>
+                        <li name="li_4" id="not_page2_records" class="page-item disabled">
+                            <button id="not_button2_records" name="button_4" class="page-link" aria-label="">...</button>
+                        </li>
+                        <li name="li_5" id="page{{pages_records_max}}_records" class="page-item">
+                            <button class="page-link" aria-label="" name="button_5" id="button{{pages_records_max}}_records" onclick="cambiar_ultima_pagina_records({{pages_records_max}});">{{pages_records_max}}</button>
+                        </li>
+                        <li class="page-item page-next {% if pages_records_max < 7 %}disabled{% endif %}" id="button_avanzar_records">
+                            <button class="page-link" aria-label="" onclick="avanzar_paginas_records();">›</button>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </section>
     <script>
+
+        var rango_pagina_records = 1;
+        var pagina_actual_records = 1;
+        var pages_records_max = {{pages_records_max}};
+
+        function retrasar_paginas_records(){
+            max_pag = Math.round((rango_pagina_records * 3))
+            max_pag_for = (rango_pagina_records * 3) + 1
+            min_pag = (rango_pagina_records * 3) - 4
+            for (var i=min_pag; i < max_pag_for; i++){
+                remove_page = "#page" + i + "_records"
+                $(remove_page).removeClass("active");
+    
+            }
+    
+            for (var i=0; i < 3; i++){
+                pagina_anterior = max_pag - i
+                pagina_posterior = pagina_anterior - 3
+                page = "#page" + pagina_anterior + "_records"
+                button = "#button" + pagina_anterior + "_records"
+    
+                $(page).attr("id","page" + pagina_posterior + "_records");
+                $(button).attr("onclick","cambiar_pagina_records(" + pagina_posterior + ");");
+                $(button).text(pagina_posterior);
+                $(button).attr("id","button" + pagina_posterior + "_records");
+    
+                if (pagina_posterior == pagina_actual_records){
+                    $("#page" + pagina_posterior + "_records").addClass("active");
+                }
+                
+            }
+            
+            rango_pagina_records = parseFloat((rango_pagina_records - 1).toFixed(2));
+            console.log("rango_pagina_records")
+            console.log(rango_pagina_records)
+            if (rango_pagina_records == 1){
+                $("#button_retrasar_records").addClass("disabled");
+            }
+            else if ($("#not_page1_records").length > 0 && rango_pagina_records >= 1 && rango_pagina_records <= 2) {
+                $("#button_retrasar_records").addClass("disabled");
+            }
+            else if (rango_pagina_records == Math.floor(((pages_records_max) / 3))){
+                $("#button_avanzar_records").addClass("disabled");
+            }
+            else if (rango_pagina_records == parseFloat((pages_records_max) / 3).toFixed(2)){
+                $("#button_avanzar_records").addClass("disabled");
+            }
+            else {
+                $("#button_retrasar_records").removeClass("disabled");
+                $("#button_avanzar_records").removeClass("disabled");
+            }
+        }
+
+
+        function avanzar_paginas_records(){
+            max_pag = Math.round((rango_pagina_records * 3))
+            max_pag_for = (rango_pagina_records * 3) + 1
+            min_pag = (rango_pagina_records * 3) - 4
+            for (var i=min_pag; i < max_pag_for; i++){
+                remove_page = "#page" + i + "_records"
+                $(remove_page).removeClass("active");
+            }
+    
+            for (var i=0; i < 5; i++){
+                pagina_anterior = max_pag - i
+                pagina_posterior = pagina_anterior + 3
+                page = "#page" + pagina_anterior + "_records"
+                button = "#button" + pagina_anterior + "_records"
+    
+                $(page).attr("id","page" + pagina_posterior + "_records");
+                $(button).attr("onclick","cambiar_pagina_records(" + pagina_posterior + ");");
+                $(button).text(pagina_posterior);
+                $(button).attr("id","button" + pagina_posterior + "_records");
+    
+                if (pagina_posterior == pagina_actual_records){
+                    $("#page" + pagina_posterior + "_records").addClass("active");
+                }
+    
+            }
+            rango_pagina_records = parseFloat((rango_pagina_records + 1).toFixed(2));
+            
+            console.log("rango_pagina_records")
+            console.log(rango_pagina_records)
+            console.log(parseFloat((pages_records_max) / 3).toFixed(2))
+
+            if (rango_pagina_records == 1){
+                $("#button_retrasar_records").addClass("disabled");
+            }
+            else if ($("#not_page1_records").length > 0 && rango_pagina_records >= 1 && rango_pagina_records <= 2) {
+                $("#button_retrasar_records").addClass("disabled");
+            }
+            else if (rango_pagina_records == Math.floor(((pages_records_max) / 3))){
+                $("#button_avanzar_records").addClass("disabled");
+            }
+            else if (rango_pagina_records == parseFloat((pages_records_max) / 3).toFixed(2)){
+                $("#button_avanzar_records").addClass("disabled");
+            }
+            else {
+                $("#button_retrasar_records").removeClass("disabled");
+                $("#button_avanzar_records").removeClass("disabled");
+            }
+    
+        }
+
+        function cambiar_pagina_records(pagina){
+            data = {}
+            if ($("#search").attr("oninput") == "search_player(this);"){
+                data.player = $("#search").val();
+            }
+            else if ($("#search").attr("oninput") == "search_country(this);"){
+                data.country = $("#search").val();
+            }
+            data.select_country = $("#country").val();
+            data.pages_records = pagina
+            $.ajax({
+                type: "post", // "post" "get" "delete" "put"
+                data: data, // PREFERIBLEMENTE JSON
+                cache: false,
+                headers: {
+                  "X-CSRFToken": Cookies.get("csrftoken")
+                },
+                success: function (response) {
+                    $('#tablePlayers > tbody').empty();
+                    max_pag = Math.round(rango_pagina_records * 3) + 1
+                    min_pag = Math.round(rango_pagina_records * 3) - 4
+                    if ($("#search").attr("oninput") == "search_country(this);"){
+                        var indiceColumnPlayer = $("#tablePlayers th:contains('Player')").index();
+                        $("#tablePlayers th, #tablePlayers td").filter(":nth-child(" + (indiceColumnPlayer + 1) + ")").remove();
+                        $("#search").attr("placeholder", "Search country...");
+                        $("#search").attr("oninput", "search_country(this);");
+                    }
+                        $(response[0]).each(function (index, player) {
+                        if ($("#search").attr("oninput") == "search_player(this);"){
+                            var fila=`<tr class="table-row"><td class="position-cell">` + player.position + `</td>`;
+                            if (player.country__picture){
+                                fila+=`<td class="country-cell"><img src="` + player.country__picture + `" title="` + player.country__country + `" height="20" class="d-inline-block align-top"/></td>`;
+                            }
+                            else {
+                                fila+=`<td class="country-cell"></td>`;
+                            }
+                            fila+=`<td class="player-cell"><a href="{% url 'users:detail' 1234 %}" target="_blank">`.replace(/1234/, player.user__id) + player.user__username + `</a></td>`;
+                            fila+=`<td class="list_points-cell">` + player.list_points + `</td></tr>`;
+                            $('#tablePlayers > tbody').append(fila);
+                        }
+                        else if ($("#search").attr("oninput") == "search_country(this);"){
+                            var fila=`<tr class="table-row"><td class="position-cell">` + player.position + `</td>`;
+                                fila+=`<td class="country-cell"><img src="` + player.picture + `" title="` + player.country + `" height="20" class="d-inline-block align-top" style="margin-right:15px"/>` + player.country + `</td>`;
+                                fila+=`<td class="list_points-cell">` + player.list_points + `</td></tr>`;
+                                $('#tablePlayers > tbody').append(fila);
+                        }
+                    })
+                    page = "#page" + pagina + "_records"
+                    for (var i=min_pag; i < max_pag + 3; i++){
+                        console.log("i")
+                        console.log(i)
+                        remove_page = "#page" + i + "_records"
+                        $(remove_page).removeClass("active");
+    
+                    }
+
+                    $(page).addClass("active");
+    
+                    pagina_actual_records = pagina;
+                    if (response[0].length == 0){
+                        if ($("#search").attr("oninput") == "search_player(this);"){
+                            var fila=`<tr class="table-row"><td colspan="4" class="player-cell">There are no players</td></tr>`
+                        }
+                        else if ($("#search").attr("oninput") == "search_country(this);"){
+                            var fila=`<tr class="table-row"><td colspan="4" class="player-cell">There are no countries</td></tr>`
+                        }
+                    $('#tablePlayers > tbody').append(fila);
+                    }
+                }
+            })
+        }
+
+        function cambiar_ultima_pagina_records(pagina){
+            data = {}
+            if ($("#search").attr("oninput") == "search_player(this);"){
+                data.player = $("#search").val();
+            }
+            else if ($("#search").attr("oninput") == "search_country(this);"){
+                data.country = $("#search").val();
+            }
+            data.select_country = $("#country").val();
+            data.pages_records = pagina
+            $.ajax({
+                type: "post", // "post" "get" "delete" "put"
+                data: data, // PREFERIBLEMENTE JSON
+                cache: false,
+                headers: {
+                  "X-CSRFToken": Cookies.get("csrftoken")
+                },
+                success: function (response) {
+                    $('#tablePlayers > tbody').empty();
+                    max_pag = Math.round(rango_pagina_records * 3) - 1
+                    min_pag = Math.round(rango_pagina_records * 3) - 4
+                    if ($("#search").attr("oninput") == "search_country(this);"){
+                        var indiceColumnPlayer = $("#tablePlayers th:contains('Player')").index();
+                        $("#tablePlayers th, #tablePlayers td").filter(":nth-child(" + (indiceColumnPlayer + 1) + ")").remove();
+                        $("#search").attr("placeholder", "Search country...");
+                        $("#search").attr("oninput", "search_country(this);");
+                    }
+                    $(response[0]).each(function (index, player) {
+                        if ($("#search").attr("oninput") == "search_player(this);"){
+                            var fila=`<tr class="table-row"><td class="position-cell">` + player.position + `</td>`;
+                            if (player.country__picture){
+                                fila+=`<td class="country-cell"><img src="` + player.country__picture + `" title="` + player.country__country + `" height="20" class="d-inline-block align-top"/></td>`;
+                            }
+                            else {
+                                fila+=`<td class="country-cell"></td>`;
+                            }
+                            fila+=`<td class="player-cell"><a href="{% url 'users:detail' 1234 %}" target="_blank">`.replace(/1234/, player.user__id) + player.user__username + `</a></td>`;
+                            fila+=`<td class="list_points-cell">` + player.list_points + `</td></tr>`;
+                            $('#tablePlayers > tbody').append(fila);
+                        }
+                        else if ($("#search").attr("oninput") == "search_country(this);"){
+                            var fila=`<tr class="table-row"><td class="position-cell">` + player.position + `</td>`;
+                                fila+=`<td class="country-cell"><img src="` + player.picture + `" title="` + player.country + `" height="20" class="d-inline-block align-top" style="margin-right:15px"/>` + player.country + `</td>`;
+                                fila+=`<td class="list_points-cell">` + player.list_points + `</td></tr>`;
+                                $('#tablePlayers > tbody').append(fila);
+                        }
+                    })
+                    page = "#page" + pagina + "_records"
+                    button = "#button" + pagina + "_records"
+                    for (var i=min_pag; i < max_pag + 3; i++){
+                        remove_page = "#page" + i + "_records"
+                        $(remove_page).removeClass("active");
+                    }
+                    $(page).addClass("active");
+                    $(button).attr("onclick","cambiar_pagina_records(" + pagina + ");");
+                    pagina_actual_records = pagina;
+                    rango_pagina_records = (pages_records_max) / 3
+                    new_max_pag = Math.round(rango_pagina_records * 3) - 1
+                    console.log("aver ahora si")
+                    console.log(pages_records_max)
+                    console.log(rango_pagina_records)
+                    if (rango_pagina_records == 1){
+                        $("#button_retrasar_records").addClass("disabled");
+                    }
+                    else if ($("#not_page1_records").length > 0 && rango_pagina_records >= 1 && rango_pagina_records <= 2) {
+                        $("#button_retrasar_records").addClass("disabled");
+                    }
+                    else {
+                        $("#button_retrasar_records").removeClass("disabled");
+                    }
+                    $("#button_avanzar_records").addClass("disabled");
+                    for (var i = 4; i >= 0; i--){
+                        pagina_anterior = max_pag - i + 2
+                        pagina_posterior = new_max_pag - i
+
+                        console.log("i", i)
+                        console.log("pagina_anterior")
+                        console.log(pagina_anterior)
+                        console.log(pagina_posterior)
+                        if (i == 0) {
+                            page = "#not_page2_records"
+                            button = "#not_button2_records"
+    
+                            $(page).attr("id","page" + pagina_posterior + "_records");
+                            $(button).attr("onclick","cambiar_pagina_records(" + pagina_posterior + ");");
+                            $(button).text(pagina_posterior);
+                            $(button).attr("id","button" + pagina_posterior + "_records");
+                            $("#page" + pagina_posterior + "_records").removeClass("disabled");
+                            console.log($("#page" + pagina_posterior + "_records"))
+                        }
+                        else if (i == 2) {
+                            page = "#page" + pagina_anterior + "_records"
+                            button = "#button" + pagina_anterior + "_records"
+                    
+                            $(page).attr("id","not_page1_records");
+                            $(button).attr("onclick","");
+                            $(button).text("...");
+                            $(button).attr("id","not_button1_records");
+                            $("#not_page1_records").addClass("disabled");
+                        }
+                        else if (i == 3) {
+                            page = "#page" + pagina_anterior + "_records"
+                            button = "#button" + pagina_anterior + "_records"
+                    
+                            $(page).attr("id","page1_records");
+                            $(button).attr("onclick","cambiar_primera_pagina_records(1);");
+                            $(button).text("1");
+                            $(button).attr("id","button1_records");
+                        }
+                        else {
+                            page = "#page" + pagina_anterior + "_records"
+                            button = "#button" + pagina_anterior + "_records"
+                    
+                            $(page).attr("id","page" + pagina_posterior + "_records");
+                            $(button).attr("onclick","cambiar_pagina_records(" + pagina_posterior + ");");
+                            $(button).text(pagina_posterior);
+                            $(button).attr("id","button" + pagina_posterior + "_records");
+                            
+                            if (pagina_posterior == pagina_actual_records){
+                                $("#page" + pagina_posterior + "_records").addClass("active");
+                            }
+                        }
+                    }
+                    console.log(rango_pagina_records)
+                    if (rango_pagina_records == 1){
+                        $("#button_retrasar_records").addClass("disabled");
+                    }
+                    else if ($("#not_page1_records").length > 0 && rango_pagina_records >= 1 && rango_pagina_records <= 2) {
+                        $("#button_retrasar_records").addClass("disabled");
+                    }
+                    else if (rango_pagina_records == Math.floor(((pages_records_max) / 3))){
+                        console.log("aver2")
+                        $("#button_avanzar_records").addClass("disabled");
+                    }
+                    else if (rango_pagina_records == (pages_records_max) / 3){
+                        console.log("aver133")
+                        $("#button_avanzar_records").addClass("disabled");
+                    }
+                    else {
+                        console.log("aver14444")
+                        $("#button_retrasar_records").removeClass("disabled");
+                        $("#button_avanzar_records").removeClass("disabled");
+                    }
+
+                    if (response[0].length == 0){
+                    var fila=`<tr class="table-row"><td colspan="4" class="player-cell">There are no players</td></tr>`
+                    $('#tablePlayers > tbody').append(fila);
+                    }
+                }
+            })
+        }
+
+        function cambiar_primera_pagina_records(pagina){
+            data = {}
+            if ($("#search").attr("oninput") == "search_player(this);"){
+                data.player = $("#search").val();
+            }
+            else if ($("#search").attr("oninput") == "search_country(this);"){
+                data.country = $("#search").val();
+            }
+            data.select_country = $("#country").val();
+            data.pages_records = pagina
+            $.ajax({
+                type: "post", // "post" "get" "delete" "put"
+                data: data, // PREFERIBLEMENTE JSON
+                cache: false,
+                headers: {
+                  "X-CSRFToken": Cookies.get("csrftoken")
+                },
+                success: function (response) {
+                    $('#tablePlayers > tbody').empty();
+                    max_pag = Math.round((rango_pagina_records * 3) + 1)
+                    min_pag = Math.round((rango_pagina_records * 3) - 4)
+                    console.log("rango_pagina_records")
+                    console.log(rango_pagina_records)
+                    if ($("#search").attr("oninput") == "search_country(this);"){
+                        var indiceColumnPlayer = $("#tablePlayers th:contains('Player')").index();
+                        $("#tablePlayers th, #tablePlayers td").filter(":nth-child(" + (indiceColumnPlayer + 1) + ")").remove();
+                        $("#search").attr("placeholder", "Search country...");
+                        $("#search").attr("oninput", "search_country(this);");
+                    }
+                    $(response[0]).each(function (index, player) {
+                        if ($("#search").attr("oninput") == "search_player(this);"){
+                            var fila=`<tr class="table-row"><td class="position-cell">` + player.position + `</td>`;
+                            if (player.country__picture){
+                                fila+=`<td class="country-cell"><img src="` + player.country__picture + `" title="` + player.country__country + `" height="20" class="d-inline-block align-top"/></td>`;
+                            }
+                            else {
+                                fila+=`<td class="country-cell"></td>`;
+                            }
+                            fila+=`<td class="player-cell"><a href="{% url 'users:detail' 1234 %}" target="_blank">`.replace(/1234/, player.user__id) + player.user__username + `</a></td>`;
+                            fila+=`<td class="list_points-cell">` + player.list_points + `</td></tr>`;
+                            $('#tablePlayers > tbody').append(fila);
+                        }
+                        else if ($("#search").attr("oninput") == "search_country(this);"){
+                            var fila=`<tr class="table-row"><td class="position-cell">` + player.position + `</td>`;
+                                fila+=`<td class="country-cell"><img src="` + player.picture + `" title="` + player.country + `" height="20" class="d-inline-block align-top" style="margin-right:15px"/>` + player.country + `</td>`;
+                                fila+=`<td class="list_points-cell">` + player.list_points + `</td></tr>`;
+                                $('#tablePlayers > tbody').append(fila);
+                        }
+                    })
+                    page = "#page" + pagina + "_records"
+                    button = "#button" + pagina + "_records"
+                    for (var i=min_pag; i < max_pag + 3; i++){
+                        remove_page = "#page" + i + "_records"
+                        $(remove_page).removeClass("active");
+                    }
+
+
+                    $(page).addClass("active");
+                    $(button).attr("onclick","cambiar_pagina_records(1);");
+                    pagina_actual_records = pagina;
+
+                    rango_pagina_records = 1
+                    new_max_pag = Math.round(rango_pagina_records * 3) + 1
+                    if (response[2] >= 7){
+                        $("#button_avanzar_records").removeClass("disabled");
+                    }
+                    else {
+                        $("#button_avanzar_records").addClass("disabled");
+                    }
+                    $("#button_retrasar_records").addClass("disabled");
+                    for (var i=0; i < 4; i++){
+                        pagina_anterior = max_pag - i - 1
+                        pagina_posterior = new_max_pag - i + 1
+                        console.log("i")
+                        console.log(i)
+                        console.log("pagina_anterior")
+                        console.log(pagina_anterior)
+                        console.log("pagina_posterior")
+                        console.log(pagina_posterior)
+                        if (i == 0) {
+                            page = "#page" + pagina_anterior + "_records"
+                            button = "#button" + pagina_anterior + "_records"
+    
+                            $(page).attr("id","page" + pages_records_max + "_records");
+                            $(button).attr("onclick","cambiar_ultima_pagina_records(" + pages_records_max + ");");
+                            $(button).text("" + pages_records_max + "");
+                            $(button).attr("id","button" + pages_records_max + "_records");
+                        }
+                        else if (i == 1) {
+                            page = "#page" + pagina_anterior + "_records"
+                            button = "#button" + pagina_anterior + "_records"
+
+                            console.log("aver esto")
+                            console.log(page)
+    
+                            $(page).attr("id","not_page2_records");
+                            $(button).attr("onclick","");
+                            $(button).text("...");
+                            $(button).attr("id","not_button2_records");
+                            $("#not_page2_records").addClass("disabled");
+                        }
+                        else if (i == 3) {
+                            page = "#not_page1_records"
+                            button = "#not_button1_records"
+                    
+                            $(page).attr("id","page2_records");
+                            $(button).attr("onclick","cambiar_pagina_records(2);");
+                            $(button).text("2");
+                            $(button).attr("id","button2_records");
+                            $("#page2_records").removeClass("disabled");
+                        }
+                        else {
+                            page = "#page" + pagina_anterior + "_records"
+                            button = "#button" + pagina_anterior + "_records"
+                    
+                            $(page).attr("id","page" + pagina_posterior + "_records");
+                            $(button).attr("onclick","cambiar_pagina_records(" + pagina_posterior + ");");
+                            $(button).text(pagina_posterior);
+                            $(button).attr("id","button" + pagina_posterior + "_records");
+                            
+                            if (pagina_posterior == pagina_actual_records){
+                                $("#page" + pagina_posterior + "_records").addClass("active");
+                            }
+                        }
+                    }
+                    
+                    if (response[0].length == 0){
+                    var fila=`<tr class="table-row"><td colspan="4" class="player-cell">There are no players</td></tr>`
+                    $('#tablePlayers > tbody').append(fila);
+                    }
+                }
+            })
+        }
 
         function search_player(player)
         {
@@ -82,19 +568,45 @@
             },
             success: function (response) {
             $('#tablePlayers > tbody').empty();
-            $(response).each(function (index, player) {
+            $(response[0]).each(function (index, player) {
             var fila=`<tr class="table-row"><td class="position-cell">` + player.position + `</td>`;
                 fila+=`<td class="country-cell"><img src="` + player.country__picture + `" title="` + player.country__country + `" height="20" class="d-inline-block align-top"/></td>`;
                 fila+=`<td class="player-cell"><a href="{% url 'users:detail' 1234 %}" target="_blank">`.replace(/1234/, player.user__id) + player.user__username + `</a></td>`;
                 fila+=`<td class="list_points-cell">` + player.list_points + `</td></tr>`;
                 $('#tablePlayers > tbody').append(fila);
             })
-            console.log(response.length)
-            if (response.length == 0){
-            var fila=`<tr class="table-row"><td colspan="4" class="player-cell">There have been no players yet</td></tr>`
+            if (response[0].length == 0){
+            var fila=`<tr class="table-row"><td colspan="4" class="player-cell">There are no players</td></tr>`
             $('#tablePlayers > tbody').append(fila);
             }
+            if (response[1]) {
+                page = "#page1_records"
+                max_pag = Math.round(rango_pagina_records * 3) + 1
+                min_pag = Math.round(rango_pagina_records * 3) - 4
+                for (var i=min_pag; i < max_pag + 3; i++){
+                    remove_page = "#page" + i + "_records"
+                    $(remove_page).removeClass("active");
+                }
+
+                $(page).addClass("active");
+                page = "#page" + pages_records_max + "_records"
+                button = "#button" + pages_records_max + "_records"
+
+                if (response[2] < 4){
+                    response[2] = 4
+                }
+
+                $(page).attr("id","page" + response[2] + "_records");
+                $(button).attr("onclick","cambiar_ultima_pagina_records(" + response[2] + ");");
+                $(button).text("" + response[2] + "");
+                $(button).attr("id","button" + response[2] + "_records");
             }
+            if (response[1]) {
+                reset_pages(response);
+            }
+            pages_records_max = response[2]
+            rango_pagina_records = 1
+        }
         })
     }
 
@@ -116,17 +628,45 @@
             $("#tablePlayers th, #tablePlayers td").filter(":nth-child(" + (indiceColumnPlayer + 1) + ")").remove();
             $("#search").attr("placeholder", "Search country...");
             $("#search").attr("oninput", "search_country(this);");
-            $(response).each(function (index, player) {
+            $(response[0]).each(function (index, player) {
                 var fila=`<tr class="table-row"><td class="position-cell">` + player.position + `</td>`;
                 fila+=`<td class="country-cell"><img src="` + player.picture + `" title="` + player.country + `" height="20" class="d-inline-block align-top" style="margin-right:15px"/>` + player.country + `</td>`;
                     fila+=`<td class="list_points-cell">` + player.list_points + `</td></tr>`;
                     $('#tablePlayers > tbody').append(fila);
                 })
-            if (response.length == 0){
-            var fila=`<tr class="table-row"><td colspan="4" class="player-cell">There have been no players yet</td></tr>`
+            if (response[0].length == 0){
+            var fila=`<tr class="table-row"><td colspan="4" class="player-cell">There are no countries</td></tr>`
             $('#tablePlayers > tbody').append(fila);
             }
+            if (response[1]) {
+                page = "#page1_records"
+                max_pag = Math.round(rango_pagina_records * 3) + 1
+                min_pag = Math.round(rango_pagina_records * 3) - 4
+                for (var i=min_pag; i < max_pag + 3; i++){
+                    remove_page = "#page" + i + "_records"
+                    $(remove_page).removeClass("active");
+                }
+
+                $(page).addClass("active");
+                page = "#page" + pages_records_max + "_records"
+                button = "#button" + pages_records_max + "_records"
+                
+                if (response[2] < 4){
+                    response[2] = 4
+                }
+
+                $(page).attr("id","page" + response[2] + "_records");
+                $(button).attr("onclick","cambiar_ultima_pagina_records(" + response[2] + ");");
+                $(button).text("" + response[2] + "");
+                $(button).attr("id","button" + response[2] + "_records");
+                
             }
+            if (response[1]) {
+                reset_pages(response);
+            }
+            pages_records_max = response[2]
+            rango_pagina_records = 1
+        }
         })
     }
 
@@ -153,9 +693,14 @@
             $("#tablePlayers tbody tr td:nth-child(2)").after("<td>Nombre del Jugador</td>");
             $("#search").attr("placeholder", "Search player...");
             $("#search").attr("oninput", "search_player(this);");
-            $(response).each(function (index, player) {
+            $(response[0]).each(function (index, player) {
                 var fila=`<tr class="table-row"><td class="position-cell">` + player.position + `</td>`;
-                    fila+=`<td class="country-cell"><img src="/media/` + player.country__picture + `" title="` + player.country__country + `" height="20" class="d-inline-block align-top"/></td>`;
+                    if (player.country__picture){
+                        fila+=`<td class="country-cell"><img src="/media/` + player.country__picture + `" title="` + player.country__country + `" height="20" class="d-inline-block align-top"/></td>`;
+                    }
+                    else {
+                        fila+=`<td class="country-cell"></td>`;
+                    }
                     fila+=`<td class="player-cell"><a href="{% url 'users:detail' 1234 %}" target="_blank">`.replace(/1234/, player.user__id) + player.user__username + `</a></td>`;
                     fila+=`<td class="list_points-cell">` + player.list_points + `</td></tr>`;
                     $('#tablePlayers > tbody').append(fila);
@@ -167,7 +712,7 @@
             $("#tablePlayers th, #tablePlayers td").filter(":nth-child(" + (indiceColumnPlayer + 1) + ")").remove();
             $("#search").attr("placeholder", "Search country...");
             $("#search").attr("oninput", "search_country(this);");
-            $(response).each(function (index, player) {
+            $(response[0]).each(function (index, player) {
                 var fila=`<tr class="table-row"><td class="position-cell">` + player.position + `</td>`;
                     fila+=`<td class="country-cell"><img src="/media/` + player.picture + `" title="` + player.country + `" height="20" class="d-inline-block align-top" style="margin-right:15px"/>` + player.country + `</td>`;
                     fila+=`<td class="list_points-cell">` + player.list_points + `</td></tr>`;
@@ -175,12 +720,44 @@
                 })
         }
         
-        console.log(response.length)
-        if (response.length == 0){
-        var fila=`<tr class="table-row"><td colspan="4" class="player-cell">There have been no players yet</td></tr>`
-        $('#tablePlayers > tbody').append(fila);
+        if (response[0].length == 0){
+            if (data.option == "Individual"){
+                var fila=`<tr class="table-row"><td colspan="4" class="player-cell">There are no players</td></tr>`
+            }
+            else if (data.option == "Nations"){
+                var fila=`<tr class="table-row"><td colspan="4" class="player-cell">There are no countries</td></tr>`
+            }
+            $('#tablePlayers > tbody').append(fila);
         }
+        if (response[1]) {
+            page = "#page1_records"
+            max_pag = Math.round(rango_pagina_records * 3) + 1
+            min_pag = Math.round(rango_pagina_records * 3) - 4
+            for (var i=min_pag; i < max_pag + 3; i++){
+                remove_page = "#page" + i + "_records"
+                $(remove_page).removeClass("active");
+            }
+
+            $(page).addClass("active");
+            page = "#page" + pages_records_max + "_records"
+            button = "#button" + pages_records_max + "_records"
+
+            if (response[2] < 4){
+                response[2] = 4
+            }
+
+            $(page).attr("id","page" + response[2] + "_records");
+            $(button).attr("onclick","cambiar_ultima_pagina_records(" + response[2] + ");");
+            $(button).text("" + response[2] + "");
+            $(button).attr("id","button" + response[2] + "_records");
+
         }
+        if (response[1]) {
+            reset_pages(response);
+        }
+        pages_records_max = response[2]
+        rango_pagina_records = 1
+    }
     })
 }
 
@@ -206,21 +783,80 @@
             $("#tablePlayers tbody tr td:nth-child(2)").after("<td>Nombre del Jugador</td>");
             $("#search").attr("placeholder", "Search player...");
             $("#search").attr("oninput", "search_player(this);");
-            $(response).each(function (index, player) {
+            $(response[0]).each(function (index, player) {
                 var fila=`<tr class="table-row"><td class="position-cell">` + player.position + `</td>`;
                     fila+=`<td class="country-cell"><img src="` + player.country__picture + `" title="` + player.country__country + `" height="20" class="d-inline-block align-top"/></td>`;
                     fila+=`<td class="player-cell"><a href="{% url 'users:detail' 1234 %}" target="_blank">`.replace(/1234/, player.user__id) + player.user__username + `</a></td>`;
                     fila+=`<td class="list_points-cell">` + player.list_points + `</td></tr>`;
                     $('#tablePlayers > tbody').append(fila);
                 })
-            console.log(response.length)
-            if (response.length == 0){
-            var fila=`<tr class="table-row"><td colspan="4" class="player-cell">There have been no players yet</td></tr>`
+            if (response[0].length == 0){
+            var fila=`<tr class="table-row"><td colspan="4" class="player-cell">There are no countries</td></tr>`
             $('#tablePlayers > tbody').append(fila);
             }
+
+            if (response[1]) {
+                reset_pages(response);
             }
+            pages_records_max = response[2]
+            rango_pagina_records = 1
+        }
             })
         }
+
+
+    function reset_pages(response){
+        max_pag = Math.round(rango_pagina_records * 3) + 1
+        min_pag = Math.round(rango_pagina_records * 3) - 4
+        for (var i=min_pag; i < max_pag + 3; i++){
+            remove_page = "#page" + i + "_records"
+            $(remove_page).removeClass("active");
+        }
+
+        console.log("rango_pagina_records222")
+        console.log(rango_pagina_records)
+        console.log(max_pag)
+
+        page = "#page" + pages_records_max + "_records"
+        button = "#button" + pages_records_max + "_records"
+
+        if (response[2] < 4){
+            response[2] = 4
+        }
+
+        $("#button_retrasar_records").addClass("disabled");
+        if (response[2] >= 7){
+            $("#button_avanzar_records").removeClass("disabled");
+        }
+        else {
+            $("#button_avanzar_records").addClass("disabled");
+        }
+
+        console.log(response[2])
+
+        for (var i = 1; i < 4; i++){
+            $("li[name='li_" + i + "']").attr("id", "page" + i + "_records");
+            $("button[name='button_" + i + "']").attr("onclick","cambiar_pagina_records(" + i + ");");
+            $("button[name='button_" + i + "']").text(i);
+            $("button[name='button_" + i + "']").attr("id","button" + i + "_records");
+            if (i == 2){
+                $("li[name='li_" + i + "']").removeClass("disabled");
+            }
+        }
+
+        $("li[name='li_4']").attr("id", "not_page2_records");
+        $("button[name='button_4']").attr("onclick","");
+        $("button[name='button_4']").text("...");
+        $("button[name='button_4']").attr("id","not_button2_records");
+        $("li[name='li_4']").addClass("disabled");
+
+        $(page).attr("id","page" + response[2] + "_records");
+        $(button).attr("onclick","cambiar_ultima_pagina_records(" + response[2] + ");");
+        $(button).text("" + response[2] + "");
+        $(button).attr("id","button" + response[2] + "_records");
+        page = "#page1_records"
+        $(page).addClass("active");
+    }
 
     </script>
 

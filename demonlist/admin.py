@@ -23,6 +23,7 @@ class ProfileModFilter(admin.SimpleListFilter):
             ('IvanCrafter026', 'IvanCrafter026'),
             ('DiegoLix', 'DiegoLix'),
             ('Lunnagd', 'Lunnagd'),
+            ('Alvaneder', 'Alvaneder'),
         )
 
     def queryset(self, request, queryset):
@@ -41,7 +42,7 @@ class DemonAdmin(admin.ModelAdmin):
 class RecordAdmin(admin.ModelAdmin):
     """Record admin."""
 
-    list_display = ('id', 'demon', 'player', 'accepted', "mod", "datetime_accepted")
+    list_display = ('id', 'demon', 'player', 'accepted', "mod", "mod_notes", "datetime_accepted")
     search_fields = ('player__user__username',)
     list_filter = ("demon", "accepted", ProfileModFilter, 'datetime_submit', 'datetime_accepted')
 
