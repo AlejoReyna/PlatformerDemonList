@@ -137,7 +137,7 @@ class RecordsStatusView(LoginRequiredMixin, TemplateView):
         context["records"] = records
         return context
     
-class UserDetailView(LoginRequiredMixin, DetailView):
+class UserDetailView(DetailView):
     # User Detail View
 
     template_name = "users/detail.html"
@@ -150,40 +150,73 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         # Add user's records to context
         context = super().get_context_data(**kwargs)
         user = self.get_object()
-        following = self.request.user.profile.followings.all()
-        if user.profile in following:
-            following = True
+        if not(self.request.user.is_anonymous):
+            following = self.request.user.profile.followings.all()
+            if user.profile in following:
+                following = True
+            else:
+                following = False
+
+            records = Record.objects.filter(player=user.profile, accepted=True).order_by("demon__position")
+            
+            try:
+                players_annotated = Profile.objects.filter(list_points__gte=1).annotate(
+                    position=Window(expression=Rank(), order_by=F('list_points').desc())
+                )
+
+                players_filtered = players_annotated.filter(user__username=user.profile)
+
+                original_positions = {player.id: player.position for player in players_annotated}
+
+                players_final = sorted(players_filtered, key=lambda player: original_positions[player.id])
+
+                ranking = original_positions[players_final[0].id]
+            
+            except:
+                ranking = "-"
+
+            try:    
+                hardest = records.order_by("demon__position")[0].demon.level
+            except:
+                hardest = "-"
+
+            context["following"] = following
+            context["hardest"] = hardest
+            context["ranking"] = ranking
+            context["records"] = records
+            return context
         else:
+            
             following = False
 
-        records = Record.objects.filter(player=user.profile, accepted=True).order_by("demon__position")
-        
-        try:
-            players_annotated = Profile.objects.filter(list_points__gte=1).annotate(
-                position=Window(expression=Rank(), order_by=F('list_points').desc())
-            )
+            records = Record.objects.filter(player=user.profile, accepted=True).order_by("demon__position")
+            
+            try:
+                players_annotated = Profile.objects.filter(list_points__gte=1).annotate(
+                    position=Window(expression=Rank(), order_by=F('list_points').desc())
+                )
 
-            players_filtered = players_annotated.filter(user__username=user.profile)
+                players_filtered = players_annotated.filter(user__username=user.profile)
 
-            original_positions = {player.id: player.position for player in players_annotated}
+                original_positions = {player.id: player.position for player in players_annotated}
 
-            players_final = sorted(players_filtered, key=lambda player: original_positions[player.id])
+                players_final = sorted(players_filtered, key=lambda player: original_positions[player.id])
 
-            ranking = original_positions[players_final[0].id]
-        
-        except:
-            ranking = "-"
+                ranking = original_positions[players_final[0].id]
+            
+            except:
+                ranking = "-"
 
-        try:    
-            hardest = records.order_by("demon__position")[0].demon.level
-        except:
-            hardest = "-"
+            try:    
+                hardest = records.order_by("demon__position")[0].demon.level
+            except:
+                hardest = "-"
 
-        context["following"] = following
-        context["hardest"] = hardest
-        context["ranking"] = ranking
-        context["records"] = records
-        return context
+            context["following"] = following
+            context["hardest"] = hardest
+            context["ranking"] = ranking
+            context["records"] = records
+            return context
     
     def post(self, request, *args, **kwargs):
         user = self.get_object()

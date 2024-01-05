@@ -1,3 +1,4 @@
+{% load custom_tags %}
 <section class="container d-none d-md-block">
     <div class="row">
         <div class="col-sm-12 col-md-8 offset-md-2 p-4 d-flex post-container demon-item mt-{% if forloop.first %}3{% else %}4{% endif %}" id="{{demon.level}}">
@@ -10,14 +11,14 @@
                 <!-- Imagen del demonio -->
                 <img style="width: 80; height: 125px;" src="{{ demon.photo.url }}" alt="{{ demon.level }}" class="float-left mr-3">
             </div>
-            <div>
+            <div>   
                 <p class="mt-1 ml-2">
                     <!--<a href="" style="color: #000; font-size: 20px;">
                         <i class="far fa-heart"></i>
                     </a>-->
                 </p>
                 <p class="ml-2 mt-0 mb-2">
-                    <a href="{% url 'demonlist:detail' demon.position %}" style="font-size: 24px; color: black; font-weight: bold;">#{{demon.position}} - {{ demon.level }}</a>
+                    <a href="{% url 'demonlist:detail' demon.position %}" style="font-size: 24px; color: black; font-weight: bold; ">#{{demon.position}} - {{ demon.level }}</a>
                 </p>
                 <p class="ml-2 mt-0 mb-2">
                     <b style="font-size: 15px; font-style: italic; color: #666666;">{{demon.creator}}</b>

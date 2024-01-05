@@ -1,5 +1,5 @@
 # Django
-from django.db.models import Sum, Q, F
+from django.db.models import Sum, Q, F, Avg
 
 # Models
 from django.contrib.auth.models import User
@@ -92,9 +92,41 @@ def update_top_all():
 
 
 def upload_bots_albania():
-    for i in range(2000, 3000):
+    for i in range(2000, 6000):
         user = User.objects.create(username=f"i-user{i}", password=f"i-password{i}")
         Profile.objects.create(user=user,
                                list_points=3400,
                                country=Country.objects.get(country="Albania")
                                )
+        
+def upload_all_stars(demon):
+    records = Record.objects.filter(demon=demon, accepted=True).annotate(sum_enjoyment_stars=Sum("enjoyment_stars"),
+    sum_gameplay_stars=Sum("gameplay_stars"),
+    sum_decoration_stars=Sum("decoration_stars"),
+    sum_balanced_stars=Sum("balanced_stars"),
+    sum_atmosphere_stars=Sum("atmosphere_stars")).aggregate(avg_enjoyment_stars=Avg("sum_enjoyment_stars"),
+                                                            avg_gameplay_stars=Avg("sum_gameplay_stars"),
+                                                            avg_decoration_stars=Avg("sum_decoration_stars"),
+                                                            avg_balanced_stars=Avg("sum_balanced_stars"),
+                                                            avg_atmosphere_stars=Avg("sum_atmosphere_stars")
+                                                           )
+    
+    if not(records["avg_enjoyment_stars"]):
+        records["avg_enjoyment_stars"] = 0
+    if not(records["avg_gameplay_stars"]):
+        records["avg_gameplay_stars"] = 0
+    if not(records["avg_decoration_stars"]):
+        records["avg_decoration_stars"] = 0
+    if not(records["avg_balanced_stars"]):
+        records["avg_balanced_stars"] = 0
+    if not(records["avg_atmosphere_stars"]):
+        records["avg_atmosphere_stars"] = 0
+
+    all_stars = (records["avg_enjoyment_stars"] + records["avg_gameplay_stars"] + records["avg_decoration_stars"] + records["avg_balanced_stars"] + records["avg_atmosphere_stars"]) / 5
+    demon.enjoyment_stars = records["avg_enjoyment_stars"]
+    demon.gameplay_stars = records["avg_gameplay_stars"]
+    demon.decoration_stars = records["avg_decoration_stars"]
+    demon.balanced_stars = records["avg_balanced_stars"]
+    demon.atmosphere_stars = records["avg_atmosphere_stars"]
+    demon.all_stars = all_stars
+    demon.save()

@@ -85,6 +85,13 @@
                     </div> 
 
                     <div class="form-group">
+                        <input class="form-control {% if form.title.errors %}is-invalid{% endif %}" type="number" id="level_id_ldm" name="level_id_ldm" placeholder="Level id LDM (Optional)" required>
+                        <div class="invalid-feedback">
+                            {% for error in form.title.errors %}{{ error }}{% endfor %}
+                        </div>
+                    </div> 
+
+                    <div class="form-group">
                         <input class="form-control {% if form.title.errors %}is-invalid{% endif %}" type="number" id="object_count" name="object_count" placeholder="Object Count" required>
                         <div class="invalid-feedback">
                             {% for error in form.title.errors %}{{ error }}{% endfor %}

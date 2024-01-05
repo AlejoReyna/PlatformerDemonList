@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block head_content %}
+<title>Roulette</title>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+{% endblock %}
+
+{% block container %}
+
+    <section class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-sm-10 col-md-10 col-lg-8 pt-3 pb-3 mx-auto" id="profile-box">
+                <p style="font-size: 28px; color: #454546; font-weight: bold; text-align: center;">Roulette</p>
+
+                {% if request.user.profile %}
+                    {% if not request.user.profile.verified %}
+                    <p style="text-align: center;"><i class="fas fa-exclamation-triangle" style="color: #FFA500; font-size: 18px; margin-right: 5px;"></i>To submit a record, you must <a href="{% url "users:update" %}">verify</a> your account.</p>
+                    {% endif %}
+                {% else %}
+                <p style="text-align: center;"><i class="fas fa-exclamation-triangle" style="color: #FFA500; font-size: 18px; margin-right: 5px;"></i>To submit a record, you must <a href="{% url "users:signup" %}">register</a> an account.</p>
+                {% endif %}
+
+                {% if user.profile.verified %}
+
+                <div class="form-group">
+                </div> 
+
+                <div class="form-group" id="start-div">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="name">Name:</label>
+                            <input class="form-control" type="text" id="name" placeholder="Roulette Name" maxlength="500" required>
+                            <div id="error-message" style="color: red; text-align: center; margin-top: 10px; display: none;"></div>
+                        </div> 
+                        <div class="col-md-6">
+                            <label for="number_demons">N. of Demons by Stage:</label>
+                            <select class="form-control" style="border: 2px solid #ced4da;" id="number_demons" name="number_demons" required>
+                                <option selected disabled="disabled" value="">-- N. of Demons by Stage --</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                            <div id="error-message2" style="color: red; text-align: center; margin-top: 10px; display: none;"></div>
+                        </div> 
+                    </div> 
+                    <div style="margin-top: 80px;">
+                        <button id="start-button" type="button" class="btn btn-primary btn-block mt-5" onclick="add_demon(true);">Start!</button>
+                    </div>
+                </div> 
+
+
+
+
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function limitInput(element, maxLength) {
+            if (element.value.length > maxLength) {
+                element.value = element.value.slice(0, maxLength);
+            }
+        }
+
+        function add_demon(first)
+        {
+
+        accept_add = true
+        if (first){
+            var name = $("#name").val();
+            var number_demons = $("#number_demons").val();
+            console.log("number_demons")
+            console.log(number_demons)
+            $('#error-message').text(errorMessage).hide();
+            $('#error-message2').text(errorMessage).hide();
+            if (name !== "" && number_demons !== null) {
+                data = {}
+                data.number_demons = number_demons;
+                data.name = name;
+            else {
+                accept_add = false
+            }    
+        }
+        else {
+            data = {}
+            data.another = another;
+        }
+
+        if (accept_add){
+            $.ajax({
+                type: "post", // "post" "get" "delete" "put"
+                data: data, // PREFERIBLEMENTE JSON
+                cache: false,
+                headers: {
+                "X-CSRFToken": Cookies.get("csrftoken")
+                },
+                success: function (response) {
+                    console.log("hola")
+                    console.log(response)
+                    $("#start-div").remove();
+                    $('#profile-box').append(`<section class="container d-none d-md-block">
+                        <div class="row">
+                            <div class="p-4 d-flex post-container demon-item mt-3" id="` + response.level + `" style="border: 2px solid #ced4da;">
+                                <div class="position-relative"> <!-- Contenedor relativo -->
+                                    <!-- Enlace de YouTube con icono gris y rojo al hacer hover -->
+                                    <a href="` + response.verification_video + `" style="position: absolute; top: 50%; left: 48%; transform: translate(-50%, -50%);">
+                                        <i class="fab fa-youtube youtube-icon"></i> <!-- Ajustado el tamaño del icono y agregado el cambio de color al hacer hover -->
+                                    </a>
+                    
+                                    <!-- Imagen del demonio -->
+                                    <img style="width: 80; height: 125px;" src="` + response.photo__url + `" alt="` + response.level + `" class="float-left mr-3">
+                                </div>
+                                <div>
+                                    <p class="mt-1 ml-2">
+                                        <!--<a href="" style="color: #000; font-size: 20px;">
+                                            <i class="far fa-heart"></i>
+                                        </a>-->
+                                    </p>
+                                    <p class="ml-2 mt-0 mb-2">
+                                        <a href="{% url 'demonlist:detail' 1234 %}`.replace(/1234/, response.position) + `" style="font-size: 24px; color: black; font-weight: bold; ">#` + response.position + ` - ` + response.level + `</a>
+                                    </p>
+                                    <p class="ml-2 mt-0 mb-2">
+                                        <b style="font-size: 15px; font-style: italic; color: #666666;">` + response.creator + `</b>
+                                    </p>
+                                </div>
+                                <button type="button" class="btn btn-primary ml-auto" style="height: 50px; margin-top: 30px" target="_blank" onclick="add_demon(false);">Complete</button>
+                            </div>
+                        </div>
+                    </section>`);
+
+                    }
+                })
+            }
+        else {
+            if (name == "") {
+                console.log("eerede")
+                var errorMessage = "The name field is empty. Please provide a name before proceeding.";
+                $('#error-message').text(errorMessage).show();
+            }
+            else if (number_demons == null) {
+                var errorMessage = "The number of demons field is empty. Please provide a number before proceeding.";
+                $('#error-message2').text(errorMessage).show();
+            }
+        }
+    }
+    </script>
+
+{% endblock %}
+
+{% block footer_margin %}600{% endblock  %}

@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 
 # Models
-from demonlist.models import Demon, Record, Changelog
+from demonlist.models import Demon, Record, Changelog, Roulette
 
 class ProfileModFilter(admin.SimpleListFilter):
     title = 'Profile Mod'
@@ -21,9 +21,9 @@ class ProfileModFilter(admin.SimpleListFilter):
             ('Mechabrandon', 'Mechabrandon'),
             ('Ryexus', 'Ryexus'),
             ('IvanCrafter026', 'IvanCrafter026'),
-            ('DiegoLix', 'DiegoLix'),
             ('Lunnagd', 'Lunnagd'),
             ('Alvaneder', 'Alvaneder'),
+            ('ImCrisGD', 'ImCrisGD'),
         )
 
     def queryset(self, request, queryset):
@@ -53,3 +53,10 @@ class ChangelogAdmin(admin.ModelAdmin):
     list_display = ('id', 'demon', 'reason', 'position')
     search_fields = ('level',)
     list_filter = ("demon", 'datetime',)
+
+@admin.register(Roulette)
+class RouletteAdmin(admin.ModelAdmin):
+    """Roulette admin."""
+
+    list_display = ('id', 'player',)
+    search_fields = ('player',)

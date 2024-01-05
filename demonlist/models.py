@@ -31,6 +31,7 @@ class Demon(models.Model):
     """Demon model."""
 
     level = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
     creator = models.CharField(max_length=255)
     verificator = models.CharField(max_length=255)
     position = models.IntegerField()
@@ -40,10 +41,19 @@ class Demon(models.Model):
     verification_video = models.CharField(max_length=2000)
 
     level_id = models.BigIntegerField(blank=True, null=True)
+    level_id_ldm = models.BigIntegerField(blank=True, null=True)
     object_count = models.BigIntegerField(blank=True, null=True)
     demon_difficulty = models.CharField(max_length=50, blank=True, null=True)
     update_created = models.CharField(max_length=5, blank=True, null=True)
     level_password = models.BigIntegerField(blank=True, null=True)
+
+    enjoyment_stars = models.FloatField(blank=True, null=True)
+    gameplay_stars = models.FloatField(blank=True, null=True)
+    decoration_stars = models.FloatField(blank=True, null=True)
+    balanced_stars = models.FloatField(blank=True, null=True)
+    atmosphere_stars = models.FloatField(blank=True, null=True)
+
+    all_stars = models.FloatField(blank=True, null=True)
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -54,6 +64,19 @@ class Demon(models.Model):
     def save(self, *args, **kwargs):
         if self.list_points:
             self.list_points = round(self.list_points, 2)
+        if self.enjoyment_stars:
+            self.enjoyment_stars = round(self.enjoyment_stars, 1)
+        if self.gameplay_stars:
+            self.gameplay_stars = round(self.gameplay_stars, 1)
+        if self.decoration_stars:
+            self.decoration_stars = round(self.decoration_stars, 1)
+        if self.balanced_stars:
+            self.balanced_stars = round(self.balanced_stars, 1)
+        if self.atmosphere_stars:
+            self.atmosphere_stars = round(self.atmosphere_stars, 1)
+        if self.all_stars:
+            self.all_stars = round(self.all_stars, 1)
+
         super(Demon, self).save(*args, **kwargs)
 
 class Record(models.Model):
@@ -72,6 +95,12 @@ class Record(models.Model):
 
     top_order = models.IntegerField(blank=True, null=True)
     top_best_time = models.IntegerField(blank=True, null=True)
+
+    enjoyment_stars = models.FloatField(blank=True, null=True)
+    gameplay_stars = models.FloatField(blank=True, null=True)
+    decoration_stars = models.FloatField(blank=True, null=True)
+    balanced_stars = models.FloatField(blank=True, null=True)
+    atmosphere_stars = models.FloatField(blank=True, null=True)
 
     datetime_submit = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
@@ -116,6 +145,18 @@ class Changelog(models.Model):
 
     def __str__(self):
         """Return changelog."""
+        return '{}'.format(self.id)
+    
+class Roulette(models.Model):
+    """Roulette model."""
+
+    name = models.CharField(max_length=500)
+    player = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    demons = models.ManyToManyField(Demon, blank=True)
+    max_demons = models.IntegerField(blank=True, null=True)
+
+    def __str__(self):
+        """Return roulette id."""
         return '{}'.format(self.id)
 
 class Update(models.Model):
