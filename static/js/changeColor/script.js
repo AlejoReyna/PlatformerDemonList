@@ -5,7 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextUpdate = document.getElementById("nextUpdate");
     const body = document.getElementById("bg");
     const searchbar = document.getElementById("search");
-
+    const projectHelpers = document.getElementById("projectHelpers");
+    const listDevs = document.getElementById("listDevs");
     let isOriginalColor = true;
 
     function change_color() {
@@ -17,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             body.style.backgroundColor = "black";
             searchbar.style.backgroundColor = "gray";
+            projectHelpers.style.backgroundColor = "black";
+            listDevs.style.backgroundColor = "black";
         } else {
             navbar.style.backgroundColor = ""; // Resets to original color
             Array.from(demonCard).forEach(card => card.style.backgroundColor = ""); // Resets to original color
@@ -25,6 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             body.style.backgroundColor = "";
             searchbar.style.backgroundColor = "";
+            projectHelpers.style.backgroundColor = "";
+            listDevs.style.backgroundColor = "";
         }
         isOriginalColor = !isOriginalColor;
     }

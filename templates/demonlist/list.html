@@ -5,6 +5,8 @@
     <meta name="og:title" content="Platformer DemonList">
     <meta name="description" content="The Official Platformer DemonList. Check it out!">
     <meta name="og:description" content="The Official Platformer DemonList. Check it out!">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}"/>
+
 {% endblock%}
 
 {% block container %}
@@ -12,8 +14,8 @@
 
 <div class="row">
     <!-- LIST DEVELOPER CONTAINER / LIST LEADERS  -->
-    <div class="col-md-3">
-        <div class="col-sm-12 col-md-8 offset-md-2 mt-5 p-3 post-container">
+    <div class="col-md-3" >
+        <div class="col-sm-12 col-md-12 offset-md-2 mt-5 p-3 post-container" style="margin: 0;"id="listDevs">
             <div class="underlined">
                 <h2 style="text-align: center;">List Developer</h2>
             </div>
@@ -44,22 +46,26 @@
                     </li>
                 </ul>
 
-        
-            </div> <!-- do not delete this div -->
-            <!-- PROJECT HELPERS CONTAINER -->
-            <div class="col-sm-12 col-md-8 offset-md-2 mt-4 p-3 post-container no-margin" >
-                <div class="underlined">
-                    <h2 style="text-align: center; margin-top: 15px;">Project Helpers</h2>
+                <div class="col-sm-12 col-md-8 offset-md-2 mt-4 p-3 " id="projectHelpers">
+                    <div class="underlined">
+                        <h2 style="text-align: center; margin-top: 15px;">Project Helpers</h2>
+                    </div>
+                    <p style="text-align: center;"> Aquí van unos nombres </p>
+                    <ul id="list-user" style="line-height: 30px; text-align: center;">
+                    </ul>
                 </div>
-                <p style="text-align: center;">People who directly or indirectly help with the project, do not contact them for questions regarding the list.</p>
-                <ul id="list-user" style="line-height: 30px; text-align: center;">
-                </ul>
+        
+            </div> <!-- do not delete this /div -->
+
+            <!-- UNRATED PLATFORM DEMONLIST -->
+            <div class="unratedPlatformDemonlist col-sm-12 col-md-12 offset-md-2 mt-4 p-3" style="margin: 0; border: 1px solid black; text-align: center;">
+                <h4> Unrated Platform Demonlist </h4>
             </div>
-            <!-- PROJECT HELPERS CONTAINER -->
+            <!-- UNRATED PLATFORM DEMONLIST -->
             
             <!-- DISCORD API -->
             <div class="discordApiContainer">
-                <div class="col-sm-12 col-md-8 offset-md-2 mt-2 p-3 no-margin">
+                <div class="col-sm-12 col-md-12  mt-2 p-3 no-margin">
                     <iframe src="https://discord.com/widget?id=1189387080980234240&theme=light" id="discord_widget" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
                 </div>
             </div>
@@ -70,7 +76,7 @@
     <!-- Container of searchbar and demonlist -->
     <div class="col-md-6
     ">
-        <div class="col-sm-12 col-md-8 offset-md-2 mt-5 p-1 post-container-1" id="searchbar">
+        <div class="col-sm-12 col-md-12 offset-md-2 mt-5 p-1 post-container-1" style="margin: 0; padding: 0;" id="searchbar">
             <input class="mb-1" type="text" id="search" placeholder="Search demon..." oninput="search_demon(this);">
         </div>
 
@@ -81,11 +87,11 @@
     <!-- Container of searchbar and demonlist -->
     
     <div class="col-md-3">
-            <div class="col-sm-12 col-md-8 offset-md-2 mt-5 p-3 post-container" id="nextUpdate">
+            <div class="col-sm-12 col-md-12 offset-md-2 mt-5 p-3 post-container" style="margin: 0;" id="nextUpdate">
                 <div class="underlined">
-                    <h2 style="text-align: center;">Next Update v1.1</h2>
+                    <h2 style="text-align: center;">News </h2>
                 </div>
-                <ul style="line-height: 30px">
+                <ul style="line-height: 30px; list-style-type: none;">
                     <li>
                         <p>Rate demons from 1 to 5 stars (categories: enjoyment, gameplay, decoration, balanced, atmosphere)</p>
                     </li>
@@ -104,6 +110,15 @@
                     <li>
                         <p>Improved website design</p>
                     </li>
+                </ul>
+            </div>
+
+            <div class="col-sm-12 col-md-12 offset-md-2 mt-5 p-3 post-container" style="margin: 0;" id="nextUpdate">
+                <div class="underlined">
+                    <h2 style="text-align: center;">Next Update v1.2 </h2>
+                </div>
+                <ul style="line-height: 30px; list-style-type: none;">
+                    <li> Coming soon... </li>
                 </ul>
             </div>
     </div>
