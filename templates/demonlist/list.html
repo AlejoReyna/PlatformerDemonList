@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block head_content %}
     <title>Platformer DemonList</title>
     <meta name="og:title" content="Platformer DemonList">
@@ -9,19 +9,23 @@
 
 {% block container %}
 
-    <div class="row">
-        <div class="col-md-8">
-            
-            <div class="col-sm-12 col-md-8 offset-md-2 mt-5 p-1 post-container-1">
-                <input class="mb-1" type="text" id="search" placeholder="Search demon..." oninput="search_demon(this);">
-            </div>
 
-            {% for demon in demons %}
-                {% include "demonlist/demon_card.html" %}
-            {% endfor %}
+<div class="row">
+    <!-- Container of searchbar and demonlist -->
+    <div class="col-md-8">
+        
+        <div class="col-sm-12 col-md-8 offset-md-2 mt-5 p-1 post-container-1" id="searchbar">
+            <input class="mb-1" type="text" id="search" placeholder="Search demon..." oninput="search_demon(this);">
         </div>
-        <div class="col-md-4">
-            <div class="col-sm-12 col-md-8 offset-md-2 mt-5 p-3 post-container">
+
+        {% for demon in demons %}
+            {% include "demonlist/demon_card.html" %}
+        {% endfor %}
+    </div>
+    <!-- Container of searchbar and demonlist -->
+    
+    <div class="col-md-4">
+            <div class="col-sm-12 col-md-8 offset-md-2 mt-5 p-3 post-container" id="nextUpdate">
                 <div class="underlined">
                     <h2 style="text-align: center;">Next Update v1.1</h2>
                 </div>
@@ -46,51 +50,52 @@
                     </li>
                 </ul>
             </div>
-            <div class="col-sm-12 col-md-8 offset-md-2 mt-2 p-3">
-                <iframe src="https://discord.com/widget?id=1189387080980234240&theme=light" id="discord_widget" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
-            </div>
+    </div>
+        <div class="col-sm-12 col-md-8 offset-md-2 mt-2 p-3">
+            <iframe src="https://discord.com/widget?id=1189387080980234240&theme=light" id="discord_widget" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+        </div>
 
-            <div class="col-sm-12 col-md-8 offset-md-2 mt-2 p-3 post-container">
-                <div class="underlined">
-                    <h2 style="text-align: center;">List Developer</h2>
-                </div>
-                <p style="text-align: center;">Developer of the Platformer Demon List website.</p>
-                <ul id="list-user" style="line-height: 30px; text-align: center;">
-                    <li>
-                        <a target="_blank" href="{% url 'users:detail' 1 %}">ChuckyGD</a>
-                    </li>
-                </ul>
-                <div class="underlined">
-                    <h2 style="text-align: center; margin-top: 15px;">List Leaders</h2>
-                </div>
-                <p style="text-align: center;">Leaders of the Platformer Demon List and its team.</p>
-                <ul id="list-user" style="line-height: 30px; text-align: center;">
-                    <li>
-                        <a target="_blank" href="{% url 'users:detail' 1 %}">ChuckyGD</a>
-                    </li>
-                    <li>
-                        <a target="_blank" href="{% url 'users:detail' 4 %}">Mechabrandon</a>
-                    </li>
-                </ul>
-                <ul id="list-user" style="line-height: 30px; text-align: center;">
-                    <li>
-                        <a target="_blank" href="{% url 'users:detail' 19 %}">German</a>
-                    </li>
-                    <li>
-                        <a target="_blank" href="{% url 'users:detail' 52 %}">MSGUS</a>
-                    </li>
-                </ul>
-                <!--
-                <div class="underlined">
-                    <h2 style="text-align: center; margin-top: 15px;">Project Helpers</h2>
-                </div>
-                <p style="text-align: center;">People who directly or indirectly help with the project, do not contact them for questions regarding the list.</p>
-                <ul id="list-user" style="line-height: 30px; text-align: center;">
-                </ul>
-                -->
+        <div class="col-sm-12 col-md-8 offset-md-2 mt-2 p-3 post-container">
+            <div class="underlined">
+                <h2 style="text-align: center;">List Developer</h2>
             </div>
+            <p style="text-align: center;">Developer of the Platformer Demon List website.</p>
+            <ul id="list-user" style="line-height: 30px; text-align: center;">
+                <li>
+                    <a target="_blank" href="{% url 'users:detail' 1 %}">ChuckyGD</a>
+                </li>
+            </ul>
+            <div class="underlined">
+                <h2 style="text-align: center; margin-top: 15px;">List Leaders</h2>
+            </div>
+            <p style="text-align: center;">Leaders of the Platformer Demon List and its team.</p>
+            <ul id="list-user" style="line-height: 30px; text-align: center;">
+                <li>
+                    <a target="_blank" href="{% url 'users:detail' 1 %}">ChuckyGD</a>
+                </li>
+                <li>
+                    <a target="_blank" href="{% url 'users:detail' 4 %}">Mechabrandon</a>
+                </li>
+            </ul>
+            <ul id="list-user" style="line-height: 30px; text-align: center;">
+                <li>
+                    <a target="_blank" href="{% url 'users:detail' 19 %}">German</a>
+                </li>
+                <li>
+                    <a target="_blank" href="{% url 'users:detail' 52 %}">MSGUS</a>
+                </li>
+            </ul>
+            <!--
+            <div class="underlined">
+                <h2 style="text-align: center; margin-top: 15px;">Project Helpers</h2>
+            </div>
+            <p style="text-align: center;">People who directly or indirectly help with the project, do not contact them for questions regarding the list.</p>
+            <ul id="list-user" style="line-height: 30px; text-align: center;">
+            </ul>
+            -->
         </div>
     </div>
+</div>
     <script>
         function search_demon(demon)
         {
@@ -109,6 +114,7 @@
             });
     }
     </script>
+    <script src="{% static 'js/changeColor/script.js' %}"></script>
 
 {% endblock %}
 

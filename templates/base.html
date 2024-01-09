@@ -16,6 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:image" content="{% static 'img/demonlist3.png' %}">
     <script type="application/ld+json">
+
         {
             "@context": "http://schema.org",
             "@type": "Organization",
@@ -584,25 +585,26 @@
         margin-left: 8px;
     }
 
-
 </style>
 
 <body>
 
     {% include "nav.html" %}
     
-        <section class="container">
+        <section class="container" id="bg">
             <div class="row">
                 
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 offset-me-4 mt-5">
                     {% block container %}
                     {% endblock%} 
                 </div>
-    
+                
             </div>
+            <script src="{% static 'js/changeColor/script.js' %}"></script>
+
         </section>
 
-    </div>
+    
 
     <div style="margin-top: {% block footer_margin %}{% endblock  %}px;">
         

@@ -55,21 +55,27 @@
         <div class="col-sm-4 col-md-10 col-lg-12">
             
             <nav class="navbar navbar-expand fixed-top" id="main-navbar">
+                <!-- LOGO CONTAINER -->
+                <!-- 
                 <a class="navbar-brand d-none d-md-flex align-items-center" href="{% url 'demonlist:list' %}" style="line-height: 0;">
                     <img src="{% static "img/demonlist.png" %}" class="d-inline-block align-top" style="width: 240px; height: auto;"/>
                     <div style="display: flex; align-items: center; margin-left: 10px; margin-top: 20px;">
                         <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 20px; color: #3498db; padding: 5px 10px; margin-bottom: 0;">v 1.0</p>
                     </div>
                 </a>
+            -->
+                
+                
                 <a class="navbar-brand d-block d-md-none" href="{% url 'demonlist:list' %}" style="line-height: 0;">
                     <img src="{% static "img/demonlist.png" %}" class="d-inline-block align-top"/>
                     <div style="margin-top: 5px; display: flex; align-items: baseline;">
                         <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 20px; color: #3498db; padding: 5px 10px; margin-bottom: 0; margin-left: 100px;">v 1.0</p>
                     </div>
                 </a>
+                <!-- LOGO CONTAINER -->
             
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon">a</span>
                 </button>
                 
                     <ul class="navbar-nav ml-auto">
@@ -108,7 +114,16 @@
                             </a>
                         </li>
                         {% endif %}
-                        
+
+                        <!-- DARK MODE CODE by alejoreyna -->
+                        <!-- NOTAS PARA YO EN EL FUTURO: 
+                             -->
+                        <button class="darkmode" id="changeColor" onClick="change_color()">
+                            Test modo nocturno
+                        </button>
+                        <!-- DARK MODE CODE -->
+
+                        <!-- MENU BUTTON CODE -->
                         <div class="collapse navbar-collapse" id="navbarNav" style="margin-top: 5px; margin-left: 20px;">
                             <div class="dropdown" >
                                 <button class="dropbtn" id="menuBtn" style="margin-right: 80px;">
@@ -136,7 +151,9 @@
                                     </form>
                                 </div>
                             </div>
-                    </div>
+                        </div>
+                        <!-- MENU BUTTON CODE -->
+
 
                         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
             
@@ -163,9 +180,8 @@
     </div>
 </section>
 
-<script>
-    // Obtén el elemento con la clase "nav-icon"
-    function change_color(){
-    }
+<script src="{% static 'js/changeColor/script.js' %}"></script>
+
+    
 </script>
 </html>
