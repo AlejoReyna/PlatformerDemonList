@@ -4,7 +4,7 @@
 
 <section class="container d-none d-md-block">
     <div class="row">
-        <div class="col-sm-12 col-md-12 offset-md-2 p-4 d-flex post-container demon-item mt-{% if forloop.first %}3{% else %}4{% endif %} demonCard" style="margin: 0; border-radius: 10px" id="{{demon.level}}">
+        <div class="col-sm-12 col-md-12 offset-md-2 p-4 d-flex post-container demon-item mt-{% if forloop.first %}3{% else %}4{% endif %} demonCard shadow" style="margin: 0; border-radius: 10px" id="{{demon.level}}">
             <div class="position-relative"> <!-- Contenedor relativo -->
                 <!-- Enlace de YouTube con icono gris y rojo al hacer hover -->
                 <a href="{{demon.verification_video}}" style="position: absolute; top: 50%; left: 48%; transform: translate(-50%, -50%);">
@@ -34,7 +34,7 @@
 
 <section class="container d-block d-md-none">
     <div class="row">
-        <div class="col-sm-12 col-md-8 col-lg-8 offset-md-2 mt-3 p-6 d-flex post-container demon-item" id="{{demon.level}}">
+        <div class="col-sm-12 col-md-8 col-lg-8 offset-md-2 mt-3 p-6 d-flex post-container demon-item shadow" id="{{demon.level}}">
             <div class="mt-{% if forloop.first %}3{% else %}4{% endif %}">
                 <img style="width: 80px; height: 58px;" src="{{ demon.photo.url }}" alt="{{ demon.level }}" class="mr-3">
             </div>

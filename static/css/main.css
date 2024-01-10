@@ -71,7 +71,37 @@ html, body {
 }
 
 .news li {
-    margin-top: 5px;
+    margin-left: 20px;
+    padding: 0;
 }
 
-/** Code for demoncard **/
+.news p {
+    margin-bottom: 0;
+}
+
+/** CSS TO PUT MAGNIFYING GLASS INSIDE THE INPUT BAR **/
+.search-bar-container {
+    position: relative;
+}
+
+.search-bar-container input {
+    width: 100%;
+    padding-right: 30px; /* Espacio para el ícono */
+}
+
+.search-icon {
+    position: absolute;
+    right: 10px; /* Ajusta la posición a la derecha */
+    top: 50%;
+    transform: translateY(-50%); /* Centra el ícono verticalmente */
+    pointer-events: none; /* Hace que el ícono no afecte la funcionalidad del input */
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.shadow {
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.25);
+}
