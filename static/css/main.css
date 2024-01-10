@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Teko:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Teko:wght@300;500&display=swap');
+
 html, body {
     background: #fafafa;
     height: 100%;
@@ -52,3 +55,13 @@ html, body {
     padding: 0;
 }
 
+.Teko-Medium {
+    font-family: 'Teko', sans-serif;
+    font-weight: 500;
+}
+
+.Teko-Light {
+    font-family: 'Teko', sans-serif;
+    font-weight: 300;
+
+}
