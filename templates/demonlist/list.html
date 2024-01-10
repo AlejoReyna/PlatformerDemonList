@@ -16,19 +16,19 @@
     <div class="col-md-3" >
         <div class="col-sm-12 col-md-12 offset-md-2 mt-5 p-3 post-container" style="margin: 0;"id="listDevs">
             <div class="underlined">
-                <h2 style="text-align: center;" class="Teko-Medium">List Developer</h2>
+                <h2 style="text-align: center;" class="Teko-Medium">LIST DEVELOPER</h2>
             </div>
-            <p style="text-align: center;">Developer of the Platformer Demon List website.</p>
+            <p style="text-align: center;" class="Teko-Light">Developer of the Platformer Demon List website.</p>
             <ul id="list-user" style="line-height: 30px; text-align: center;">
                 <li>
-                    <a target="_blank" href="{% url 'users:detail' 1 %}">ChuckyGD</a>
+                    <a target="_blank" href="{% url 'users:detail' 1 %}" class="Teko-Light">ChuckyGD</a>
                 </li>
             </ul>
             <div class="underlined">
-                <h2 style="text-align: center; margin-top: 15px;" class="Teko-Medium">List Leaders</h2>
+                <h2 style="text-align: center; margin-top: 15px;" class="Teko-Medium">LIST LEADERS</h2>
             </div>
-                <p style="text-align: center;">Leaders of the Platformer Demon List and its team.</p>
-                <ul id="list-user" style="line-height: 30px; text-align: center;">
+                <p style="text-align: center;" class="Teko-Light">Leaders of the Platformer Demon List and its team.</p>
+                <ul id="list-user" style="line-height: 30px; text-align: center;" class="Teko-Light">
                     <li>
                         <a target="_blank" href="{% url 'users:detail' 1 %}">ChuckyGD</a>
                     </li>
@@ -36,7 +36,7 @@
                         <a target="_blank" href="{% url 'users:detail' 4 %}">Mechabrandon</a>
                     </li>
                 </ul>
-                <ul id="list-user" style="line-height: 30px; text-align: center;">
+                <ul id="list-user" style="line-height: 30px; text-align: center;" class="Teko-Light">
                     <li>
                         <a target="_blank" href="{% url 'users:detail' 19 %}">German</a>
                     </li>
@@ -47,9 +47,9 @@
 
                 <div class="col-sm-12 col-md-8 offset-md-2 mt-4 p-3 " id="projectHelpers">
                     <div class="underlined">
-                        <h2 style="text-align: center; margin-top: 15px;" class="Teko-Medium">Project Helpers</h2>
+                        <h2 style="text-align: center; margin-top: 15px;" class="Teko-Medium">LIST HELPERS</h2>
                     </div>
-                    <p style="text-align: center;"> Aquí van unos nombres </p>
+                    <p style="text-align: center;" class="Teko-Light"> Aquí van unos nombres </p>
                     <ul id="list-user" style="line-height: 30px; text-align: center;">
                     </ul>
                 </div>
@@ -76,7 +76,7 @@
     <div class="col-md-6
     ">  <!-- DELETED 'POST-CONTAINER CLASS'-->
         <div class="col-sm-12 col-md-12 offset-md-2 mt-5 p-1 " style="margin: 0;" id="searchbar">
-            <input class="mb-1" type="text" id="search" placeholder="Search demon..." oninput="search_demon(this);">
+            <input class="mb-1 Teko-Light" type="text" id="search" placeholder="Search demon..." oninput="search_demon(this);">
         </div>
 
         {% for demon in demons %}
@@ -88,9 +88,9 @@
     <div class="col-md-3">
             <div class="col-sm-12 col-md-12 offset-md-2 mt-5 p-3 post-container" style="margin: 0;" id="nextUpdate">
                 <div class="underlined">
-                    <h2 style="text-align: center;">News </h2>
+                    <h2 style="text-align: center;" class="Teko-Medium">¡NEWS v1.1! </h2>
                 </div>
-                <ul style="line-height: 30px; list-style-type: none;">
+                <ul style="line-height: 30px; list-style-type: none; border-radius: 10px; padding: 0;" class="Teko-Light news">
                     <li>
                         <p>Rate demons from 1 to 5 stars (categories: enjoyment, gameplay, decoration, balanced, atmosphere)</p>
                     </li>
@@ -114,7 +114,7 @@
 
             <div class="col-sm-12 col-md-12 offset-md-2 mt-5 p-3 post-container" style="margin: 0;" id="nextUpdate">
                 <div class="underlined">
-                    <h2 style="text-align: center;">Next Update v1.2 </h2>
+                    <h2 style="text-align: center;" class="Teko-Medium"> NEXT UPDATE v1.2 </h2>
                 </div>
                 <ul style="line-height: 30px; list-style-type: none;">
                     <li> Coming soon... </li>

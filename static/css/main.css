@@ -58,10 +58,20 @@ html, body {
 .Teko-Medium {
     font-family: 'Teko', sans-serif;
     font-weight: 500;
+    color: red;
+    font-style: italic;
+
 }
 
 .Teko-Light {
     font-family: 'Teko', sans-serif;
     font-weight: 300;
-
+    font-size: 20px;
+    font-style: italic;
 }
+
+.news li {
+    margin-top: 5px;
+}
+
+/** Code for demoncard **/
