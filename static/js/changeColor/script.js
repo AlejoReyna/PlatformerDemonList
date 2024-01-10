@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const navbar = document.getElementById("main-navbar");
     const demonCard = document.getElementsByClassName("demonCard");
     const nextUpdate = document.getElementById("nextUpdate");
-    const body = document.getElementById("bg");
     const searchbar = document.getElementById("search");
     const projectHelpers = document.getElementById("projectHelpers");
     const listDevs = document.getElementById("listDevs");
@@ -11,12 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function change_color() {
         if (isOriginalColor) {
-            navbar.style.backgroundColor = "black";
+            navbar.style.backgroundColor = gray;
             Array.from(demonCard).forEach(card => card.style.backgroundColor = "black");
             if (nextUpdate) { // Check if element exists
                 nextUpdate.style.backgroundColor = "black";
             }
-            body.style.backgroundColor = "black";
             searchbar.style.backgroundColor = "gray";
             projectHelpers.style.backgroundColor = "black";
             listDevs.style.backgroundColor = "black";
@@ -26,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (nextUpdate) { // Check if element exists
                 nextUpdate.style.backgroundColor = "";
             }
-            body.style.backgroundColor = "";
+            
             searchbar.style.backgroundColor = "";
             projectHelpers.style.backgroundColor = "";
             listDevs.style.backgroundColor = "";

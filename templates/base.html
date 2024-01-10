@@ -44,13 +44,20 @@
 
 
 <style>
-
-    body {
+   
+body   {
         background-image: url("../../static/img/white-bg.jpg");
         background-size: cover; /* Ensure the image covers the full screen */
         background-repeat: no-repeat; /* Prevent the image from repeating */
-        background-attachment: fixed; /* Optional: Fixes the background */
+        background-attachment: scroll; /* Optional: Fixes the background */
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column:
     }
+
+.content {
+    flex: 1;
+}
 
     .select-roulette {
         width: 100%;
