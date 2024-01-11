@@ -7,31 +7,54 @@
 
 {% block container %}
 
-<div class="container">
+<style>
+
+    .fullContainer {
+        background-image: url("../../static/img/white-bg.jpg");
+    }
+
+    .label-container {
+        background-color: #3499d6; /* Replace with the actual color from your image */
+        padding: 5px; /* Adjust the padding to match the size from your image */
+        border-radius: 10px; /* Optional: if you want rounded corners */
+        color: white;
+        width: 10rem;
+        height: 2rem;
+        display: flex;
+        justify-content: center;
+    }    
+
+    
+    
+</style>
+<div class="container fullContainer" >
 
     <div class="row justify-content-md-center">
-        <div class="col-sm-12 col-md-10 col-lg-6 p-5" id="profile-box">
+        <!-- Line that contains the form-->
+        <div class="col-sm-12 col-md-10 col-lg-6 p-5" id="profile-box" style="border-radius: 10px;">
 
             <form action="{% url "users:update" %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
 
-                <div class='media'>
-                    {% if request.user.profile.picture %}
-                        <img src="{{request.user.profile.picture.url}}" class="rounded-circle" width="50" height="50"/>
-                    {% else %}
-                        <img src="{% static 'img/default-profile.png' %}" class="rounded-circle" width="50" height="50"/>
-                    {% endif %}
+                <!-- Next line is for the Input Image Script-->
+                <input type="file" id="profile-picture-input" name="picture" style="display:none;" onchange="displayImage(this)"/>
 
-                    <div class="media-body">
-                        <h5 class="ml-4">{{ request.user.username }}</h5>
-                        
-                        {% for error in form.picture.errors %}
-                        <div class="alert alert-danger">
-                            <b>Picture: </b>{{error}}
-                        </div>
-                        {% endfor %}
-                    </div>
+                <div class='media d-flex justify-content-center'>
+                    {% if request.user.profile.picture %}
+                    <!-- Clicking on the image now triggers the file input click event -->
+                    <img src="{{request.user.profile.picture.url}}" class="rounded-circle" width="150" height="150" onclick="document.getElementById('profile-picture-input').click();"/>
+                    {% else %}
+                    <img src="{% static 'img/default-profile.png' %}" class="rounded-circle" width="150" height="150" onclick="document.getElementById('profile-picture-input').click();"/>
+                    {% endif %}
                 </div>
+                <div class="media-body">
+                    {% for error in form.picture.errors %}
+                    <div class="alert alert-danger">
+                        <b>Picture: </b>{{error}}
+                    </div>
+                    {% endfor %}
+                </div>
+                
 
                 <hr>
                 {% if request.user.profile.discord %}
@@ -45,23 +68,14 @@
                 {% else %}
                 <p style="margin-left: 15px; margin-top: 10px;"><i class="fas fa-exclamation-triangle" style="color: #FFA500; font-size: 18px; margin-right: 5px;"></i>To verify your account, please enter your Discord username and <a href="https://discord.gg/PlatformerList">join the server.</a></p>
                 {% endif %}
-                {# Picture field #}
-                <div class="form-group">
-                    <label>Picture</label>
-                    <p class="form-control"><input type="file" name="picture"></p>
-                    
-                    {% for error in form.picture.errors %}
-                    <div class="alert alert-danger">
-                        <b>Picture: </b>{{error}}
-                    </div>
-                    {% endfor %}
-                </div>
 
                 {# Username field #}
                 <div class="form-group">
-                    <label>Username</label>
+                    <div class="label-container">
+                        <label> <span class="Teko-Light"> USERNAME </span> </label>
+                    </div>
                     <input 
-                        class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+                        class="form-control {% if form.username.errors %}is-invalid{% endif %} Teko-Light shadow"
                         type="text" 
                         name="username" 
                         placeholder="Username" 
@@ -72,12 +86,27 @@
                             </div>
                         {% endfor %}
                 </div>
+                
+                {# Picture field #}
+                <!-- 
+                <div class="form-group">
+                    <label>Picture</label>
+                    <p class="form-control"><input type="file" name="picture"></p>
+                    
+                    {% for error in form.picture.errors %}
+                    <div class="alert alert-danger">
+                        <b>Picture: </b>{{error}}
+                    </div>
+                    {% endfor %}
+                </div> -->
 
                 {# Discord field #}
                 <div class="form-group">
-                    <label>Discord username</label>
+                    <div class="label-container">
+                        <label> <span class="Teko-Light"> DISCORD USERNAME </span> </label>
+                    </div>
                     <input 
-                        class="form-control {% if form.discord.errors %}is-invalid{% endif %}"
+                        class="form-control {% if form.discord.errors %}is-invalid{% endif %} Teko-Light shadow"
                         type="text" 
                         name="discord" 
                         placeholder="Discord username" 
@@ -91,9 +120,11 @@
 
                 {# Youtube channel field #}
                 <div class="form-group">
-                    <label>Youtube channel</label>
+                    <div class="label-container">
+                        <label>  <span class="Teko-Light"> YOUTUBE CHANNEL </span> </label>
+                    </div>
                     <input 
-                        class="form-control {% if form.youtube_channel.errors %}is-invalid{% endif %}"
+                        class="form-control {% if form.youtube_channel.errors %}is-invalid{% endif %} Teko-Light shadow"
                         type="text" 
                         name="youtube_channel" 
                         placeholder="Youtube channel"
@@ -108,9 +139,11 @@
 
                 {# Twitter field #}
                 <div class="form-group">
-                    <label>Twitter</label>
+                    <div class="label-container">
+                    <label> <span class="Teko-Light"> TWITTER </span> </label>
+                    </div>
                     <input 
-                        class="form-control {% if form.twitter.errors %}is-invalid{% endif %}"
+                        class="form-control {% if form.twitter.errors %}is-invalid{% endif %} Teko-Light shadow"
                         type="text" 
                         name="twitter" 
                         placeholder="Twitter"
@@ -125,9 +158,11 @@
 
                 {# Twitch field #}
                 <div class="form-group">
-                    <label>Twitch</label>
+                    <div class="label-container">
+                    <label> <span class="Teko-Light"> TWITCH </span> </label>
+                    </div>
                     <input 
-                        class="form-control {% if form.twitch.errors %}is-invalid{% endif %}"
+                        class="form-control {% if form.twitch.errors %}is-invalid{% endif %} Teko-Light shadow"
                         type="text" 
                         name="twitch" 
                         placeholder="Twitch"
@@ -142,9 +177,11 @@
 
                 {# Facebook field #}
                 <div class="form-group">
-                    <label>Facebook</label>
+                    <div class="label-container">
+                    <label>  <span class="Teko-Light"> FACEBOOK </span> </label>
+                    </div>
                     <input 
-                        class="form-control {% if form.facebook.errors %}is-invalid{% endif %}"
+                        class="form-control {% if form.facebook.errors %}is-invalid{% endif %} Teko-Light shadow"
                         type="text" 
                         name="facebook" 
                         placeholder="Facebook"
@@ -159,8 +196,10 @@
 
                 {# Country field #}
                 <div class="form-group">
-                    <label>Country</label>
-                    <select class="form-control" id="country" name="country">
+                    <div class="label-container">
+                    <label>  <span class="Teko-Light"> COUNTRY </span> </label>
+                    </div>
+                    <select class="form-control shadow" id="country" name="country">
                         <option selected disabled="disabled" value="0">-- Country --</option>
                         {% for country in countries %}
                         <option value="{{country}}" {% if request.user.profile.country == country %}selected{% endif %}>{{country}}</option>
@@ -173,7 +212,7 @@
                     {% endfor %}
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block mt-5">Update info</button>
+                <button type="submit" class="btn btn-primary btn-block mt-5 Teko-Light">UPDATE INFO</button>
             </form>
         </div>
     </div>
@@ -199,6 +238,18 @@
     
         input.value = "https://facebook.com/" + userValue;
       }
+
+      // Script to change the image while clicking on Picture
+      function displayImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var profileImage = document.querySelector('.rounded-circle');
+                profileImage.src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 </script>
 {% endblock %}
 

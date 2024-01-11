@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block head_content %}
+<link rel="stylesheet" href="{% static 'css/userTable.css' %}"/>
 <title>{{ user.username }} | Platformer Demon List</title>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
@@ -147,88 +148,103 @@
         }
     </style>
 
-    <div class="container mb-5" style="margin-top: 5em;">
-        <div class="row">
-
-            <div class="col-sm-4 d-flex justify-content-center">
-                <img
-                    src="{% if user.profile.picture %}{{ user.profile.picture.url }}{% else %}{% static 'img/default-profile.png' %}{% endif %}"
-                    alt="@{{ user.username}}"
-                    class="rounded-circle"
-                    width="200px"
-                    height="200px"
-                />
+<div class="container-fluid mb-5" style="margin-top: 5em;">
+    <!-- ROW FOR LAYOUT -->
+    <div class="row align-items-center">
+    <!-- CONTENEDOR DE ESTADISTICAS -->
+        <div class="col-md-4">
+            <div class="d-flex justify-content-center text-center statistic-container" style="margin: 0; padding: 0;">
+                <table style="width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 10px; overflow: hidden;">
+                    <tbody>
+                        <tr>
+                            <th colspan="2" style="background-color:#54a1f8; color: white; border-radius: 5px;" class="Teko-Light TekoRed BlackBackground">STATISTICS</th>
+                        </tr>
+                        <!-- Asegurarse de que las celdas tengan el mismo ancho -->
+                        <tr>
+                            <td style="width: 50%;"><b class="Teko-Light">Hardest:</b></td>
+                            <td style="width: 50%;">{{hardest}}</td>
+                        </tr>
+                        <tr>
+                            <td><b class="Teko-Light">Ranking:</b></td>
+                            <td>{{ranking}}</td>
+                        </tr>
+                        <tr>
+                            <td><b class="Teko-Light">List Points:</b></td>
+                            <td>{{user.profile.list_points}}</td>
+                        </tr>
+                        <tr>
+                            <td><b class="Teko-Light"> Demons beaten:</b></td>
+                            <td>{{records|length}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+        </div>
+    
+        <!-- Column for profile picture -->
+        <div class="col-md-4 d-flex justify-content-center">            
+            <img
+                src="{% if user.profile.picture %}{{ user.profile.picture.url }}{% else %}{% static 'img/default-profile.png' %}{% endif %}"
+                alt="@{{ user.username}}"
+                class="rounded-circle"
+                width="200px"
+                height="200px"
+            />
+        </div>
 
-            <div class="col-sm-8">
-                <h2 style="font-weight: 100;">
-                    <img src="{{user.profile.country.picture.url}}" title="{{user.profile.country}}" height="35" class="d-inline-block align-top" style="margin-right: 15px;"/>{{ user.username }}{% if user.profile.verified %}<i class="fas fa-check-circle" style="margin-left: 10px; color: #4169E1;"></i>{% endif %}
+        <!-- Column for user information and actions -->
+        <div class="col-md-4">
+            <!-- Name and verified badge -->
+            <h2 style="font-weight: 300; font-size: 30px;" class="Teko-Light">
+                <!-- Country flag next to the username -->
+                <div class="user-info">
+                    <!-- User image -->
+                    <img src="{{user.profile.country.picture.url}}" title="{{user.profile.country}}" height="35" class="user-image" />
+                    <!-- Username displayed below the image -->
+                    <div class="username" style="margin-top: 10px;">{{ user.username }}</div>
+                </div>
 
-                    {% if user.profile.youtube_channel %}
-                    <a href="{{user.profile.youtube_channel}}" target="_blank" id="youtube_button"><i class="fab fa-youtube"></i></a>
-                    {% endif %}
+                <!-- Display verified badge if the user is verified -->
+                {% if user.profile.verified %}
+                    <i class="fas fa-check-circle" style="margin-left: 10px; color: #4169E1;"></i>
+                {% endif %}
 
-                    {% if user.profile.twitter %}
-                    <a href="{{user.profile.twitter}}" target="_blank" id="twitter_button"><i class="fab fa-twitter"></i></a>
-                    {% endif %}
+                <!-- Display social media links if they exist in the user's profile -->
+                {% if user.profile.youtube_channel %}
+                <a href="{{user.profile.youtube_channel}}" target="_blank" id="youtube_button"><i class="fab fa-youtube"></i></a>
+                {% endif %}
 
-                    {% if user.profile.twitch %}
-                    <a href="{{user.profile.twitch}}" target="_blank" id="twitch_button"><i class="fab fa-twitch"></i></a>
-                    {% endif %}
+                {% if user.profile.twitter %}
+                <a href="{{user.profile.twitter}}" target="_blank" id="twitter_button"><i class="fab fa-twitter"></i></a>
+                {% endif %}
 
-                    {% if user.profile.facebook %}
-                    <a href="{{user.profile.facebook}}" target="_blank" id="facebook_button"><i class="fab fa-facebook"></i></a>
-                    {% endif %}
+                {% if user.profile.twitch %}
+                <a href="{{user.profile.twitch}}" target="_blank" id="twitch_button"><i class="fab fa-twitch"></i></a>
+                {% endif %}
 
-                    {% if user == request.user %}
-                        <a
-                            href="{% url "users:update" %}"
-                            class="ml-5 btn btn-sm btn-outline-info"
-                        >
-                            Edit profile
-                        </a>
-                        <a
-                            href="{% url "users:records_status" %}"
-                            class="ml-5 btn btn-sm btn-outline-info"
-                        >
-                            Records Status
-                        </a>
-                    {% else %}
-                        <form method="POST" style="display: inline-block;">
-                            {% csrf_token %}
-                            {% if following %}
-                            <input type="hidden" name="action" value="unfollow">
-                            <button type="submit" class="ml-5 btn btn-sm btn-primary">Unfollow</button>
-                            {% else %}
-                            {% if request.user.is_anonymous %}
-                                <a href="{% url 'users:login' %}" class="ml-5 btn btn-sm btn-primary">Follow</a>
-                            {% else %}
-                                <input type="hidden" name="action" value="follow">
-                                <button type="submit" class="ml-5 btn btn-sm btn-primary">Follow</button>
-                            {% endif %}
-                            {% endif %}
-                        </form>
-                    {% if request.user.groups.get|stringformat:"s" == "Mod" %}
-                        <form method="POST" style="display: inline-block;">
-                            {% csrf_token %}
-                            <input type="hidden" name="action" value="delete">
-                            <button type="submit" class="ml-5 btn btn-sm btn-danger" style="background-color: red;">Delete Profile Picture</button>
-                        </form>
-                    {% endif %}
-                    {% endif %}
-                </h2>
+                <!-- If the user has a Facebook profile, display the link -->
+                {% if user.profile.facebook %}
+                <a href="{{user.profile.facebook}}" target="_blank" id="facebook_button"><i class="fab fa-facebook"></i></a>
+                {% endif %}
 
+               
+            </h2>
+                <!-- ROW FOR RECORD, FOLLOWERS, FOLLOWING, IN THAT ORDER -->
                 <div class="row mt-2" style="font-size: 1.2em">
                     <div class="col-sm-4">
-                        <b>{{records|length}}</b> records
+                        <b> <span class="Teko-Light"> {{records|length}} </span> <br> 
+                        </b> <span class="Teko-Light"> Records </span>
                     </div>
                     <div class="col-sm-4">
-                        <b>{{ user.profile.followers.count }}</b> <button onclick="show_followers()" style="border: none; background-color: transparent; cursor: pointer; padding: 0; margin: 0;">followers</button>
+                        <b> <span class="Teko-Light"> {{ user.profile.followers.count }} </span><br> 
+                        </b> <button onclick="show_followers()" style="border: none; background-color: transparent; cursor: pointer; padding: 0; margin: 0;">  <span class="Teko-Light"> Followers </span> </button>
                     </div>
                     <div class="col-sm-4">
-                        <b>{{ user.profile.followings.count }}</b> <button onclick="show_following()" style="border: none; background-color: transparent; cursor: pointer; padding: 0; margin: 0;">following</button>
+                        <b> <span class="Teko-Light"> {{ user.profile.followings.count }} </span> <br>
+                        </b> <button onclick="show_following()" style="border: none; background-color: transparent; cursor: pointer; padding: 0; margin: 0;">  <span class="Teko-Light"> Following  <span class="Teko-Light"> </button>
                     </div>
                 </div>
+                <!-- ROW FOR RECORD, FOLLOWERS, FOLLOWING, IN THAT ORDER -->
                 <div class="overlay_followers" id="overlay_followers" onclick="hide_followers()"></div>
                 <div id="popup_followers" class="popup_followers">
                     <div style="text-align: center; font-size: 20px;">
@@ -286,74 +302,101 @@
                     {% endif %}
                     <div class="col-sm-12">
                         <i class="fas fa-user" style="font-size: 26px; color: #43BD43; float: left;"></i>
-                        <p style="font-size: 1.2em; margin-left: 40px;">Joined date: {{ user.profile.created|date }}</p>
+                        <p style="font-size: 1.2em; margin-left: 40px;" class="Teko-Light">Joined date: {{ user.profile.created|date }}</p>
                     </div>
                 </div>
+                 <!-- Display edit profile and record status buttons if the logged-in user is viewing their own profile -->
+                 {% if user == request.user %}
+                 <div class="d-flex justify-content-start" >
+                    <a href="{% url 'users:update' %}" class="btn btn-sm btn-outline-info Teko-Light TekoRed">Edit profile</a>
+                    <a href="{% url 'users:records_status' %}" class="btn btn-sm btn-outline-info Teko-Light TekoRed">Records Status</a>
+                </div>
+                {% else %}
+                 <!-- If viewing another user's profile, show follow/unfollow buttons -->
+                 <form method="POST" style="display: inline-block;">
+                     {% csrf_token %}
+                     <!-- If the logged-in user is following the profile, show an unfollow button -->
+                     {% if following %}
+                     <input type="hidden" name="action" value="unfollow">
+                     <button type="submit" class="ml-5 btn btn-sm btn-primary">Unfollow</button>
+                     <!-- Otherwise, show a follow button -->
+                     {% else %}
+                         <!-- If the visitor is not logged in, prompt them to log in to follow -->
+                         {% if request.user.is_anonymous %}
+                             <a href="{% url 'users:login' %}" class="ml-5 btn btn-sm btn-primary">Follow</a>
+                         <!-- If logged in, show the follow button -->
+                         {% else %}
+                             <input type="hidden" name="action" value="follow">
+                             <button type="submit" class="ml-5 btn btn-sm btn-primary">Follow</button>
+                         {% endif %}
+                     {% endif %}
+                 </form>
+                 <!-- If the logged-in user is a moderator, show a button to delete the profile picture -->
+                 {% if request.user.groups.get|stringformat:"s" == "Mod" %}
+                     <form method="POST" style="display: inline-block;">
+                         {% csrf_token %}
+                         <input type="hidden" name="action" value="delete">
+                         <button type="submit" class="ml-5 btn btn-sm btn-danger" style="background-color: red;">Delete Profile Picture</button>
+                     </form>
+                 {% endif %}
+             {% endif %}
             </div>
         </div>
     </div>
 
     <hr>
 
-    <div class="container" id="user-records">
-        <div class="row mt-3 ">
-            <div class="col-sm-2 col-md-8 col-lg-8 d-flex justify-content-center text-center" style="margin: auto;">
-                <table class="table-no-bg" >
-                    <tbody>
-                        <tr>
-                            <td><b>Hardest:</b></td>
-                            <td>{{hardest}}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Ranking:</b></td>
-                            <td>{{ranking}}</td>
-                        </tr>
-                        <tr>
-                            <td><b>List Points:</b></td>
-                            <td>{{user.profile.list_points}}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Demons beaten:</b></td>
-                            <td>{{records|length}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <p style="font-size: 28px; color: #454546; font-weight: bold; text-align: center; margin-bottom: 10px;">Records</p>
-        <div class="row mt-3">
-            <table class="table custom-table" id="tablePlayers">
-                <thead>
-                    <tr>
-                        <th style="text-align: center;">Demon</th>
-                        <th style="text-align: center;">Best Time</th>
-                        <th style="text-align: center;">Top</th>
-                        <th style="text-align: center;">Video Proof</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if records %}
-                    {% for record in records %}
-                    <tr>
-                        <td class="demon-cell" style="text-align: center;"><div style="margin-top: 10px;"><a href="{% url 'demonlist:detail' record.demon.position %}" style="color: black;">#{{record.demon.position}} {{record.demon}}</a></div></td>
-                        <td class="best-time-cell" style="text-align: center;"><div style="margin-top: 10px;">{{record.best_time|date:"H"}}:{{record.best_time|date:"i"}}:{{record.best_time|date:"s"}}.{{record.best_time|date:"u"|slice:":3"}}</div></td>
-                        <td class="top-cell" style="text-align: center;"><div>[#{{record.top_order}} by order]</div></div>[#{{record.top_best_time}} by best time]</div></td>
-                        <td class="video-link-cell" style="text-align: center;">
-                            {% if record.video %}<a class="btn btn-primary" style="margin: 0 auto;" href="{{record.video}}" target="_blank">{{record.video_platform}}</a>{% else %}<br><br>{% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    {% else %}
-                    <tr class="table-row">
-                        <td colspan="4" class="record-cell" style="text-align: center;">
-                            There have been no records yet
-                        </td>
-                    </tr>
-                    {% endif %}
-                </tbody>
-            </table>
-        </div>
+    
+   
+    <!-- TABLE CONTAINER -->
+    <div class="row mt-3">
+        <!-- Custom styled table -->
+        <table class="table custom-table" id="tablePlayers">
+            <!-- Table header -->
+            <thead>
+                <tr>
+                    <th class="header-demon Teko-Light TekoRed BlackBackground">Demon</th>
+                    <th class="header-best-time Teko-Light TekoRed BlackBackground">Best Time</th>
+                    <th class="header-top Teko-Light TekoRed BlackBackground">Top</th>
+                    <th class="header-video-proof Teko-Light TekoRed BlackBackground">Video Proof</th>
+                </tr>
+            </thead>
+            <!-- Table body -->
+            <tbody>
+                <!-- Check if there are records to display -->
+                {% if records %}
+                <!-- Loop through each record -->
+                {% for record in records %}
+                <tr>
+                    <!-- Demon name and position -->
+                    <td class="demon-cell"><div class="cell-content"><a href="{% url 'demonlist:detail' record.demon.position %}" class="demon-link">#{{record.demon.position}} {{record.demon}}</a></div></td>
+                    <!-- Best time with formatting for hours, minutes, seconds, and milliseconds -->
+                    <td class="best-time-cell"><div class="cell-content">{{record.best_time|date:"H"}}:{{record.best_time|date:"i"}}:{{record.best_time|date:"s"}}.{{record.best_time|date:"u"|slice:":3"}}</div></td>
+                    <!-- Top order and best time rankings -->
+                    <td class="top-cell"><div class="cell-content">[#{{record.top_order}} by order] [#{{record.top_best_time}} by best time]</div></td>
+                    <!-- Video proof link -->
+                    <td class="video-link-cell">
+                        <!-- Check if there is a video link -->
+                        {% if record.video %}
+                        <a class="btn-video-proof" href="{{record.video}}" target="_blank">{{record.video_platform}}</a>
+                        {% else %}
+                        <!-- If no video, provide empty space or alternative content -->
+                        <div class="no-video">No Video</div>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <!-- Message if there are no records -->
+                <tr class="table-row">
+                    <td colspan="4" class="no-records-cell">There have been no records yet</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
     </div>
+</div>
+    
 
     <script>
         let list_users = []
@@ -414,6 +457,8 @@
             })
         }
       </script>
+      <script src="{% static 'js/changeColor/users.js' %}"></script>
+
 
 {% endblock %}
 {% block footer_margin %}100{% endblock  %}
