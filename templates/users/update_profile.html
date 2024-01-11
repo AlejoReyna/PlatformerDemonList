@@ -31,7 +31,7 @@
 
     <div class="row justify-content-md-center fullContainer">
         <!-- Line that contains the form-->
-        <div class="col-sm-12 col-md-10 col-lg-6 p-5" id="profile-box" style="border-radius: 10px;">
+        <div class="col-sm-12 col-md-10 col-lg-10 p-5" id="profile-box" style="border-radius: 10px;">
 
             <form action="{% url "users:update" %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -101,116 +101,119 @@
                 </div> -->
 
                 {# Discord field #}
-                <div class="form-group">
-                    <div class="label-container">
-                        <label> <span class="Teko-Light"> DISCORD USERNAME </span> </label>
-                    </div>
-                    <input 
-                        class="form-control {% if form.discord.errors %}is-invalid{% endif %} Teko-Light shadow"
-                        type="text" 
-                        name="discord" 
-                        placeholder="Discord username" 
-                        value="{% if form.errors %}{{form.errors}}{% else %}{% if request.user.profile.discord %}{{request.user.profile.discord}}{% endif %}{% endif %}"/>
-                        {% for error in form.discord.errors %}
-                            <div class="invalid-feedback">
-                                {{error}}
-                            </div>
-                        {% endfor %}
-                </div>
-
-                {# Youtube channel field #}
-                <div class="form-group">
-                    <div class="label-container">
-                        <label>  <span class="Teko-Light"> YOUTUBE CHANNEL </span> </label>
-                    </div>
-                    <input 
-                        class="form-control {% if form.youtube_channel.errors %}is-invalid{% endif %} Teko-Light shadow"
-                        type="text" 
-                        name="youtube_channel" 
-                        placeholder="Youtube channel"
-                        value="{% if form.errors %}{{form.youtube_channel.value}}{% else %}{% if request.user.profile.youtube_channel %}{{request.user.profile.youtube_channel}}{% else %}https://www.youtube.com/@{% endif %}{% endif %}"
-                        oninput="updateYoutubeValue(this)"/>
-                        {% for error in form.website.errors %}
-                            <div class="invalid-feedback">
-                                {{error}}
-                            </div>
-                        {% endfor %}
-                </div>
-
-                {# Twitter field #}
-                <div class="form-group">
-                    <div class="label-container">
-                    <label> <span class="Teko-Light"> TWITTER </span> </label>
-                    </div>
-                    <input 
-                        class="form-control {% if form.twitter.errors %}is-invalid{% endif %} Teko-Light shadow"
-                        type="text" 
-                        name="twitter" 
-                        placeholder="Twitter"
-                        value="{% if form.errors %}{{form.twitter.value}}{% else %}{% if request.user.profile.twitter %}{{request.user.profile.twitter}}{% else %}https://twitter.com/{% endif %}{% endif %}"
-                        oninput="updateTwitterValue(this)"/>
-                        {% for error in form.twitter.errors %}
-                            <div class="invalid-feedback">
-                                {{error}}
-                            </div>
-                        {% endfor %}
-                </div>
-
-                {# Twitch field #}
-                <div class="form-group">
-                    <div class="label-container">
-                    <label> <span class="Teko-Light"> TWITCH </span> </label>
-                    </div>
-                    <input 
-                        class="form-control {% if form.twitch.errors %}is-invalid{% endif %} Teko-Light shadow"
-                        type="text" 
-                        name="twitch" 
-                        placeholder="Twitch"
-                        value="{% if form.errors %}{{form.twitch.value}}{% else %}{% if request.user.profile.twitch %}{{request.user.profile.twitch}}{% else %}https://twitch.tv/{% endif %}{% endif %}"
-                        oninput="updateTwitchValue(this)"/>
-                        {% for error in form.twitch.errors %}
-                            <div class="invalid-feedback">
-                                {{error}}
-                            </div>
-                        {% endfor %}
-                </div>
-
-                {# Facebook field #}
-                <div class="form-group">
-                    <div class="label-container">
-                    <label>  <span class="Teko-Light"> FACEBOOK </span> </label>
-                    </div>
-                    <input 
-                        class="form-control {% if form.facebook.errors %}is-invalid{% endif %} Teko-Light shadow"
-                        type="text" 
-                        name="facebook" 
-                        placeholder="Facebook"
-                        value="{% if form.errors %}{{form.facebook.value}}{% else %}{% if request.user.profile.facebook %}{{request.user.profile.facebook}}{% else %}https://facebook.com/{% endif %}{% endif %}"
-                        oninput="updateFacebookValue(this)"/>
-                        {% for error in form.facebook.errors %}
-                            <div class="invalid-feedback">
-                                {{error}}
-                            </div>
-                        {% endfor %}
-                </div>
-
-                {# Country field #}
-                <div class="form-group">
-                    <div class="label-container">
-                    <label>  <span class="Teko-Light"> COUNTRY </span> </label>
-                    </div>
-                    <select class="form-control shadow" id="country" name="country">
-                        <option selected disabled="disabled" value="0">-- Country --</option>
-                        {% for country in countries %}
-                        <option value="{{country}}" {% if request.user.profile.country == country %}selected{% endif %}>{{country}}</option>
-                        {% endfor %}
-                    </select>
-                    {% for error in form.country.errors %}
-                        <div class="invalid-feedback">
-                            {{error}}
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <div class="label-container">
+                            <label> <span class="Teko-Light"> DISCORD USERNAME </span> </label>
                         </div>
-                    {% endfor %}
-                </div>
+                        <input 
+                            class="form-control {% if form.discord.errors %}is-invalid{% endif %} Teko-Light shadow"
+                            type="text" 
+                            name="discord" 
+                            placeholder="Discord username" 
+                            value="{% if form.errors %}{{form.errors}}{% else %}{% if request.user.profile.discord %}{{request.user.profile.discord}}{% endif %}{% endif %}"/>
+                            {% for error in form.discord.errors %}
+                                <div class="invalid-feedback">
+                                    {{error}}
+                                </div>
+                            {% endfor %}
+                    </div>
+
+                    {# Youtube channel field #}
+                    <div class="form-group col-md-6">
+                        <div class="label-container">
+                            <label>  <span class="Teko-Light"> YOUTUBE CHANNEL </span> </label>
+                        </div>
+                        <input 
+                            class="form-control {% if form.youtube_channel.errors %}is-invalid{% endif %} Teko-Light shadow"
+                            type="text" 
+                            name="youtube_channel" 
+                            placeholder="Youtube channel"
+                            value="{% if form.errors %}{{form.youtube_channel.value}}{% else %}{% if request.user.profile.youtube_channel %}{{request.user.profile.youtube_channel}}{% else %}https://www.youtube.com/@{% endif %}{% endif %}"
+                            oninput="updateYoutubeValue(this)"/>
+                            {% for error in form.website.errors %}
+                                <div class="invalid-feedback">
+                                    {{error}}
+                                </div>
+                            {% endfor %}
+                    </div>
+
+                    {# Twitter field #}
+                    <div class="form-group col-md-6">
+                        <div class="label-container">
+                        <label> <span class="Teko-Light"> TWITTER </span> </label>
+                        </div>
+                        <input 
+                            class="form-control {% if form.twitter.errors %}is-invalid{% endif %} Teko-Light shadow"
+                            type="text" 
+                            name="twitter" 
+                            placeholder="Twitter"
+                            value="{% if form.errors %}{{form.twitter.value}}{% else %}{% if request.user.profile.twitter %}{{request.user.profile.twitter}}{% else %}https://twitter.com/{% endif %}{% endif %}"
+                            oninput="updateTwitterValue(this)"/>
+                            {% for error in form.twitter.errors %}
+                                <div class="invalid-feedback">
+                                    {{error}}
+                                </div>
+                            {% endfor %}
+                    </div>
+
+                    {# Twitch field #}
+                    <div class="form-group col-md-6">
+                        <div class="label-container">
+                        <label> <span class="Teko-Light"> TWITCH </span> </label>
+                        </div>
+                        <input 
+                            class="form-control {% if form.twitch.errors %}is-invalid{% endif %} Teko-Light shadow"
+                            type="text" 
+                            name="twitch" 
+                            placeholder="Twitch"
+                            value="{% if form.errors %}{{form.twitch.value}}{% else %}{% if request.user.profile.twitch %}{{request.user.profile.twitch}}{% else %}https://twitch.tv/{% endif %}{% endif %}"
+                            oninput="updateTwitchValue(this)"/>
+                            {% for error in form.twitch.errors %}
+                                <div class="invalid-feedback">
+                                    {{error}}
+                                </div>
+                            {% endfor %}
+                    </div>
+
+                    {# Facebook field #}
+                    <div class="row justify-content-center">
+                        <div class="form-group col-md-6">
+                            <div class="label-container">
+                            <label>  <span class="Teko-Light"> FACEBOOK </span> </label>
+                            </div>
+                            <input 
+                                class="form-control {% if form.facebook.errors %}is-invalid{% endif %} Teko-Light shadow"
+                                type="text" 
+                                name="facebook" 
+                                placeholder="Facebook"
+                                value="{% if form.errors %}{{form.facebook.value}}{% else %}{% if request.user.profile.facebook %}{{request.user.profile.facebook}}{% else %}https://facebook.com/{% endif %}{% endif %}"
+                                oninput="updateFacebookValue(this)"/>
+                                {% for error in form.facebook.errors %}
+                                    <div class="invalid-feedback">
+                                        {{error}}
+                                    </div>
+                                {% endfor %}
+                        </div>
+    
+                        {# Country field #}
+                        <div class="form-group col-md-6">
+                            <div class="label-container">
+                            <label>  <span class="Teko-Light"> COUNTRY </span> </label>
+                            </div>
+                            <select class="form-control shadow" id="country" name="country">
+                                <option selected disabled="disabled" value="0">-- Country --</option>
+                                {% for country in countries %}
+                                <option value="{{country}}" {% if request.user.profile.country == country %}selected{% endif %}>{{country}}</option>
+                                {% endfor %}
+                            </select>
+                            {% for error in form.country.errors %}
+                                <div class="invalid-feedback">
+                                    {{error}}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
 
                 <button type="submit" class="btn btn-primary btn-block mt-5 Teko-Light">UPDATE INFO</button>
             </form>
