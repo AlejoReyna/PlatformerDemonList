@@ -93,7 +93,7 @@
     <!-- THIS COLUMN CHATGPT -->
     <div class="col-md-6">  <!-- DELETED 'POST-CONTAINER CLASS'-->
         <div class="search-bar-container col-sm-12 col-md-12 offset-md-2 mt-5 p-1" style="margin: 0;" id="searchbar">
-            <input class="mb-1 Teko-Light shadow inputElements" type="text" id="search" placeholder="SEARCH DEMON..." oninput="search_demon(this);">
+            <input class="mb-1 Teko-Light shadow inputElements value-color" type="text" id="search" placeholder="SEARCH DEMON..." oninput="search_demon(this);">
             <i class="fa-solid fa-magnifying-glass search-icon inputElements" style="color: gray"></i>
         </div>
 
@@ -162,7 +162,8 @@
             });
     }
     </script>
-    <script src="{% static 'js/changeColor/script.js' %}"></script>
+    <script src="{% static 'js/changeColor/list.js' %}" defer></script>
+
 
 {% endblock %}
 

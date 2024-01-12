@@ -47,7 +47,19 @@
             color: #3498db;
           }
         
-
+          /* Botón responsivo */
+          @media (max-width: 768px) {
+            .dropbtn {
+                margin-right: 0; /* Elimina el margen para pantallas pequeñas */
+                padding: 10px; /* Ajusta el padding para pantallas pequeñas */
+                
+            }
+            
+            .MenuText {
+                display: none; /* Oculta el texto 'MENU' en pantallas pequeñas */
+            }
+        }
+        
     </style>
      {% load static %}
 <section class="container">
@@ -67,9 +79,9 @@
                 
                 <!-- NAVBAR FOR MOBILE -->
                 <a class="navbar-brand d-block d-md-none" href="{% url 'demonlist:list' %}" style="line-height: 0;">
-                    <img src="{% static "img/demonlist2.png" %}" class="d-inline-block align-top"/>
+                    <img src="{% static "img/new-logo.png" %}" class="d-inline-block align-top"/>
                     <div style="margin-top: 5px; display: flex; align-items: baseline;">
-                        <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 20px; color: #3498db; padding: 5px 10px; margin-bottom: 0; margin-left: 100px;">v 1.0</p>
+                        <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 20px; color: #3498db; padding: 5px 10px; margin-bottom: 0; margin-left: 100px;">v 1.1</p>
                     </div>
                 </a>
                 <!-- LOGO CONTAINER -->
@@ -118,42 +130,40 @@
                         <!-- DARK MODE CODE-->
 
                         <div class="icon-and-button" style="display: flex; align-items: center;"> 
-                            <i class="fa-solid fa-moon darkmode" id="changeColor" onClick="change_color()" style="font-size: 40px; margin-left: 20px"></i>
-
-
+                            <i class="fa-solid fa-moon darkmode" id="changeColor" onclick="change_color()" style="font-size: 40px; margin-left: 20px"></i>
+                        </div>
+    
                         <!-- MENU BUTTON CODE -->
-                            <div class="collapse navbar-collapse" id="navbarNav" style="margin-top: 5px; margin-left: 20px;">
-                                <div class="dropdown" >
-                                    <button class="dropbtn shadow" id="menuBtn" style="margin-right: 80px; background-color: white; color: black; border: 2px solid black; border-radius: 10px; ">
-                                        <i class="fas fa-bars" id="menuIcon"></i> <span class="Teko-Light"> MENU </span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="collapse navbar-collapse" id="navbarNav" style="margin-top: 5px; margin-left: 20px;">
+                            <div class="dropdown" >
+                                <button class="dropbtn shadow" id="menuBtn" style="margin-right: 80px; background-color: white; color: black; border: 2px solid black; border-radius: 10px; ">
+                                    <i class="fas fa-bars" id="menuIcon"></i> <span class="Teko-Light MenuText"> MENU </span>
+                                </button>
 
+                        
                                 <div class="dropdown-content" id="menuContent">
-                                    <a href="{% url 'demonlist:stats_viewer' %}">
-                                        <i class="fas fa-chart-bar"></i> Stats viewer
-                                    </a>
-                                    <a href="{% url 'demonlist:submit_record' %}">
-                                        <i class="fas fa-plus"></i> Submit record
-                                    </a>
-                                    <a href="{% url 'guidelines' %}">
-                                        <i class="fas fa-question-circle"></i> Guidelines
-                                    </a>
-                                    <form method="post" action="{% url 'users:logout' %}">
-                                        {% csrf_token %}
-                                        <button type="submit" class="custom-button2">
-                                            {% if request.user.id %}
-                                                <i class="fas fa-sign-out-alt" style="font-size: 25px;"></i> Logout
-                                            {% else %}
-                                                <i class="fas fa-sign-in-alt" style="font-size: 25px;"></i> Login
-                                            {% endif %}
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                                    <a class="menuElement" href="{% url 'demonlist:stats_viewer' %}">
+                                            <i class="fas fa-chart-bar"></i> Stats viewer
+                                        </a>
+                                        <a class="menuElement" href="{% url 'demonlist:submit_record' %}">
+                                            <i class="fas fa-plus"></i> Submit record
+                                            </a>
+                                            <a class="menuElement" href="{% url 'guidelines' %}">
+                                                <i class="fas fa-question-circle menuElement"></i> Guidelines
+                                            </a>
+                                            <form method="post" action="{% url 'users:logout' %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="custom-button2">
+                                                    {% if request.user.id %}
+                                                        <i class="fas fa-sign-out-alt menuElement" style="font-size: 25px;"></i> Logout
+                                                    {% else %}
+                                                        <i class="fas fa-sign-in-alt menuElement" style="font-size: 25px;"></i> Login
+                                                    {% endif %}
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                         </div>
                         <!-- MENU BUTTON CODE -->
 
 
@@ -182,7 +192,7 @@
     </div>
 </section>
 
-<script src="{% static 'js/changeColor/script.js' %}"></script>
+<script src="{% static 'js/changeColor/navbar.js' %}" defer></script>
 <script src="https://kit.fontawesome.com/d6b454d5de.js" crossorigin="anonymous"></script>
 
     

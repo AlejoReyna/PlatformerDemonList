@@ -1,6 +1,6 @@
+// Script for list template
 document.addEventListener('DOMContentLoaded', () => {
     const changeColorBtn = document.getElementById("changeColor");
-    const navbar = document.getElementById("main-navbar");
     const demonCard = document.getElementsByClassName("demonCard");
     const news = document.getElementById("news");
     const nextUpdate = document.getElementById("nextUpdate");
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function change_color() {
         if (isOriginalColor) {
-            navbar.style.backgroundColor = "#3e3e3e";
+            
             // Demon card styles
             Array.from(demonCard).forEach(card => card.style.backgroundColor = "black");
             Array.from(demonCard).forEach(card => card.style.background = 'linear-gradient(to right, #0a0f0d, #000000);');
@@ -47,7 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         } else {
-            navbar.style.backgroundColor = ""; // Resets to original color
+            /*
+            navbar.style.backgroundColor = "";*/ // Resets to original color
             Array.from(demonCard).forEach(card => card.style.backgroundColor = ""); // Resets to original color
             nextUpdate.style.backgroundColor = "";
             nextUpdate.style.background = "";
