@@ -11,6 +11,7 @@
 {% block container %}
 
     <style>
+        
 
         body.popup-open_followers {
             overflow: hidden; /* Evita el desplazamiento cuando el pop-up está abierto */
@@ -147,12 +148,11 @@
             color: black;
         }
     </style>
-
-<div class="container-fluid mb-5" style="margin-top: 5em;">
+<div class="container mb-5" style="margin-top: 5em;">
     <!-- ROW FOR LAYOUT -->
     <div class="row align-items-center">
     <!-- CONTENEDOR DE ESTADISTICAS -->
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="d-flex justify-content-center text-center statistic-container" style="margin: 0; padding: 0;">
                 <table style="width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 10px; overflow: hidden;">
                     <tbody>
@@ -181,8 +181,8 @@
             </div>
         </div>
     
-        <!-- Column for profile picture -->
-        <div class="col-md-4 d-flex justify-content-center">            
+        <!-- Column for profile picture and username-->
+        <div class="col-md-6 justify-content-center">            
             <img
                 src="{% if user.profile.picture %}{{ user.profile.picture.url }}{% else %}{% static 'img/default-profile.png' %}{% endif %}"
                 alt="@{{ user.username}}"
@@ -190,46 +190,17 @@
                 width="200px"
                 height="200px"
             />
-        </div>
-
-        <!-- Column for user information and actions -->
-        <div class="col-md-4">
+            <!-- Username displayed below the image -->
+            <div class="username" style="margin-top: 10px;">{{ user.username }}</div>
+            <!-- BADGES MUST APPEAR BELOW USERNAME-->
             <!-- Name and verified badge -->
             <h2 style="font-weight: 300; font-size: 30px;" class="Teko-Light">
                 <!-- Country flag next to the username -->
                 <div class="user-info">
                     <!-- User image -->
                     <img src="{{user.profile.country.picture.url}}" title="{{user.profile.country}}" height="35" class="user-image" />
-                    <!-- Username displayed below the image -->
-                    <div class="username" style="margin-top: 10px;">{{ user.username }}</div>
-                </div>
-
-                <!-- Display verified badge if the user is verified -->
-                {% if user.profile.verified %}
-                    <i class="fas fa-check-circle" style="margin-left: 10px; color: #4169E1;"></i>
-                {% endif %}
-
-                <!-- Display social media links if they exist in the user's profile -->
-                {% if user.profile.youtube_channel %}
-                <a href="{{user.profile.youtube_channel}}" target="_blank" id="youtube_button"><i class="fab fa-youtube"></i></a>
-                {% endif %}
-
-                {% if user.profile.twitter %}
-                <a href="{{user.profile.twitter}}" target="_blank" id="twitter_button"><i class="fab fa-twitter"></i></a>
-                {% endif %}
-
-                {% if user.profile.twitch %}
-                <a href="{{user.profile.twitch}}" target="_blank" id="twitch_button"><i class="fab fa-twitch"></i></a>
-                {% endif %}
-
-                <!-- If the user has a Facebook profile, display the link -->
-                {% if user.profile.facebook %}
-                <a href="{{user.profile.facebook}}" target="_blank" id="facebook_button"><i class="fab fa-facebook"></i></a>
-                {% endif %}
-
-               
-            </h2>
-                <!-- ROW FOR RECORD, FOLLOWERS, FOLLOWING, IN THAT ORDER -->
+                    
+                    <!-- ROW FOR RECORD, FOLLOWERS, FOLLOWING, IN THAT ORDER -->
                 <div class="row mt-2" style="font-size: 1.2em">
                     <div class="col-sm-4">
                         <b> <span class="Teko-Light"> {{records|length}} </span> <br> 
@@ -245,67 +216,17 @@
                     </div>
                 </div>
                 <!-- ROW FOR RECORD, FOLLOWERS, FOLLOWING, IN THAT ORDER -->
-                <div class="overlay_followers" id="overlay_followers" onclick="hide_followers()"></div>
-                <div id="popup_followers" class="popup_followers">
-                    <div style="text-align: center; font-size: 20px;">
-                        <b>Followers</b>
-                    </div>
-                    <div style="display: flex; justify-content: center; align-items: center;">
-                        <input class="mb-4" style="margin-top: 10px; width: 220px; height: 40px; background-color: #f8f9fa; color: #495057; border: 2px solid #ced4da; " type="text" id="search_follower" placeholder="Search user..." oninput="search_user(this, 'followers');">
-                    </div>
-                    <div class="user-container_followers" id="user-container_followers">
-                    {% for follower in user.profile.followers.all %}
-                        <div class="user-element" id="user_{{follower.user.id}}">
-                            {% if follower.picture %}
-                                <img src="/media/{{ follower.picture }}" width="50" height="50" class="d-inline-block align-top rounded-circle user-picture"/>
-                            {% else %}
-                                <img src="{% static 'img/default-profile.png' %}" width="50" height="50" class="d-inline-block align-top rounded-circle user-picture"/>
-                            {% endif %}
-                            <div class="user-info">
-                                <a href="{% url 'users:detail' follower.user.id %}" target="_blank" class="user-link">{{follower}}</a>
-                            </div>
-                        </div>
-                    {% endfor %}
-                    </div>
-                    <button onclick="hide_followers()" class="close-button">X</button>
-                </div>
-                <div class="overlay_following" id="overlay_following" onclick="hide_following()"></div>
-                <div id="popup_following" class="popup_following">
-                    <div style="text-align: center; font-size: 20px;">
-                        <b>Following</b>
-                    </div>
-                    <div style="display: flex; justify-content: center; align-items: center;">
-                        <input class="mb-4" style="margin-top: 10px; width: 220px; height: 40px; background-color: #f8f9fa; color: #495057; border: 2px solid #ced4da;" type="text" id="search_following" placeholder="Search user..." oninput="search_user(this, 'following');">
-                    </div>
-                    <div class="user-container_following" id="user-container_following">
-                    {% for following in user.profile.followings.all %}
-                        <div class="user-element" id="user_{{following.user.id}}">
-                            {% if following.picture %}
-                                <img src="/media/{{ following.picture }}" width="50" height="50" class="d-inline-block align-top rounded-circle user-picture"/>
-                            {% else %}
-                                <img src="{% static 'img/default-profile.png' %}" width="50" height="50" class="d-inline-block align-top rounded-circle user-picture"/>
-                            {% endif %}
-                            <div class="user-info">
-                                <a href="{% url 'users:detail' following.user.id %}" target="_blank" class="user-link">{{following}}</a>
-                            </div>
-                        </div>
-                    {% endfor %}
-                    </div>
-                    <button onclick="hide_following()" class="close-button">X</button>
-                </div>
-                <div class="row mt-4">
                     {% if user.profile.discord %}
                     <div class="col-sm-12">
                         <i class="fab fa-discord" style="font-size: 30px; color: #7289da; float: left;"></i>
-                        <p style="font-size: 1.2em; margin-left: 40px;">{{ user.profile.discord }}</p>
+                        <p style="font-size: 1.2em; margin-left: 40px;" class="Teko-Light">{{ user.profile.discord }}</p>
                     </div>
                     {% endif %}
                     <div class="col-sm-12">
                         <i class="fas fa-user" style="font-size: 26px; color: #43BD43; float: left;"></i>
                         <p style="font-size: 1.2em; margin-left: 40px;" class="Teko-Light">Joined date: {{ user.profile.created|date }}</p>
                     </div>
-                </div>
-                 <!-- Display edit profile and record status buttons if the logged-in user is viewing their own profile -->
+                     <!-- Display edit profile and record status buttons if the logged-in user is viewing their own profile -->
                  {% if user == request.user %}
                  <div class="d-flex justify-content-start" >
                     <a href="{% url 'users:update' %}" class="btn btn-sm btn-outline-info Teko-Light TekoRed">Edit profile</a>
@@ -331,18 +252,109 @@
                          {% endif %}
                      {% endif %}
                  </form>
-                 <!-- If the logged-in user is a moderator, show a button to delete the profile picture -->
-                 {% if request.user.groups.get|stringformat:"s" == "Mod" %}
-                     <form method="POST" style="display: inline-block;">
-                         {% csrf_token %}
-                         <input type="hidden" name="action" value="delete">
-                         <button type="submit" class="ml-5 btn btn-sm btn-danger" style="background-color: red;">Delete Profile Picture</button>
-                     </form>
-                 {% endif %}
-             {% endif %}
+             <!-- Display verified badge if the user is verified -->
+            {% if user.profile.verified %}
+             <i class="fas fa-check-circle" style="margin-left: 10px; color: #4169E1;"></i>
+            {% endif %}
+
+            <!-- Display social media links if they exist in the user's profile -->
+            {% if user.profile.youtube_channel %}
+            <a href="{{user.profile.youtube_channel}}" target="_blank" id="youtube_button"><i class="fab fa-youtube"></i></a>
+            {% endif %}
+
+            {% if user.profile.twitter %}
+            <a href="{{user.profile.twitter}}" target="_blank" id="twitter_button"><i class="fab fa-twitter"></i></a>
+            {% endif %}
+
+            {% if user.profile.twitch %}
+            <a href="{{user.profile.twitch}}" target="_blank" id="twitch_button"><i class="fab fa-twitch"></i></a>
+            {% endif %}
+
+            <!-- If the user has a Facebook profile, display the link -->
+            {% if user.profile.facebook %}
+            <a href="{{user.profile.facebook}}" target="_blank" id="facebook_button"><i class="fab fa-facebook"></i></a>
+            {% endif %}
+
+            <!-- NO FUCKING CLUE WHAT THIS DOES -->
+            <!-- PART 1 -->
+            <div class="overlay_followers" id="overlay_followers" onclick="hide_followers()"></div>
+            <div id="popup_followers" class="popup_followers">
+                <div style="text-align: center; font-size: 20px;">
+                    <b>Followers</b>
+                    </div>
+                    <div style="display: flex; justify-content: center; align-items: center;">
+                        <input class="mb-4" style="margin-top: 10px; width: 220px; height: 40px; background-color: #f8f9fa; color: #495057; border: 2px solid #ced4da; " type="text" id="search_follower" placeholder="Search user..." oninput="search_user(this, 'followers');">
+                    </div>
+                    <div class="user-container_followers" id="user-container_followers">
+                    {% for follower in user.profile.followers.all %}
+                        <div class="user-element" id="user_{{follower.user.id}}">
+                            {% if follower.picture %}
+                                <img src="/media/{{ follower.picture }}" width="50" height="50" class="d-inline-block align-top rounded-circle user-picture"/>
+                            {% else %}
+                                <img src="{% static 'img/default-profile.png' %}" width="50" height="50" class="d-inline-block align-top rounded-circle user-picture"/>
+                            {% endif %}
+                            <div class="user-info">
+                                <a href="{% url 'users:detail' follower.user.id %}" target="_blank" class="user-link">{{follower}}</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                    <button onclick="hide_followers()" class="close-button">X</button>
+                </div>
+            </div>
+
+            <!-- PART 2 -->
+            <div class="overlay_following" id="overlay_following" onclick="hide_following()"></div>
+                    <div id="popup_following" class="popup_following">
+                        <div style="text-align: center; font-size: 20px;">
+                            <b>Following</b>
+                        </div>
+                        <div style="display: flex; justify-content: center; align-items: center;">
+                            <input class="mb-4" style="margin-top: 10px; width: 220px; height: 40px; background-color: #f8f9fa; color: #495057; border: 2px solid #ced4da;" type="text" id="search_following" placeholder="Search user..." oninput="search_user(this, 'following');">
+                        </div>
+                        <div class="user-container_following" id="user-container_following">
+                        {% for following in user.profile.followings.all %}
+                            <div class="user-element" id="user_{{following.user.id}}">
+                                {% if following.picture %}
+                                    <img src="/media/{{ following.picture }}" width="50" height="50" class="d-inline-block align-top rounded-circle user-picture"/>
+                                {% else %}
+                                    <img src="{% static 'img/default-profile.png' %}" width="50" height="50" class="d-inline-block align-top rounded-circle user-picture"/>
+                                {% endif %}
+                                <div class="user-info">
+                                    <a href="{% url 'users:detail' following.user.id %}" target="_blank" class="user-link">{{following}}</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        </div>
+                        <button onclick="hide_following()" class="close-button">X</button>
+                    </div>
+            <!-- PART 3 -->
+            <!-- If the logged-in user is a moderator, show a button to delete the profile picture -->
+            {% if request.user.groups.get|stringformat:"s" == "Mod" %}
+            <form method="POST" style="display: inline-block;">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="delete">
+                <button type="submit" class="ml-5 btn btn-sm btn-danger" style="background-color: red;">Delete Profile Picture</button>
+            </form>
+        {% endif %}
+    {% endif %}
+                
+
+        </div>
+
+        <!-- Column for user information and actions -->
+        <div class="col-md-3 d-flex">
+
+            
+                
+                
+                <div class="row mt-4">
+                    
+                
+                 
             </div>
         </div>
-    </div>
+
 
     <hr>
 
@@ -457,6 +469,7 @@
             })
         }
       </script>
+    </body>
 
 
 {% endblock %}
