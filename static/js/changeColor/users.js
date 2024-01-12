@@ -10,10 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isOriginalColor) {
         Array.from(TekoRed).forEach(element => element.style.color = "red");
         Array.from(BlackBlackground).forEach(element => element.style.backgroundColor = "black");
-        navbar.style.backgroundColor = "#3e3e3e";
         } else {
         Array.from(TekoRed).forEach(element => element.style.color = "");
-        navbar.style.backgroundColor = "";
         Array.from(BlackBlackground).forEach(element => element.style.backgroundColor = "");
         }
         isOriginalColor = !isOriginalColor;

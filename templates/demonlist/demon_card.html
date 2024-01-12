@@ -1,7 +1,6 @@
 {% load custom_tags %}
 {% load static %}
 
-
 <section class="container d-none d-md-block">
     <div class="row">
         <div class="col-sm-12 col-md-12 offset-md-2 p-4 d-flex post-container demon-item mt-{% if forloop.first %}3{% else %}4{% endif %} demonCard shadow" style="margin: 0; border-radius: 10px" id="{{demon.level}}">
@@ -21,7 +20,7 @@
                     </a>-->
                 </p>
                 <p class="ml-2 mt-0 mb-2">
-                    <a href="{% url 'demonlist:detail' demon.position %}" style="font-size: 30px; color: red; font-weight: bold; " class="Teko-Medium cardText" >#{{demon.position}} - {{ demon.level }}</a>
+                    <a href="{% url 'demonlist:detail' demon.position %}" style="font-size: 30px; font-weight: bold; " class="Teko-Medium cardText" >#{{demon.position}} - {{ demon.level }}</a>
                 </p>
                 <p class="ml-2 mt-0 mb-2">
                     <b style="font-size: 20px; font-style: italic; color: #666666;" class="Teko-Light cardText">{{demon.creator}}</b>
