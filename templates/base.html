@@ -600,21 +600,19 @@ body, html   {
 
 </style>
 
-<body>
+<body class="col-sm-12 col-md-12 col-lg-12 col-xl-12" style="padding: 0;">
 
     {% include "nav.html" %}
     
-        <section class="container" id="bg">
-            <div class="row">
+    <section class="col-sm-12 col-md-12 col-lg-12 col-xl-12 container-fluid" id="bg" style="padding: 0;">
+        <div class="row">
                 
-                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 offset-me-4 mt-5">
-                    {% block container %}
-                    {% endblock%} 
-                </div>
-                
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-5" style="padding: 20px;" >                    {% block container %}
+                {% endblock%} 
             </div>
-
-        </section>
+                
+        </div>
+    </section>
 
     
 
