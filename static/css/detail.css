@@ -32,7 +32,15 @@
     text-align: center;
     
 }   
+.record-value{
+    color: black;
+    display: flex;
+    justify-content: center;
+}
 
+#records-column span, #followers-column span, #followings-column span{
+    font-size: 30px;
+}
 .table-row {
     background-color: white;
 }
@@ -53,3 +61,4 @@ b{
 .no-records-cell {
     background-color: white;
 }
+

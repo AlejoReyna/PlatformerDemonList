@@ -23,7 +23,7 @@
             <div class="row align-items-center mt-5">
 
                 <!-- Column: Container of the statistics table -->
-                <div class="col-md-3">
+                <div class="col-12 col-md-3 mb-4 mb-md-0" style="height: 50vh">
 
                     <!-- This block of code contains the statistics container -->
                     <div class="statistics-container">
@@ -60,34 +60,37 @@
                 </div>
                 
                 <!-- Column: Container of the profile image, the username, the mediastats, the medialinks, etc; -->
-                <div class="col-md-6">
+                <div class="col-md-6" style="height: 50vh;">
                     <!-- First half of the medium column -->
                     <div class="row">
-                        <div class="col-6">
-                            <div id="user-image-container">
+                        <div class="col-1">
+                        </div>
+                        <div class="col-4">
+                            <div id="user-image-container" class="d-flex justify-content-center">
                                 <img
                                     src="{% if user.profile.picture %}{{ user.profile.picture.url }}{% else %}{% static 'img/default-profile.png' %}{% endif %}"
                                     alt="@{{ user.username}}"
                                     class="rounded-circle"
-                                    width="200px"
-                                    height="200px"
+                                    width="300px"
+                                    height="300px"
+    
                                 />
                             </div>
 
-                            <div id="username-container" class="d-flex align-items-center">
+                            <div id="username-container" class="d-flex justify-content-center mt-3 align-items-center">
                                 <!-- Flag User Icon -->
                                 <div class="flag-user-icon me-2">
                                     <img src="{{ user.profile.country.picture.url }}" title="{{ user.profile.country }}" height="35" class="user-image"/>
                                 </div>
                                 
                                 <!-- Username -->
-                                <div class="username-display Teko-Medium">
+                                <div class="username-display Teko-Medium" style=" color: black;">
                                     {{ user.username }}
                                 </div>
                             </div>
                             
                             
-                            <div id="social-media-icons">
+                            <div id="social-media-icons" class="d-flex justify-content-center">
                                 <div class="row">
                                     <!-- Verified Icon -->
                                     {% if user.profile.verified %}
@@ -132,13 +135,13 @@
                                 <div class="row">
                                     <!-- Records Column -->
                                     <div class="col-sm-4" id="records-column">
-                                        <b> <span class="Teko-Light"> {{ records|length }} </span> <br></b>
+                                        <b> <span class="record-value Teko-Light"> {{ records|length }} </span></b>
                                         <span class="Teko-Light"> Records </span>
                                     </div>
                             
                                     <!-- Followers Column -->
                                     <div class="col-sm-4" id="followers-column">
-                                        <b> <span class="Teko-Light"> {{ user.profile.followers.count }} </span><br></b>
+                                        <b> <span class="record-value Teko-Light"> {{ user.profile.followers.count }} </span></b>
                                         <button onclick="show_followers()" style="border: none; background-color: transparent; cursor: pointer; padding: 0; margin: 0;">
                                             <span class="Teko-Light"> Followers </span>
                                         </button>
@@ -146,7 +149,7 @@
                             
                                     <!-- Following Column -->
                                     <div class="col-sm-4" id="followings-column">
-                                        <b> <span class="Teko-Light"> {{ user.profile.followings.count }} </span><br></b>
+                                        <b> <span class="record-value Teko-Light"> {{ user.profile.followings.count }} </span></b>
                                         <button onclick="show_following()" style="border: none; background-color: transparent; cursor: pointer; padding: 0; margin: 0;">
                                             <span class="Teko-Light"> Following </span>
                                         </button>
@@ -158,7 +161,7 @@
                             <!-- Description container -->
                             <div id="description-container">
                                 <div class="row">
-                                    <h3 class="Teko-Light"> Description lalalalalalall </h3>
+                                    <h3 class="Teko-Light"> HERE MUST GO THE DESCRIPTION </h3>
                                 </div>
                             </div>
                             <!-- End of description container.-->
@@ -168,10 +171,8 @@
                                 <div class="row">
                                     <div id="discord-data">
                                         {% if user.profile.discord %}
-                                        <div class="col-sm-12">
                                             <i class="fab fa-discord" style="font-size: 30px; color: #7289da; float: left;"></i>
                                             <p style="font-size: 1.2em; margin-left: 40px;" class="Teko-Light">{{ user.profile.discord }}</p>
-                                        </div>
                                         {% endif %}
                                     </div>
 
@@ -181,11 +182,11 @@
                                     </div>
 
                                     <div id="edit-profile-buttons">
-                                        <div class="button-container" id="EDIT PROFILE">
+                                        <div class="button-container">
                                             {% if user == request.user %}
                                             <div class="d-flex justify-content-start" >
-                                                <a href="{% url 'users:update' %}" class="btn btn-sm btn-outline-info Teko-Light TekoRed">Edit profile</a>
-                                                <a href="{% url 'users:records_status' %}" class="btn btn-sm btn-outline-info Teko-Light TekoRed">Records Status</a>
+                                                <a href="{% url 'users:update' %}" class="btn btn-sm btn-outline-info Teko-Light TekoRed shadow" style="background-image: linear-gradient(to right, #00BFFF, #1E90FF);">Edit profile</a>
+                                                <a href="{% url 'users:records_status' %}" class="btn btn-sm btn-outline-info Teko-Light TekoRed shadow" style="background-image: linear-gradient(to right, #00BFFF, #1E90FF);">Records Status</a>
                                             </div>
                                             {% else %}
                                                 <form method="POST" style="display: inline-block;">
@@ -211,12 +212,16 @@
                             </div> 
 
                         </div>
+
+
+                        <div class="col-1">
+                        </div>
                         
                     </div>
                 </div>
 
-                <div class="col-md-3">
-                    <div id="global-rank-container">
+                <div class="col-md-3"  style="height: 50vh;">
+                    <div id="global-rank-container" style="margin: 0 20px;">
                                     
                         <div class="row">
                             <div class="global-rank-header Teko-Light" 

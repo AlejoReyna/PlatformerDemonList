@@ -604,7 +604,7 @@ body, html   {
 
     {% include "nav.html" %}
     
-    <section class="col-sm-12 col-md-12 col-lg-12 col-xl-12 container-fluid" id="bg" style="padding: 0;">
+    <section class="col-sm-12 col-md-12 col-lg-12 col-xl-12 container-fluid" id="bg" style="padding: 0; height: 100vh;">
         <div class="row">
                 
             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-5" style="padding: 20px;" >                    {% block container %}
@@ -614,12 +614,6 @@ body, html   {
         </div>
     </section>
 
-    
-
-    <div style="margin-top: {% block footer_margin %}{% endblock  %}px;">
-        
-    </div>
-    
     <section class="d-none d-md-block">   
         <div class="footer">
             <div>
