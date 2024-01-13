@@ -9,8 +9,9 @@
 
 <style>
 
-    .fullContainer {
+    .container {
         background-image: url("/static/img/white-bg.jpg");
+        background-size: cover;
     }
 
     .label-container {
@@ -32,193 +33,192 @@
     
     
 </style>
-<div class="container">
 
-    <div class="row justify-content-md-center fullContainer">
-        <!-- Line that contains the form-->
-        <div class="col-sm-12 col-md-10 col-lg-10 p-5" id="profile-box" style="border-radius: 10px;">
+<body>
+    <section class="update-profile mt-5" style="height: 100vh;">
+        <div class="container container-fluid mt-5" style="height: 100vh;">
 
-            <form action="{% url "users:update" %}" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
+            <div class="row align-items-center justify-content-center" style="height: 100vh">
+                <!-- Line that contains the form-->
+                <div class="col-sm-12 col-md-10 col-lg-10 p-5" id="profile-box" style="border-radius: 10px;">
 
-                <!-- Next line is for the Input Image Script-->
-                <input type="file" id="profile-picture-input" name="picture" style="display:none;" onchange="displayImage(this)"/>
+                    <form action="{% url "users:update" %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
 
-                <div class='media d-flex justify-content-center'>
-                    {% if request.user.profile.picture %}
-                    <!-- Clicking on the image now triggers the file input click event -->
-                    <img src="{{request.user.profile.picture.url}}" class="rounded-circle" width="150" height="150" onclick="document.getElementById('profile-picture-input').click();"/>
-                    {% else %}
-                    <img src="{% static 'img/default-profile.png' %}" class="rounded-circle" width="150" height="150" onclick="document.getElementById('profile-picture-input').click();"/>
-                    {% endif %}
-                </div>
-                <div class="media-body">
-                    {% for error in form.picture.errors %}
-                    <div class="alert alert-danger">
-                        <b>Picture: </b>{{error}}
-                    </div>
-                    {% endfor %}
-                </div>
-                
+                        <!-- Next line is for the Input Image Script-->
+                        <input type="file" id="profile-picture-input" name="picture" style="display:none;" onchange="displayImage(this)"/>
 
-                <hr>
-                <!-- MSG CLASS is used to manipulate it using Javascript-->
-                {% if request.user.profile.discord %}
-                    {% if request.user.profile.verified %}
-                        <p style="margin-left: 15px; margin-top: 10px;" class="msg Teko-Light"><i class="fas fa-check-circle msg" style="margin-left: 10px; color: #4169E1; margin-right: 5px;"></i>Your account has been verified.</a></p>
-                    {% elif request.user.profile.verified is none %}
-                        <p style="margin-left: 15px; margin-top: 10px;" class="msg Teko-Light"><i class="fas fa-clock msg" style="font-size: 18px; color: gray; margin-right: 5px;"></i>Your account is being verified, please wait for our response.</a></p>
-                    {% else %}
-                        <p style="margin-left: 15px; margin-top: 10px;" class="msg Teko-Light"><i class="fas fa-times-circle msg" style="font-size: 18px; color: red; margin-right: 5px;"></i>The verification of your account has been rejected.</a></p>
-                    {% endif %}
-                {% else %}
-                <p style="margin-left: 15px; margin-top: 10px;"><i class="fas fa-exclamation-triangle" style="color: #FFA500; font-size: 18px; margin-right: 5px;"></i>To verify your account, please enter your Discord username and <a href="https://discord.gg/PlatformerList">join the server.</a></p>
-                {% endif %}
-
-                {# Username field #}
-                <div class="form-group">
-                    <div class="label-container">
-                        <label> <span class="labelText Teko-Light"> USERNAME </span> </label>
-                    </div>
-                    <input 
-                        class="form-control value-color {% if form.username.errors %}is-invalid{% endif %} Teko-Light shadow"
-                        type="text" 
-                        name="username" 
-                        placeholder="Username" 
-                        value="{% if form.errors %}{{form.username.value}}{% else %}{{request.user.username}}{% endif %}"/>
-                        {% for error in form.website.errors %}
-                            <div class="invalid-feedback">
-                                {{error}}
+                        <div class='media d-flex justify-content-center'>
+                            {% if request.user.profile.picture %}
+                            <!-- Clicking on the image now triggers the file input click event -->
+                            <img src="{{request.user.profile.picture.url}}" class="rounded-circle" width="150" height="150" onclick="document.getElementById('profile-picture-input').click();"/>
+                            {% else %}
+                            <img src="{% static 'img/default-profile.png' %}" class="rounded-circle" width="150" height="150" onclick="document.getElementById('profile-picture-input').click();"/>
+                            {% endif %}
+                        </div>
+                        <div class="media-body">
+                            {% for error in form.picture.errors %}
+                            <div class="alert alert-danger">
+                                <b>Picture: </b>{{error}}
                             </div>
-                        {% endfor %}
-                </div>
-            
-
-                {# Discord field #}
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <div class="label-container">
-                            <label> <span class="labelText Teko-Light"> DISCORD USERNAME </span> </label>
-                        </div>
-                        <input 
-                            class="form-control value-color {% if form.discord.errors %}is-invalid{% endif %} Teko-Light shadow"
-                            type="text" 
-                            name="discord" 
-                            placeholder="Discord username" 
-                            value="{% if form.errors %}{{form.errors}}{% else %}{% if request.user.profile.discord %}{{request.user.profile.discord}}{% endif %}{% endif %}"/>
-                            {% for error in form.discord.errors %}
-                                <div class="invalid-feedback">
-                                    {{error}}
-                                </div>
                             {% endfor %}
-                    </div>
-
-                    {# Youtube channel field #}
-                    <div class="form-group col-md-6">
-                        <div class="label-container">
-                            <label>  <span class="labelText Teko-Light"> YOUTUBE CHANNEL </span> </label>
                         </div>
-                        <input 
-                            class="form-control value-color {% if form.youtube_channel.errors %}is-invalid{% endif %} Teko-Light shadow"
-                            type="text" 
-                            name="youtube_channel" 
-                            placeholder="Youtube channel"
-                            value="{% if form.errors %}{{form.youtube_channel.value}}{% else %}{% if request.user.profile.youtube_channel %}{{request.user.profile.youtube_channel}}{% else %}https://www.youtube.com/@{% endif %}{% endif %}"
-                            oninput="updateYoutubeValue(this)"/>
-                            {% for error in form.website.errors %}
-                                <div class="invalid-feedback">
-                                    {{error}}
-                                </div>
-                            {% endfor %}
-                    </div>
+                        
 
-                    {# Twitter field #}
-                    <div class="form-group col-md-6">
-                        <div class="label-container">
-                        <label> <span class="labelText Teko-Light"> TWITTER </span> </label>
-                        </div>
-                        <input 
-                            class="form-control value-color {% if form.twitter.errors %}is-invalid{% endif %} Teko-Light shadow"
-                            type="text" 
-                            name="twitter" 
-                            placeholder="Twitter"
-                            value="{% if form.errors %}{{form.twitter.value}}{% else %}{% if request.user.profile.twitter %}{{request.user.profile.twitter}}{% else %}https://twitter.com/{% endif %}{% endif %}"
-                            oninput="updateTwitterValue(this)"/>
-                            {% for error in form.twitter.errors %}
-                                <div class="invalid-feedback">
-                                    {{error}}
-                                </div>
-                            {% endfor %}
-                    </div>
+                        <hr>
+                        <!-- MSG CLASS is used to manipulate it using Javascript-->
+                        {% if request.user.profile.discord %}
+                            {% if request.user.profile.verified %}
+                                <p style="margin-left: 15px; margin-top: 10px;" class="msg Teko-Light"><i class="fas fa-check-circle msg" style="margin-left: 10px; color: #4169E1; margin-right: 5px;"></i>Your account has been verified.</a></p>
+                            {% elif request.user.profile.verified is none %}
+                                <p style="margin-left: 15px; margin-top: 10px;" class="msg Teko-Light"><i class="fas fa-clock msg" style="font-size: 18px; color: gray; margin-right: 5px;"></i>Your account is being verified, please wait for our response.</a></p>
+                            {% else %}
+                                <p style="margin-left: 15px; margin-top: 10px;" class="msg Teko-Light"><i class="fas fa-times-circle msg" style="font-size: 18px; color: red; margin-right: 5px;"></i>The verification of your account has been rejected.</a></p>
+                            {% endif %}
+                        {% else %}
+                        <p style="margin-left: 15px; margin-top: 10px;"><i class="fas fa-exclamation-triangle" style="color: #FFA500; font-size: 18px; margin-right: 5px;"></i>To verify your account, please enter your Discord username and <a href="https://discord.gg/PlatformerList">join the server.</a></p>
+                        {% endif %}
 
-                    {# Twitch field #}
-                    <div class="form-group col-md-6">
-                        <div class="label-container">
-                        <label> <span class="labelText Teko-Light"> TWITCH </span> </label>
-                        </div>
-                        <input 
-                            class="form-control value-color {% if form.twitch.errors %}is-invalid{% endif %} Teko-Light shadow"
-                            type="text" 
-                            name="twitch" 
-                            placeholder="Twitch"
-                            value="{% if form.errors %}{{form.twitch.value}}{% else %}{% if request.user.profile.twitch %}{{request.user.profile.twitch}}{% else %}https://twitch.tv/{% endif %}{% endif %}"
-                            oninput="updateTwitchValue(this)"/>
-                            {% for error in form.twitch.errors %}
-                                <div class="invalid-feedback">
-                                    {{error}}
-                                </div>
-                            {% endfor %}
-                    </div>
-
-                    <!-- ELEMENTS ARE IN THE SAME ROW BECAUSE THEY HAVE TO BE VERTICALLY ALLIGNED -->
-                    {# Facebook field #}
-                    <div class="row justify-content-center">
-                        <div class="form-group col-md-12">
+                        {# Username field #}
+                        <div class="form-group">
                             <div class="label-container">
-                            <label>  <span class="labelText Teko-Light"> FACEBOOK </span> </label>
+                                <label> <span class="labelText Teko-Light"> USERNAME </span> </label>
                             </div>
                             <input 
-                                class="form-control value-color{% if form.facebook.errors %}is-invalid{% endif %} Teko-Light shadow"
+                                class="form-control value-color {% if form.username.errors %}is-invalid{% endif %} Teko-Light shadow"
                                 type="text" 
-                                name="facebook" 
-                                placeholder="Facebook"
-                                value="{% if form.errors %}{{form.facebook.value}}{% else %}{% if request.user.profile.facebook %}{{request.user.profile.facebook}}{% else %}https://facebook.com/{% endif %}{% endif %}"
-                                oninput="updateFacebookValue(this)"/>
-                                {% for error in form.facebook.errors %}
+                                name="username" 
+                                placeholder="Username" 
+                                value="{% if form.errors %}{{form.username.value}}{% else %}{{request.user.username}}{% endif %}"/>
+                                {% for error in form.website.errors %}
                                     <div class="invalid-feedback">
                                         {{error}}
                                     </div>
                                 {% endfor %}
                         </div>
                     
-    
-                        {# Country field #}
-                            <div class="form-group col-md-12">
+
+                        {# Discord field #}
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
                                 <div class="label-container">
-                                    <label>  <span class="labelText Teko-Light"> COUNTRY </span> </label>
+                                    <label> <span class="labelText Teko-Light"> DISCORD USERNAME </span> </label>
                                 </div>
-                                <select class="form-control value-color shadow" id="country" name="country">
-                                    <option selected disabled="disabled" value="0">-- Country --</option>
-                                    {% for country in countries %}
-                                        <option value="{{country}}" {% if request.user.profile.country == country %}selected{% endif %}>{{country}}</option>
-                                        {% endfor %}
-                                </select>
-                                {% for error in form.country.errors %}
-                                    <div class="invalid-feedback">
-                                        {{error}}
-                                    </div>
-                                {% endfor %}
+                                <input 
+                                    class="form-control value-color {% if form.discord.errors %}is-invalid{% endif %} Teko-Light shadow"
+                                    type="text" 
+                                    name="discord" 
+                                    placeholder="Discord username" 
+                                    value="{% if form.errors %}{{form.errors}}{% else %}{% if request.user.profile.discord %}{{request.user.profile.discord}}{% endif %}{% endif %}"/>
+                                    {% for error in form.discord.errors %}
+                                        <div class="invalid-feedback">
+                                            {{error}}
+                                        </div>
+                                    {% endfor %}
                             </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <button type="submit" class="btn btn-primary btn-block mt-5 Teko-Light shadow" style="max-width: 150px; margin: auto; display: block;" id="updateBtn">UPDATE INFO</button>
-                    </div>
-            </form>
+
+                            {# Youtube channel field #}
+                            <div class="form-group col-md-6">
+                                <div class="label-container">
+                                    <label>  <span class="labelText Teko-Light"> YOUTUBE CHANNEL </span> </label>
+                                </div>
+                                <input 
+                                    class="form-control value-color {% if form.youtube_channel.errors %}is-invalid{% endif %} Teko-Light shadow"
+                                    type="text" 
+                                    name="youtube_channel" 
+                                    placeholder="Youtube channel"
+                                    value="{% if form.errors %}{{form.youtube_channel.value}}{% else %}{% if request.user.profile.youtube_channel %}{{request.user.profile.youtube_channel}}{% else %}https://www.youtube.com/@{% endif %}{% endif %}"
+                                    oninput="updateYoutubeValue(this)"/>
+                                    {% for error in form.website.errors %}
+                                        <div class="invalid-feedback">
+                                            {{error}}
+                                        </div>
+                                    {% endfor %}
+                            </div>
+
+                            {# Twitter field #}
+                            <div class="form-group col-md-6">
+                                <div class="label-container">
+                                <label> <span class="labelText Teko-Light"> TWITTER </span> </label>
+                                </div>
+                                <input 
+                                    class="form-control value-color {% if form.twitter.errors %}is-invalid{% endif %} Teko-Light shadow"
+                                    type="text" 
+                                    name="twitter" 
+                                    placeholder="Twitter"
+                                    value="{% if form.errors %}{{form.twitter.value}}{% else %}{% if request.user.profile.twitter %}{{request.user.profile.twitter}}{% else %}https://twitter.com/{% endif %}{% endif %}"
+                                    oninput="updateTwitterValue(this)"/>
+                                    {% for error in form.twitter.errors %}
+                                        <div class="invalid-feedback">
+                                            {{error}}
+                                        </div>
+                                    {% endfor %}
+                            </div>
+
+                            {# Twitch field #}
+                            <div class="form-group col-md-6">
+                                <div class="label-container">
+                                <label> <span class="labelText Teko-Light"> TWITCH </span> </label>
+                                </div>
+                                <input 
+                                    class="form-control value-color {% if form.twitch.errors %}is-invalid{% endif %} Teko-Light shadow"
+                                    type="text" 
+                                    name="twitch" 
+                                    placeholder="Twitch"
+                                    value="{% if form.errors %}{{form.twitch.value}}{% else %}{% if request.user.profile.twitch %}{{request.user.profile.twitch}}{% else %}https://twitch.tv/{% endif %}{% endif %}"
+                                    oninput="updateTwitchValue(this)"/>
+                                    {% for error in form.twitch.errors %}
+                                        <div class="invalid-feedback">
+                                            {{error}}
+                                        </div>
+                                    {% endfor %}
+                            </div>
+
+                            <!-- ELEMENTS ARE IN THE SAME ROW BECAUSE THEY HAVE TO BE VERTICALLY ALLIGNED -->
+                            {# Facebook field #}
+                            <div class="row justify-content-center">
+                                <div class="form-group col-md-6">
+                                    <div class="label-container">
+                                    <label>  <span class="labelText Teko-Light"> FACEBOOK </span> </label>
+                                    </div>
+                                    <input 
+                                        class="form-control value-color{% if form.facebook.errors %}is-invalid{% endif %} Teko-Light shadow"
+                                        type="text" 
+                                        name="facebook" 
+                                        placeholder="Facebook"
+                                        value="{% if form.errors %}{{form.facebook.value}}{% else %}{% if request.user.profile.facebook %}{{request.user.profile.facebook}}{% else %}https://facebook.com/{% endif %}{% endif %}"
+                                        oninput="updateFacebookValue(this)"/>
+                                        {% for error in form.facebook.errors %}
+                                            <div class="invalid-feedback">
+                                                {{error}}
+                                            </div>
+                                        {% endfor %}
+                                        <div class="label-container">
+                                            <label>  <span class="labelText Teko-Light"> COUNTRY </span> </label>
+                                        </div>
+                                        <select class="form-control value-color shadow" id="country" name="country">
+                                            <option selected disabled="disabled" value="0">-- Country --</option>
+                                            {% for country in countries %}
+                                                <option value="{{country}}" {% if request.user.profile.country == country %}selected{% endif %}>{{country}}</option>
+                                                {% endfor %}
+                                        </select>
+                                        {% for error in form.country.errors %}
+                                            <div class="invalid-feedback">
+                                                {{error}}
+                                            </div>
+                                        {% endfor %}
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <button type="submit" class="btn btn-primary btn-block mt-5 Teko-Light shadow" style="max-width: 150px; margin: auto; display: block;" id="updateBtn">UPDATE INFO</button>
+                            </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+    </section>
+</body>
 <script>
     function updateYoutubeValue(input) {
         const userValue = input.value.substring("https://www.youtube.com/@".length);

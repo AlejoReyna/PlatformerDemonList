@@ -21,7 +21,7 @@
 
             <!-- Row: Half vertical elements -->
             <div class="row align-items-center mt-5">
-
+                
                 <!-- Column: Container of the statistics table -->
                 <div class="col-12 col-md-3 mb-4 mb-md-0" style="height: 50vh">
 
@@ -60,12 +60,12 @@
                 </div>
                 
                 <!-- Column: Container of the profile image, the username, the mediastats, the medialinks, etc; -->
-                <div class="col-md-6" style="height: 50vh;">
+                <div class="col-12 col-md-6 mb-4 mb-md-0" style="height: 50vh;">
                     <!-- First half of the medium column -->
                     <div class="row">
-                        <div class="col-1">
+                        <div class="d-none d-md-block col-md-1">
                         </div>
-                        <div class="col-4">
+                        <div class="col-12 col-md-4">
                             <div id="user-image-container" class="d-flex justify-content-center">
                                 <img
                                     src="{% if user.profile.picture %}{{ user.profile.picture.url }}{% else %}{% static 'img/default-profile.png' %}{% endif %}"
@@ -128,7 +128,7 @@
                             
                         </div>
 
-                        <div class="col-6">
+                        <div class="col-12 col-md-6">
                             <!-- The next block of code contains the counter of Records-Followers-Following-->
                             <div id="follower-stats-row" class="d-flex">
                                 <!-- Row Container for Horizontal Alignment -->
@@ -214,13 +214,13 @@
                         </div>
 
 
-                        <div class="col-1">
+                        <div class="d-none d-md-block col-md-1">
                         </div>
                         
                     </div>
                 </div>
 
-                <div class="col-md-3"  style="height: 50vh;">
+                <div class="col-12 col-md-3"  style="height: 50vh;">
                     <div id="global-rank-container" style="margin: 0 20px;">
                                     
                         <div class="row">
@@ -265,7 +265,7 @@
 
             <!-- Code below contains the records table -->
             <div class="row mt-5">
-                <div class="col-md-12">
+                <div class="col-12">
                     <!-- Custom styled table -->
                     <table class="table custom-table" id="tablePlayers">
                         <!-- Table header -->
