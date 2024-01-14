@@ -1,35 +1,21 @@
 // Script to change color of the elemnts of the updateProfile screen
 document.addEventListener('DOMContentLoaded', () => {
     const changeColorBtn = document.getElementById("changeColor");
-    const profileBox = document.getElementById("profile-box");
-    const labelContainer = document.getElementsByClassName("label-container");
-    const labelText = document.getElementsByClassName("labelText");
-    const input = document.getElementsByClassName("form-control");
-    const updateBtn = document.getElementById("updateBtn");
-    const inputValue = document.getElementsByClassName("value-color");
-    const msg = document.getElementsByClassName("msg");
+    const box_title = document.getElementsByClassName("title");
+    const title_container = document.getElementsByClassName("title-container");
+
     let isOriginalColor = true;
 
 
     function change_color() {
         if (isOriginalColor) {
-        profileBox.style.backgroundColor = "black";
-        Array.from(labelContainer).forEach(element => element.style.backgroundColor = "gray"); 
-        Array.from(labelText).forEach(element => element.style.color = "red"); // Resets to original color
-        Array.from(input).forEach(element => element.style.background = 'linear-gradient(to bottom, #111, #333)');
-        updateBtn.style.backgroundColor = "gray";
-        updateBtn.style.color = "red";
-        Array.from(inputValue).forEach(element => element.style.color = "white");
-        Array.from(msg).forEach(element => element.style.color = "white");
+            Array.from(box_title).forEach(element => element.style.color ="red");
+            Array.from(title_container).forEach(element => element.style.backgroundColor ="#3e3e3e");
+        
         } else {
-        profileBox.style.backgroundColor = "";
-        Array.from(labelContainer).forEach(element => element.style.backgroundColor = "");
-        Array.from(labelText).forEach(element => element.style.color = ""); // Resets to original color
-        Array.from(input).forEach(element => element.style.background = '');
-        updateBtn.style.backgroundColor = "";
-        updateBtn.style.color = "";
-        Array.from(inputValue).forEach(element => element.style.color = "");
-        Array.from(msg).forEach(element => element.style.color = "");
+            Array.from(box_title).forEach(element => element.style.color ="");
+            Array.from(title_container).forEach(element => element.style.backgroundColor ="");
+        
         }
         isOriginalColor = !isOriginalColor;
         }

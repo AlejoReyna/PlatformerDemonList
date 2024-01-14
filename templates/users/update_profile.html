@@ -81,8 +81,8 @@
 
                         {# Username field #}
                         <div class="form-group">
-                            <div class="label-container">
-                                <label> <span class="labelText Teko-Light"> USERNAME </span> </label>
+                            <div class="label-container title-container">
+                                <label> <span class="labelText Teko-Light title"> USERNAME </span> </label>
                             </div>
                             <input 
                                 class="form-control value-color {% if form.username.errors %}is-invalid{% endif %} Teko-Light shadow"
@@ -101,8 +101,8 @@
                         {# Discord field #}
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <div class="label-container">
-                                    <label> <span class="labelText Teko-Light"> DISCORD USERNAME </span> </label>
+                                <div class="label-container title-container">
+                                    <label> <span class="labelText Teko-Light title"> DISCORD USERNAME </span> </label>
                                 </div>
                                 <input 
                                     class="form-control value-color {% if form.discord.errors %}is-invalid{% endif %} Teko-Light shadow"
@@ -119,8 +119,8 @@
 
                             {# Youtube channel field #}
                             <div class="form-group col-md-6">
-                                <div class="label-container">
-                                    <label>  <span class="labelText Teko-Light"> YOUTUBE CHANNEL </span> </label>
+                                <div class="label-container title-container">
+                                    <label>  <span class="labelText Teko-Light title"> YOUTUBE CHANNEL </span> </label>
                                 </div>
                                 <input 
                                     class="form-control value-color {% if form.youtube_channel.errors %}is-invalid{% endif %} Teko-Light shadow"
@@ -138,8 +138,8 @@
 
                             {# Twitter field #}
                             <div class="form-group col-md-6">
-                                <div class="label-container">
-                                <label> <span class="labelText Teko-Light"> TWITTER </span> </label>
+                                <div class="label-container title-container">
+                                <label> <span class="labelText Teko-Light title"> TWITTER </span> </label>
                                 </div>
                                 <input 
                                     class="form-control value-color {% if form.twitter.errors %}is-invalid{% endif %} Teko-Light shadow"
@@ -157,8 +157,8 @@
 
                             {# Twitch field #}
                             <div class="form-group col-md-6">
-                                <div class="label-container">
-                                <label> <span class="labelText Teko-Light"> TWITCH </span> </label>
+                                <div class="label-container title-container">
+                                <label> <span class="labelText Teko-Light title"> TWITCH </span> </label>
                                 </div>
                                 <input 
                                     class="form-control value-color {% if form.twitch.errors %}is-invalid{% endif %} Teko-Light shadow"
@@ -178,8 +178,8 @@
                             {# Facebook field #}
                             <div class="row justify-content-center">
                                 <div class="form-group col-md-6">
-                                    <div class="label-container">
-                                    <label>  <span class="labelText Teko-Light"> FACEBOOK </span> </label>
+                                    <div class="label-container title-container">
+                                    <label>  <span class="labelText Teko-Light title"> FACEBOOK </span> </label>
                                     </div>
                                     <input 
                                         class="form-control value-color{% if form.facebook.errors %}is-invalid{% endif %} Teko-Light shadow"
@@ -193,8 +193,8 @@
                                                 {{error}}
                                             </div>
                                         {% endfor %}
-                                        <div class="label-container">
-                                            <label>  <span class="labelText Teko-Light"> COUNTRY </span> </label>
+                                        <div class="label-container title-container">
+                                            <label>  <span class="labelText Teko-Light title"> COUNTRY </span> </label>
                                         </div>
                                         <select class="form-control value-color shadow" id="country" name="country">
                                             <option selected disabled="disabled" value="0">-- Country --</option>
@@ -211,7 +211,7 @@
                             </div>
                             
                             <div class="row">
-                                <button type="submit" class="btn btn-primary btn-block mt-5 Teko-Light shadow" style="max-width: 150px; margin: auto; display: block;" id="updateBtn">UPDATE INFO</button>
+                                <button type="submit" class="btn btn-primary btn-block mt-5 Teko-Light shadow title-container" style="max-width: 150px; margin: auto; display: block;" id="updateBtn">UPDATE INFO</button>
                             </div>
                     </form>
                 </div>
@@ -254,6 +254,7 @@
     }
 </script>
 
+<script src="{% static 'js/changeColor/updateProfile.js' %}" defer></script>
 {% endblock %}
 
 {% block footer_margin %}150{% endblock %}
