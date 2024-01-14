@@ -1,18 +1,19 @@
+p {
+    margin: 0;
+}
 .row .global-rank-header {
     background-color:#54a1f8; 
     border-radius: 10px;
     color: white;
     margin-bottom: 30px;
-    
-
 }
 
 .row .global-rank-user-data {
-    border: 1px solid black; 
     border-radius: 10px;                                
     display: flex;
     justify-content: center;
     background-color: white;
+    padding: 20px;
 }
 
 .stats-table {
@@ -21,14 +22,12 @@
     border-spacing: 0;
     border-radius: 10px; 
     overflow: hidden;
-    border: 1px solid black;
 }
 
 .table-header {
     background-color:#54a1f8; 
     color: white; 
     border-radius: 5px;
-    font-family: Teko;
     text-align: center;
     
 }   
@@ -47,12 +46,10 @@
 
 tr td, tr th {
     text-align: center;
+    border: none;
 }
 
-b{
-    font-family: Teko;
-    color: white;
-}
+
 
 .table-row b {
     color: black;
@@ -62,3 +59,7 @@ b{
     background-color: white;
 }
 
+.global-rank-user-data {
+    display: flex;
+    align-items: center;
+}

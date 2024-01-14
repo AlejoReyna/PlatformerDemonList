@@ -23,35 +23,35 @@
             <div class="row align-items-center mt-5">
                 
                 <!-- Column: Container of the statistics table -->
-                <div class="col-12 col-md-3 mb-4 mb-md-0" style="height: 50vh">
+                <div class="col-12 col-md-3 mb-4 mb-md-0 mt-5" style="height: 50vh">
 
                     <!-- This block of code contains the statistics container -->
                     <div class="statistics-container">
-                        <table class="stats-table">
+                        <table class="stats-table shadow" style="border: none;">
                             <tbody>
-                                <tr class="table-row shadow">
-                                    <th class="table-header" colspan="2" class="TekoRed BlackBackground">
-                                        <p> STATISTICS </p>
+                                <tr class="table-row">
+                                    <th class="table-header Teko-Light title-container" colspan="2">
+                                        <p style="margin-bottom: 0; font-size: 25px;" class="title"> STATISTICS </p>
                                     </th>
                                 </tr>
                                 
-                                <tr class="table-row">
-                                    <td style="width: 50%;"><b>Hardest:</b></td>
+                                <tr class="table-row Teko-Light black-background">
+                                    <td style="width: 50%; display: flex;"><b>Hardest:</b></td>
                                     <td style="width: 50%;">{{hardest}}</td>
                                 </tr>
 
-                                <tr class="table-row">
+                                <tr class="table-row Teko-Light black-background">
                                     <td><b>Ranking:</b></td>
                                     <td>{{ranking}}</td>
                                 </tr>
 
-                                <tr class="table-row">
+                                <tr class="table-row Teko-Light black-background">
                                     <td><b>List Points:</b></td>
                                     <td>{{user.profile.list_points}}</td>
                                 </tr>
 
-                                <tr class="table-row">
-                                    <td><b> Demons beaten: </b></td>
+                                <tr class="table-row Teko-Light black-background">
+                                    <td><b > Demons beaten: </b></td>
                                     <td>{{records|length}}</td>
                                 </tr>
                             </tbody>
@@ -60,7 +60,7 @@
                 </div>
                 
                 <!-- Column: Container of the profile image, the username, the mediastats, the medialinks, etc; -->
-                <div class="col-12 col-md-6 mb-4 mb-md-0" style="height: 50vh;">
+                <div class="col-12 col-md-6 mb-4 mb-md-0  mt-5" style="height: 50vh;">
                     <!-- First half of the medium column -->
                     <div class="row">
                         <div class="d-none d-md-block col-md-1">
@@ -185,7 +185,7 @@
                                         <div class="button-container">
                                             {% if user == request.user %}
                                             <div class="d-flex justify-content-start" >
-                                                <a href="{% url 'users:update' %}" class="btn btn-sm btn-outline-info Teko-Light TekoRed shadow" style="background-image: linear-gradient(to right, #00BFFF, #1E90FF);">Edit profile</a>
+                                                <a href="{% url 'users:update' %}" class="btn btn-sm btn-outline-info Teko-Light TekoRed shadow" style="background-image: linear-gradient(to right, #d3d3d3, #a9a9a9);">Edit profile</a>
                                                 <a href="{% url 'users:records_status' %}" class="btn btn-sm btn-outline-info Teko-Light TekoRed shadow" style="background-image: linear-gradient(to right, #00BFFF, #1E90FF);">Records Status</a>
                                             </div>
                                             {% else %}
@@ -220,42 +220,39 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-md-3"  style="height: 50vh;">
+                <div class="col-12 col-md-3 mt-5"  style="height: 50vh;">
                     <div id="global-rank-container" style="margin: 0 20px;">
                                     
                         <div class="row">
-                            <div class="global-rank-header Teko-Light" 
+                            <div class="global-rank-header shadow Teko-Light title-container" 
                             style="
-                                   border: 1px solid black; 
                                    border-radius: 10px;
                                    color: white;
                                    display:flex;
                                    justify-content: center;
+                                   align-items: center;
                                    ">
-                                <p> GLOBAL RANK </p>
+                                <p class="title" style="font-size: 24px; margin: 0;"> GLOBAL RANK </p>
                             </div>
                         </div>
 
                         <!-- Space -->
 
                         <div class="row">
-                            <div class="global-rank-user-data" 
-                            style="
-                                    
-                            ">
-                                <p> Userdata 1 </p>
+                            <div class="global-rank-user-data Teko-Light shadow black-background" style="padding: 5px; border: none; margin-bottom: 3px;">
+                                <p style="margin: 0;"> USERDATA </p>
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="global-rank-user-data" style="border: 1px solid black;">
-                                <p> Userdata 1 </p>
+                            <div class="global-rank-user-data Teko-Light shadow black-background" style="padding: 5px; border: none; margin-bottom: 3px;";>
+                                <p style="margin: 0;"> USERDATA </p>
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="global-rank-user-data" style="border: 1px solid black;">
-                                <p> Userdata 1 </p>
+                            <div class="global-rank-user-data Teko-Light shadow black-background" style="padding: 5px; border: 0.5px; margin-bottom: 3px;">
+                                <p style="margin: 0;"> USERDATA </p>
                             </div>
                         </div>
 
@@ -271,10 +268,10 @@
                         <!-- Table header -->
                         <thead>
                             <tr>
-                                <th class="header-demon Teko-Light TekoRed BlackBackground">Demon</th>
-                                <th class="header-best-time Teko-Light TekoRed BlackBackground">Best Time</th>
-                                <th class="header-top Teko-Light TekoRed BlackBackground">Top</th>
-                                <th class="header-video-proof Teko-Light TekoRed BlackBackground">Video Proof</th>
+                                <th class="header-demon Teko-Light title-container title" style="padding-right: 1rem;">Demon</th>
+                                <th class="header-best-time Teko-Light title-container title" style="padding-right: 1rem;">Best Time</th>
+                                <th class="header-top Teko-Light title-container title" style="padding-right: 1rem;">Top</th>
+                                <th class="header-video-proof Teko-Light title-container title" style="padding-right: 1rem;">Video Proof</th>
                             </tr>
                         </thead>
                         <!-- Table body -->
@@ -287,7 +284,7 @@
                                         <!-- Demon name and position -->
                                         {% if record.demon %}
                                         <td class="demon-cell">
-                                            <div class="cell-content">
+                                            <div class="cell-content black-background" >
                                                 <a href="{% url 'demonlist:detail' record.demon.position %}" class="demon-link"></a>
                                                 #{{ record.demon.position }} {{ record.demon }}
                                             </div>
@@ -295,7 +292,7 @@
                                             
                                         {% else %}
                                         <td colspan="1" class="demon-cell">
-                                           <div class="cell-content">
+                                           <div class="cell-content black-background">
                                              No data
                                            </div>
                                         </td>
@@ -315,7 +312,7 @@
                         
                                         <!-- Top order and best time rankings -->
                                         <td class="top-cell">
-                                            <div class="cell-content">
+                                            <div class="cell-content ">
                                                 {% if record.top_order and record.top_best_time %}
                                                     [#{{ record.top_order }} by order] [#{{ record.top_best_time }} by best time]
                                                 {% else %}
@@ -338,11 +335,10 @@
                             {% else %}
                                 <!-- Message if there are no records -->
                                 <tr class="table-row">
-                                    <td colspan="4" class="no-records-cell Teko-Light" style="background-color: white;" >No records</td>
+                                    <td colspan="4" class="no-records-cell Teko-Light black-background" style="background-color: white;" >No records</td>
                                 </tr>
                             {% endif %}
                         </tbody>
-                        
                     </table>                        
                 </div>
             </div>
@@ -351,6 +347,9 @@
         </div>
     <!-- End of the statistics container  -->
 </section>
+
+<script src="{% static 'js/changeColor/profileView.js' %}" defer></script>
+
 </body>
     
 {% endblock %}
