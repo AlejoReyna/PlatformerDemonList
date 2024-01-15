@@ -32,9 +32,19 @@ document.addEventListener('DOMContentLoaded', () => {
             menuIcon.style.backgroundColor = "";
         }
         isOriginalColor = !isOriginalColor;
+        localStorage.setItem('isOriginalColor', isOriginalColor);
+    }
+
+    function applyNightMode() {
+        // Verifica si el modo nocturno está activo y aplica los estilos
+        if (localStorage.getItem('isOriginalColor') === 'false') {
+            change_color();
+        }
     }
 
     if (changeColorBtn) {
         changeColorBtn.addEventListener('click', change_color);
     }
+
+    applyNightMode();
 });

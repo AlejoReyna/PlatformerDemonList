@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const value_color = document.getElementsByClassName("value-color");
     const profile_box = document.getElementyById("profile-box");
     const btn = document.getElementsByClassName("btn");
-
     let isOriginalColor = true;
 
     function change_color() {
@@ -17,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
              Array.from(black_background).forEach(element => { element.style.backgroundColor ="black"; element.style.color="white"; });
              Array.from(btn).forEach(element => { element.style.backgroundColor ="black"; element.style.color="white"; });
              Array.from(value_color).forEach(element => { element.style.backgroundColor ="gray"; element.style.color="white"; });
-            profile_box.style.backgroundColor = "";             
         } else {
             Array.from(box_title).forEach(element => element.style.color ="");
             Array.from(title_container).forEach(element => element.style.backgroundColor ="");
