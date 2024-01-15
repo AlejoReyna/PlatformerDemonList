@@ -60,12 +60,12 @@
                 </div>
                 
                 <!-- Column: Container of the profile image, the username, the mediastats, the medialinks, etc; -->
-                <div class="col-12 col-md-6 mb-4 mb-md-0  mt-5" style="height: 50vh;">
+                <div class="col-12 col-sm-3 col-md-6 mb-4 mb-md-0  mt-5" style="height: 50vh;">
                     <!-- First half of the medium column -->
                     <div class="row">
                         <div class="d-none d-md-block col-md-1">
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-12 col-sm-1 col-md-4">
                             <div id="user-image-container" class="d-flex justify-content-center">
                                 <img
                                     src="{% if user.profile.picture %}{{ user.profile.picture.url }}{% else %}{% static 'img/default-profile.png' %}{% endif %}"
@@ -128,19 +128,19 @@
                             
                         </div>
 
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-sm-2 col-md-6">
                             <!-- The next block of code contains the counter of Records-Followers-Following-->
                             <div id="follower-stats-row" class="d-flex">
                                 <!-- Row Container for Horizontal Alignment -->
                                 <div class="row">
                                     <!-- Records Column -->
-                                    <div class="col-sm-4" id="records-column">
+                                    <div class="col-sm-1" id="records-column">
                                         <b> <span class="record-value Teko-Light"> {{ records|length }} </span></b>
                                         <span class="Teko-Light"> Records </span>
                                     </div>
                             
                                     <!-- Followers Column -->
-                                    <div class="col-sm-4" id="followers-column">
+                                    <div class="col-sm-1" id="followers-column">
                                         <b> <span class="record-value Teko-Light"> {{ user.profile.followers.count }} </span></b>
                                         <button onclick="show_followers()" style="border: none; background-color: transparent; cursor: pointer; padding: 0; margin: 0;">
                                             <span class="Teko-Light"> Followers </span>
@@ -148,7 +148,7 @@
                                     </div>
                             
                                     <!-- Following Column -->
-                                    <div class="col-sm-4" id="followings-column">
+                                    <div class="col-sm-1" id="followings-column">
                                         <b> <span class="record-value Teko-Light"> {{ user.profile.followings.count }} </span></b>
                                         <button onclick="show_following()" style="border: none; background-color: transparent; cursor: pointer; padding: 0; margin: 0;">
                                             <span class="Teko-Light"> Following </span>
@@ -220,7 +220,7 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-md-3 mt-5"  style="height: 50vh;">
+                <div class="col-12 col-sm-3 col-md-3 mt-5"  style="height: 50vh;">
                     <div id="global-rank-container" style="margin: 0 20px;">
                                     
                         <div class="row">
@@ -262,7 +262,7 @@
 
             <!-- Code below contains the records table -->
             <div class="row mt-5">
-                <div class="col-12">
+                <div class="col-12 col-sm-3">
                     <!-- Custom styled table -->
                     <table class="table custom-table" id="tablePlayers">
                         <!-- Table header -->
