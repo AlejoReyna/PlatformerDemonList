@@ -604,17 +604,21 @@ body, html   {
 
     {% include "nav.html" %}
     
-    <section class="col-sm-12 col-md-12 col-lg-12 col-xl-12 container-fluid" id="bg" style="padding: 0; height: 100vh;">
-        <div class="row">
-                
-            <div style="padding: 20px;" >                    {% block container %}
-                {% endblock%} 
+    <main style="flex-grow: 1;">
+        <section class="col-sm-12 col-md-12 col-lg-12 col-xl-12 container-fluid" id="bg" style="padding: 0; height: 100vh;">
+            <div class="row">
+                    
+                <div style="padding: 20px;" >                    
+                    {% block container %}
+                    {% endblock%} 
+                </div>
+                    
             </div>
-                
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <section class="d-none d-md-block">   
+    <!-- 
+    <footer class="d-none d-md-block" style="flex-shrink: 0; margin-bottom: 300px;">   
         <div class="footer">
             <div>
                 <p>© 2024 Platformer DemonList | Developed by <a href="{% url 'users:detail' 1 %}" target="_blank">Chucky GD</a></p>
@@ -634,9 +638,9 @@ body, html   {
                 <p>Platformer DemonList is in no way affiliated with RobTopGames ®</p>
             </div>
         </div>
-    </section>
+    </footer>
 
-    <section class="d-block d-md-none">   
+    <footer class="d-block d-md-none" style="flex-shrink: 0;">   
         <div class="footer" style="flex-direction: column; text-align: center; display: flex;justify-content: space-between; align-items: center; color: #fff; padding: 20px;">
             <div>
                 <p>© 2024 Platformer DemonList | Developed by <a href="{% url 'users:detail' 1 %}" target="_blank">Chucky GD</a></p>
@@ -654,8 +658,9 @@ body, html   {
                 <p>Platformer DemonList is in no way affiliated with RobTopGames ®</p>
             </div>
         </div>
-    </section>
-
+    </footer>
+    -->
+    
     <script src="{% static 'js/changeColor/footer.js' %}" defer></script>
 
 </body>
