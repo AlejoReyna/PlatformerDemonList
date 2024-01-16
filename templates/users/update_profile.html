@@ -157,7 +157,7 @@
 
                             {# Twitch field #}
                             <div class="form-group col-md-6">
-                                <div class="label-container title-container">
+                                <div class="label-container title-container text-center">
                                 <label> <span class="labelText Teko-Light title"> TWITCH </span> </label>
                                 </div>
                                 <input 
@@ -176,10 +176,11 @@
 
                             <!-- ELEMENTS ARE IN THE SAME ROW BECAUSE THEY HAVE TO BE VERTICALLY ALLIGNED -->
                             {# Facebook field #}
-                            <div class="row justify-content-center">
-                                <div class="form-group col-md-6">
-                                    <div class="label-container title-container">
-                                    <label>  <span class="labelText Teko-Light title"> FACEBOOK </span> </label>
+                            <div class="form-row px-lg-5 px-md-0 px-sm-0" style="width:100%;">
+                                {# Facebook field #}
+                                <div class="form-group col-12">
+                                    <div class="label-container title-container text-center">
+                                    <label>  <span class="labelText Teko-Light titler"> FACEBOOK </span> </label>
                                     </div>
                                     <input 
                                         class="form-control value-color{% if form.facebook.errors %}is-invalid{% endif %} Teko-Light shadow"
@@ -193,25 +194,30 @@
                                                 {{error}}
                                             </div>
                                         {% endfor %}
-                                        <div class="label-container title-container">
-                                            <label>  <span class="labelText Teko-Light title"> COUNTRY </span> </label>
-                                        </div>
-                                        <select class="form-control value-color shadow" id="country" name="country">
-                                            <option selected disabled="disabled" value="0">-- Country --</option>
-                                            {% for country in countries %}
-                                                <option value="{{country}}" {% if request.user.profile.country == country %}selected{% endif %}>{{country}}</option>
-                                                {% endfor %}
-                                        </select>
-                                        {% for error in form.country.errors %}
-                                            <div class="invalid-feedback">
-                                                {{error}}
-                                            </div>
-                                        {% endfor %}
                                 </div>
-                            </div>
-                            
-                            <div class="row">
-                                <button type="submit" class="btn btn-primary btn-block mt-5 Teko-Light shadow title-container" style="max-width: 150px; margin: auto; display: block;" id="updateBtn">UPDATE INFO</button>
+                                {# Country field #}
+                                <div class="form-group col-12">
+                                    <div class="label-container title-container text-center">
+                                        <label>  <span class="labelText Teko-Light title"> COUNTRY </span> </label>
+                                    </div>
+                                    <select class="form-control value-color shadow" id="country" name="country">
+                                        <option selected disabled="disabled" value="0">-- Country --</option>
+                                        {% for country in countries %}
+                                            <option value="{{country}}" {% if request.user.profile.country == country %}selected{% endif %}>{{country}}</option>
+                                            {% endfor %}
+                                    </select>
+                                    {% for error in form.country.errors %}
+                                        <div class="invalid-feedback">
+                                            {{error}}
+                                        </div>
+                                    {% endfor %}
+                                </div> 
+
+                                {# Button field #}
+
+                                <div class="form-group col-12">
+                                    <button type="submit" class="btn btn-primary btn-block mt-5 Teko-Light shadow title-container" style="max-width: 150px; margin: auto; display: block;" id="updateBtn">UPDATE INFO</button>
+                                </div>
                             </div>
                     </form>
                 </div>
