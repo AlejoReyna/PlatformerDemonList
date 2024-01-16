@@ -19,7 +19,7 @@
     <div class="container-fluid">
 
         <div class="row align-items-center mt-5">
-            <div class="col-12" id="stats-table">
+            <div class="col-12 col-lg-3 col-md-3" id="stats-table">
 
 
                 <div class="statistics-container" style="margin-bottom: 5rem;">
@@ -55,11 +55,11 @@
                 </div>
             </div>
 
-            <div class="col-12" id="profile-container" style="margin-bottom: 5rem;">
+            <div class="col-12 col-lg-5 col-md-5" id="profile-container" style="margin-bottom: 5rem;">
                 <div class="row">
                     <div class="d-none d-md-block">
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 col-lg-6 col-md-6">
                         <div id="user-image-container" class="d-flex justify-content-center align-items-center">
                             <img
                                 src="{% if user.profile.picture %}{{ user.profile.picture.url }}{% else %}{% static 'img/default-profile.png' %}{% endif %}"
@@ -122,8 +122,8 @@
                         
                     </div>
 
-                    <div id="medium-block-container" class="mt-5">
-                        <div class="col-12">
+                   
+                        <div class="col-12 col-lg-6 col-md-6" id="medium-block-container">
                             <!-- The next block of code contains the counter of Records-Followers-Following-->
                             <div id="follower-stats-row" class="d-flex justify-content-center align-items-center">
                                 <!-- Row Container for Horizontal Alignment -->
@@ -181,10 +181,10 @@
                                     <div id="edit-profile-buttons">
                                         <div class="button-container d-flex justify-content-center">
                                             {% if user == request.user %}
-                                            <div class="">
+                                           
                                                 <a href="{% url 'users:update' %}" class="btn btn-sm btn-outline-info Teko-Light TekoRed shadow" style="background-image: linear-gradient(to right, #00BFFF, #1E90FF); padding: margin: 0;">Edit profile</a>
                                                 <a href="{% url 'users:records_status' %}" class="btn btn-sm btn-outline-info Teko-Light TekoRed shadow" style="background-image: linear-gradient(to right, #00BFFF, #1E90FF); margin: 0;">Records Status</a>
-                                            </div>
+                                           
                                             {% else %}
                                                 <form method="POST" class="d-flex justify-content-center">
                                                 {% csrf_token %}
@@ -206,11 +206,11 @@
                                 </div>
                             </div> 
                         </div>
-                    </div>
+                  
                 </div>
             </div>
 
-            <div class="12" id="global-rank-container" style="margin: 5rem 20px;">
+            <div class="col-12 col-lg-3 col-md-3" id="global-rank-container" style="margin: 5rem 20px;">
                 <div class="row">
                     <div class="global-rank-header shadow Teko-Light title-container" 
                     style="
@@ -245,7 +245,7 @@
                 </div>
             </div>
 
-            <div class="col-12" style="margin-bottom: 5rem">
+            <div class="col-12">
                 <!-- Custom styled table -->
                 <table class="table custom-table" id="tablePlayers">
                     <!-- Table header -->
