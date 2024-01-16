@@ -44,18 +44,30 @@
 
 
 <style>
-   
+   .footer {
+    position: absolute; /* Posiciona el footer en la parte inferior */
+    bottom: 0; /* Fija el footer en la parte inferior */
+    width: 100%; /* Asegura que el footer tenga el ancho completo */
+    height: 120px; /* Altura de tu footer */
+    /* Estilos adicionales para tu footer */
+}
 body, html   {
         background-image: url("../../static/img/white-bg.jpg");
         background-size: cover; /* Ensure the image covers the full screen */
         background-attachment: scroll; /* Optional: Fixes the background */
         min-height: 100vh;
-        display: flex;
-        flex-direction: column:
+       
     }
+body {
+    display: flex;
+    flex-direction: column;
+}
 
-.content {
-    flex: 1;
+#content {
+    flex: 1 0 auto; /* El contenido crece cuando hay más espacio, pero no se encoge */
+}
+.footer {
+    flex-shrink: 0; /* El footer no se encoge */
 }
 
     .select-roulette {
@@ -617,8 +629,8 @@ body, html   {
         </section>
     </main>
 
-    <!-- 
-    <footer class="d-none d-md-block" style="flex-shrink: 0; margin-bottom: 300px;">   
+    <!-- Hace falta arreglar el footer para pantallas pequeñas-->
+    <footer class="d-md-block">   
         <div class="footer">
             <div>
                 <p>© 2024 Platformer DemonList | Developed by <a href="{% url 'users:detail' 1 %}" target="_blank">Chucky GD</a></p>
@@ -640,27 +652,9 @@ body, html   {
         </div>
     </footer>
 
-    <footer class="d-block d-md-none" style="flex-shrink: 0;">   
-        <div class="footer" style="flex-direction: column; text-align: center; display: flex;justify-content: space-between; align-items: center; color: #fff; padding: 20px;">
-            <div>
-                <p>© 2024 Platformer DemonList | Developed by <a href="{% url 'users:detail' 1 %}" target="_blank">Chucky GD</a></p>
-                <p>© Copyright 2024 platformerlist.com</p>
-            </div>
-
-            <div class="social-media-links">
-                <a href="https://discord.gg/PlatformerList" target="_blank"><i class="fab fa-discord footerIcon"></i></a>
-                <a href="https://www.youtube.com/@PlatformerDemonList" target="_blank"><i class="fab fa-youtube footerIcon"></i></a>
-                <a href="https://twitter.com/PlatformerList" target="_blank"><i class="fab fa-twitter footerIcon"></i></a>
-            </div>
-
-            <div>
-                <p>All rights reserved</p>
-                <p>Platformer DemonList is in no way affiliated with RobTopGames ®</p>
-            </div>
-        </div>
-    </footer>
-    -->
     
+    
+
     <script src="{% static 'js/changeColor/footer.js' %}" defer></script>
 
 </body>
