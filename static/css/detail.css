@@ -1,20 +1,15 @@
 p {
     margin: 0;
 }
-.row .global-rank-header {
+.table-header {
     background-color:#54a1f8; 
     border-radius: 10px;
     color: white;
     margin-bottom: 30px;
+    text-align: center;
 }
 
-.row .global-rank-user-data {
-    border-radius: 10px;                                
-    display: flex;
-    justify-content: center;
-    background-color: white;
-    padding: 20px;
-}
+
 
 .stats-table {
     width: 100%; 
@@ -24,31 +19,17 @@ p {
     overflow: hidden;
 }
 
-.table-header {
-    background-color:#54a1f8; 
-    color: white; 
-    border-radius: 5px;
-    text-align: center;
-    
-}   
-.record-value{
-    color: black;
-    display: flex;
-    justify-content: center;
+
+
+.record-column {
+    margin: 0 20px;
 }
 
-#records-column span, #followers-column span, #followings-column span{
-    font-size: 30px;
-}
 .table-row {
-    background-color: white;
-}
-
-tr td, tr th {
     text-align: center;
+    background-color: white;
+    border-radius: 10px;
 }
-
-
 
 .table-row b {
     color: black;
@@ -62,3 +43,6 @@ tr td, tr th {
     display: flex;
     align-items: center;
 }
+
+
+

@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputBar = document.getElementById("search");
     // Get their elements 
     const inputElements = document.getElementsByClassName("inputElements");
-    let isOriginalColor = true;
 
     function change_color() {
         if (isOriginalColor) {

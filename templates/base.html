@@ -52,13 +52,13 @@
     /* Estilos adicionales para tu footer */
 }
 body, html   {
-        background-image: url("../../static/img/white-bg.jpg");
-        background-size: cover; /* Ensure the image covers the full screen */
-        background-attachment: scroll; /* Optional: Fixes the background */
+        background-size: cover; 
+        background-attachment: fixed; 
         min-height: 100vh;
        
     }
 body {
+    background-image: url("../../static/img/white-bg.jpg");
     display: flex;
     flex-direction: column;
 }
@@ -610,6 +610,8 @@ body {
         margin-left: 8px;
     }
 
+    
+
 </style>
 
 <body class="col-sm-12 col-md-12 col-lg-12 col-xl-12" style="padding: 0;">
@@ -629,8 +631,7 @@ body {
         </section>
     </main>
 
-    <!-- Hace falta arreglar el footer para pantallas pequeñas-->
-    <!-- 
+    
     <footer class="d-md-block">   
         <div class="footer">
             <div>
@@ -652,12 +653,14 @@ body {
             </div>
         </div>
     </footer>
-    -->
+
 
     
     
 
     <script src="{% static 'js/changeColor/footer.js' %}" defer></script>
+    <script src="{% static 'js/changeColor/navbar.js' %}" defer></script>
+
 
 </body>
 

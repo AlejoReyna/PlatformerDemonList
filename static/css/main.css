@@ -17,7 +17,6 @@
 .post-container {
     background: #fff;
     border: 1px solid #e6e6e6;
-    border-radius: 3px;
 }
 
 .nav-icon a {
@@ -55,7 +54,8 @@
     font-weight: 500;
     color: red;
     font-style: italic;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    /**
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);**/
 
 }
 

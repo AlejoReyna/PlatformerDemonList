@@ -63,135 +63,134 @@
     </style>
      {% load static %}
     
-<section class="container">
-    <div class="row mt-4">
-        <div class="col-sm-4 col-md-10 col-lg-12">
-            
-            <nav class="navbar navbar-expand fixed-top" id="main-navbar" >
-                <!-- LOGO CONTAINER -->
+     <section class="container">
+        <div class="row mt-4">
+            <div class="col-sm-4 col-md-10 col-lg-12">
                 
-                <a class="navbar-brand d-none d-md-flex align-items-center" href="{% url 'demonlist:list' %}" style="line-height: 0;">
-                    <img src="{% static "img/new-logo.png" %}" class="d-inline-block align-top" style="width: 240px; height: auto;"/>
-                    <div style="display: flex; align-items: center; margin-left: 10px; margin-top: 20px;">
-                        <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 20px; color: #3498db; padding: 5px 10px; margin-bottom: 0;">v 1.1</p>
-                    </div>
-                </a>
-            
-                
-                <!-- NAVBAR FOR MOBILE -->
-                <a class="navbar-brand d-block d-md-none" href="{% url 'demonlist:list' %}" style="line-height: 0;">
-                    <img src="{% static "img/new-logo.png" %}" class="d-inline-block align-top"/>
-                    <div style="margin-top: 5px; display: flex; align-items: baseline;">
-                        <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 20px; color: #3498db; padding: 5px 10px; margin-bottom: 0; margin-left: 100px;">v 1.1</p>
-                    </div>
-                </a>
-                <!-- LOGO CONTAINER -->
-            
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon">a</span>
-                </button>
-                
-                    <ul class="navbar-nav ml-auto">
-                        
-                        {% if request.user.id %}
-                        <li class="nav-item" style="margin-right: 1px;">
-                            <button type="submit" class="custom-button">
-                            <a href="{% url "users:detail" request.user.id %}">
-                                {% if request.user.profile.picture %}
-                                    <img src="{{ request.user.profile.picture.url }}" width="43" height="43" class="d-inline-block align-top rounded-circle"/>
-                                {% else %}
-                                    <img src="{% static 'img/default-profile.png' %}" width="43" height="43" class="d-inline-block align-top rounded-circle"/>
-                                {% endif %}
-                            </a>
-                        </button>
-                        </li>
-                        {% endif %}
-            
-                        {% if request.user.groups.get|stringformat:"s" == "Mod" %}
-                        <li class="nav-item nav-icon" >
-                            <a href="{% url 'demonlist:add_edit_demon' %}">Add/Edit demon
-                            </a>
-                        </li>
-                        {% endif %}
-
-                        {% if request.user.groups.get|stringformat:"s" == "Mod" or request.user.groups.get|stringformat:"s" == "List Helper" %}
-                        <li class="nav-item nav-icon" style="margin-right: 30px;">
-                            <a href="{% url 'demonlist:check_records' %}">Check records
-                            </a>
-                        </li>
-                        {% endif %}
-
-                        {% if request.user.groups.get|stringformat:"s" == "Mod" %}
-                        <li class="nav-item nav-icon" style="margin-right: 30px;">
-                            <a href="{% url 'demonlist:check_verifications' %}">Check verifications
-                            </a>
-                        </li>
-                        {% endif %}
-
-                        <!-- DARK MODE CODE-->
-
-                        <div class="icon-and-button" style="display: flex; align-items: center;"> 
-                            <i class="fa-solid fa-moon darkmode" id="changeColor" onclick="change_color()" style="font-size: 40px; margin-left: 20px"></i>
-                        </div>
-    
-                        <!-- MENU BUTTON CODE -->
-                        <div class="collapse navbar-collapse" id="navbarNav" style="margin-top: 5px; margin-left: 20px;">
-                            <div class="dropdown" >
-                                <button class="dropbtn shadow" id="menuBtn" style="margin-right: 80px; background-color: white; color: black; border: 2px solid black; border-radius: 10px; ">
-                                    <i class="fas fa-bars" id="menuIcon"></i> <span class="Teko-Light MenuText"> MENU </span>
-                                </button>
-
-                        
-                                <div class="dropdown-content" id="menuContent">
-                                    <a class="menuElement" href="{% url 'demonlist:stats_viewer' %}">
-                                            <i class="fas fa-chart-bar"></i> Stats viewer
-                                        </a>
-                                        <a class="menuElement" href="{% url 'demonlist:submit_record' %}">
-                                            <i class="fas fa-plus"></i> Submit record
-                                            </a>
-                                            <a class="menuElement" href="{% url 'guidelines' %}">
-                                                <i class="fas fa-question-circle menuElement"></i> Guidelines
-                                            </a>
-                                            <form method="post" action="{% url 'users:logout' %}">
-                                                {% csrf_token %}
-                                                <button type="submit" class="custom-button2">
-                                                    {% if request.user.id %}
-                                                        <i class="fas fa-sign-out-alt menuElement" style="font-size: 25px;"></i> Logout
-                                                    {% else %}
-                                                        <i class="fas fa-sign-in-alt menuElement" style="font-size: 25px;"></i> Login
-                                                    {% endif %}
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
-                         </div>
-                        <!-- MENU BUTTON CODE -->
-
-
-                        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-            
-                        <script>
-                            $("#menuContent").hide();
-                            $(document).ready(function () {
-                                $("#menuBtn").click(function () {
-                                    $("#menuContent").toggle();
-                                });
-                        
-                                // Oculta el menú si se hace clic fuera de él
-                                $(document).on("click", function (event) {
-                                    if (!$(event.target).closest(".dropdown").length) {
-                                        $("#menuContent").hide();
-                                    }
-                                });
-                            });
-                        </script>
-                    </ul>
+                <nav class="navbar navbar-expand fixed-top" id="main-navbar" >
+                    <!-- LOGO CONTAINER -->
                     
-            </nav>
-        </div>
+                    <a class="navbar-brand d-none d-md-flex align-items-center" href="{% url 'demonlist:list' %}" style="line-height: 0;">
+                        <img src="{% static "img/new-logo.png" %}" class="d-inline-block align-top" style="width: 240px; height: auto;"/>
+                        <div style="display: flex; align-items: center; margin-left: 10px; margin-top: 20px;">
+                            <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 20px; color: #3498db; padding: 5px 10px; margin-bottom: 0;">v 1.1</p>
+                        </div>
+                    </a>
+                
+                    
+                    <!-- NAVBAR FOR MOBILE -->
+                    <a class="navbar-brand d-block d-md-none" href="{% url 'demonlist:list' %}" style="line-height: 0;">
+                        <img src="{% static "img/new-logo.png" %}" class="d-inline-block align-top"/>
+                        <div style="margin-top: 5px; display: flex; align-items: baseline;">
+                            <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 20px; color: #3498db; padding: 5px 10px; margin-bottom: 0; margin-left: 100px;">v 1.1</p>
+                        </div>
+                    </a>
+                    <!-- LOGO CONTAINER -->
+                
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon">a</span>
+                    </button>
+                    
+                        <ul class="navbar-nav ml-auto">
+                            
+                            {% if request.user.id %}
+                            <li class="nav-item" style="margin-right: 1px;">
+                                <button type="submit" class="custom-button">
+                                <a href="{% url "users:detail" request.user.id %}">
+                                    {% if request.user.profile.picture %}
+                                        <img src="{{ request.user.profile.picture.url }}" width="43" height="43" class="d-inline-block align-top rounded-circle"/>
+                                    {% else %}
+                                        <img src="{% static 'img/default-profile.png' %}" width="43" height="43" class="d-inline-block align-top rounded-circle"/>
+                                    {% endif %}
+                                </a>
+                            </button>
+                            </li>
+                            {% endif %}
+                
+                            {% if request.user.groups.get|stringformat:"s" == "Mod" %}
+                            <li class="nav-item nav-icon" >
+                                <a href="{% url 'demonlist:add_edit_demon' %}">Add/Edit demon
+                                </a>
+                            </li>
+                            {% endif %}
+    
+                            {% if request.user.groups.get|stringformat:"s" == "Mod" or request.user.groups.get|stringformat:"s" == "List Helper" %}
+                            <li class="nav-item nav-icon" style="margin-right: 30px;">
+                                <a href="{% url 'demonlist:check_records' %}">Check records
+                                </a>
+                            </li>
+                            {% endif %}
+    
+                            {% if request.user.groups.get|stringformat:"s" == "Mod" %}
+                            <li class="nav-item nav-icon" style="margin-right: 30px;">
+                                <a href="{% url 'demonlist:check_verifications' %}">Check verifications
+                                </a>
+                            </li>
+                            {% endif %}
+    
+                            <!-- DARK MODE CODE-->
+    
+                            <div class="icon-and-button" style="display: flex; align-items: center;"> 
+                                <i class="fa-solid fa-moon darkmode" id="changeColor" onclick="change_color()" style="font-size: 40px; margin-left: 20px"></i>
+                            </div>
         
-    </div>
-</section>
+                            <!-- MENU BUTTON CODE -->
+                            <div class="collapse navbar-collapse" id="navbarNav" style="margin-top: 5px; margin-left: 20px;">
+                                <div class="dropdown" >
+                                    <button class="dropbtn shadow" id="menuBtn" style="margin-right: 80px; background-color: white; color: black; border: 2px solid black; border-radius: 10px; ">
+                                        <i class="fas fa-bars" id="menuIcon"></i> <span class="Teko-Light MenuText"> MENU </span>
+                                    </button>
+    
+                            
+                                    <div class="dropdown-content" id="menuContent">
+                                        <a class="menuElement" href="{% url 'demonlist:stats_viewer' %}">
+                                                <i class="fas fa-chart-bar"></i> Stats viewer
+                                            </a>
+                                            <a class="menuElement" href="{% url 'demonlist:submit_record' %}">
+                                                <i class="fas fa-plus"></i> Submit record
+                                                </a>
+                                                <a class="menuElement" href="{% url 'guidelines' %}">
+                                                    <i class="fas fa-question-circle menuElement"></i> Guidelines
+                                                </a>
+                                                <form method="post" action="{% url 'users:logout' %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="custom-button2">
+                                                        {% if request.user.id %}
+                                                            <i class="fas fa-sign-out-alt menuElement" style="font-size: 25px;"></i> Logout
+                                                        {% else %}
+                                                            <i class="fas fa-sign-in-alt menuElement" style="font-size: 25px;"></i> Login
+                                                        {% endif %}
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                             </div>
+                            <!-- MENU BUTTON CODE -->
+    
+    
+                            <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+                
+                            <script>
+                                $("#menuContent").hide();
+                                $(document).ready(function () {
+                                    $("#menuBtn").click(function () {
+                                        $("#menuContent").toggle();
+                                    });
+                            
+                                    // Oculta el menú si se hace clic fuera de él
+                                    $(document).on("click", function (event) {
+                                        if (!$(event.target).closest(".dropdown").length) {
+                                            $("#menuContent").hide();
+                                        }
+                                    });
+                                });
+                            </script>
+                        </ul>
+                </nav>
+            </div>
+            
+        </div>
+    </section>
 
 <script src="{% static 'js/changeColor/navbar.js' %}" defer></script>
 <script src="https://kit.fontawesome.com/d6b454d5de.js" crossorigin="anonymous"></script>

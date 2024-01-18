@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const MenuText = document.getElementsByClassName("MenuText");
     const dropdownContainer = document.getElementById("menuContent");
     const menuElement = document.getElementsByClassName("menuElement");
+    const body = document.body; 
+    var backgroundImageDarkUrl = "{% static 'img/bg-dark.jpg' %}";
+    var backgroundImageLightUrl = "{% static 'img/white-bg.jpg' %}"; 
     let isOriginalColor = true;
 
     function change_color() {
@@ -32,19 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
             menuIcon.style.backgroundColor = "";
         }
         isOriginalColor = !isOriginalColor;
-        localStorage.setItem('isOriginalColor', isOriginalColor);
-    }
-
-    function applyNightMode() {
-        // Verifica si el modo nocturno está activo y aplica los estilos
-        if (localStorage.getItem('isOriginalColor') === 'false') {
-            change_color();
-        }
     }
 
     if (changeColorBtn) {
         changeColorBtn.addEventListener('click', change_color);
     }
 
-    applyNightMode();
 });
