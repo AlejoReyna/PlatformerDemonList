@@ -44,13 +44,19 @@
 
 
 <style>
+
    .footer {
-    position: absolute; /* Posiciona el footer en la parte inferior */
-    bottom: 0; /* Fija el footer en la parte inferior */
-    width: 100%; /* Asegura que el footer tenga el ancho completo */
-    height: 120px; /* Altura de tu footer */
-    /* Estilos adicionales para tu footer */
-}
+    background-color: #2c3e50;
+    color: white;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    text-align: center;
+    margin-top: 160rem;
+    
+    }
+    
 body, html   {
         background-size: cover; 
         background-attachment: fixed; 
@@ -271,19 +277,12 @@ body {
         color: #0866ff;
     }
 
-    .footer {
-        background-color: #2c3e50;
-        color: white;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: flex-start;
-        text-align: center;
-    }
+
 
     .footer div {
         width: calc(33.33% - 0px);
         margin: 10px 0;
+        
     }
 
     .social-media-links {
@@ -610,7 +609,6 @@ body {
         margin-left: 8px;
     }
 
-    
 
 </style>
 
@@ -631,8 +629,13 @@ body {
         </section>
     </main>
 
+    <div style="margin-top: {% block footer_margin %}{% endblock  %}px;">
+        
+    </div>
     
-    <footer class="d-md-block">   
+
+    
+    <footer class="">   
         <div class="footer">
             <div>
                 <p>© 2024 Platformer DemonList | Developed by <a href="{% url 'users:detail' 1 %}" target="_blank">Chucky GD</a></p>
@@ -653,10 +656,9 @@ body {
             </div>
         </div>
     </footer>
+    
 
 
-    
-    
 
     <script src="{% static 'js/changeColor/footer.js' %}" defer></script>
     <script src="{% static 'js/changeColor/navbar.js' %}" defer></script>

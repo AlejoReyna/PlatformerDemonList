@@ -15,10 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputBar = document.getElementById("search");
     // Get their elements 
     const inputElements = document.getElementsByClassName("inputElements");
+    let isOriginalColor = true;
 
     function change_color() {
         if (isOriginalColor) {
-            
+
             // Demon card styles
             Array.from(demonCard).forEach(card => card.style.backgroundColor = "black");
             Array.from(demonCard).forEach(card => card.style.background = 'linear-gradient(to right, #0a0f0d, #000000);');
@@ -40,11 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
             Array.from(TekoLight).forEach(element => element.style.color = "white");
             menuBtn.style.backgroundColor = "#17181a";
             menuIcon.style.backgroundColor = "white";
-            // Unrated
-            unrated.style.background = 'linear-gradient(to bottom, #111, #333)';
-            
-
-
         } else {
             /*
             navbar.style.backgroundColor = "";*/ // Resets to original color
@@ -64,10 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
             Array.from(TekoLight).forEach(element => element.style.color = "");
             menuBtn.style.backgroundColor = "white";
             menuIcon.style.backgroundColor = "";
-            // Unrated 
-            unrated.style.background = "";
-
-
         }
         isOriginalColor = !isOriginalColor;
     }

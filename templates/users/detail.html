@@ -11,6 +11,125 @@
 </head>
 {% endblock %}
 
+<style>
+.popup_followers {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    z-index: 999;
+    width: 80%;
+    height: 80%;
+    max-width: 400px; /* Establece un ancho máximo para el pop-up */
+    max-height: 400px; /* Establece una altura máxima para el pop-up */
+    overflow: auto; /* Añade desplazamiento si el contenido excede las dimensiones */
+}
+
+.overlay_followers {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+
+body.popup-open_following {
+    overflow: hidden; /* Evita el desplazamiento cuando el pop-up está abierto */
+}
+
+.popup_following {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    z-index: 999;
+    width: 80%;
+    height: 80%;
+    max-width: 400px; /* Establece un ancho máximo para el pop-up */
+    max-height: 400px; /* Establece una altura máxima para el pop-up */
+    overflow: auto; /* Añade desplazamiento si el contenido excede las dimensiones */
+}
+
+/* Estilos del scrollbar */
+.popup_following::-webkit-scrollbar {
+    width: 12px; /* Ancho del scrollbar */
+}
+
+.popup_following::-webkit-scrollbar-thumb {
+    background-color: #888; /* Color del "thumb" (la barra que puedes arrastrar) */
+    border-radius: 6px; /* Borde redondeado del "thumb" */
+}
+
+.popup_following::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Color del "track" (la parte en la que se desplaza el "thumb") */
+    border-radius: 8px; /* Borde redondeado del "track" */
+}
+
+.overlay_following {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    background-color: gray; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s; /* Efecto de transición */
+}
+
+.user-element {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Puedes ajustar esto según sea necesario */
+}
+
+.user-picture {
+    margin-right: 10px;
+}
+
+.user-link {
+    color: black;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.user-link:hover {
+    color: black;
+}
+</style>
+
+
     
 {% block container %}
 <body>
@@ -138,7 +257,7 @@
                         <!-- Followers Column -->
                         <div id="followers-column" class="d-flex flex-column align-items-center" style="margin: 0 20px;">
                             <span class="Teko-Light">  
-                                <p style="font-size: 40px; margin-bottom: 0;"><b>{{ user.profile.followers.count }}</b></p> 
+                                <p style="font-size: 40px; margin-bottom: 0;"><b>{{ user.profile.followers.count }}</b> <button onclick="show_followers()" style="border: none; background-color: transparent; cursor: pointer; padding: 0; margin: 0;">{{list_words.followers}}</button></p> 
                             </span>
                             <button onclick="show_followers()" style="border: none; background-color: transparent; cursor: pointer; padding: 0;">
                                 <span class="Teko-Light record-counter"> 
@@ -146,11 +265,12 @@
                                 </span>
                             </button>
                         </div>
+                        <!-- End of followers column -->
                         
                         <!-- Following Column -->
                         <div id="followings-column" class="d-flex flex-column align-items-center" style="margin: 0 20px;">
                             <span class="Teko-Light"> 
-                                <p style="font-size: 40px; margin-bottom: 0;"><b>{{ user.profile.followings.count }}</b></p> 
+                                <p style="font-size: 40px; margin-bottom: 0;"><b>{{ user.profile.followings.count }}</b> <button onclick="show_following()" style="border: none; background-color: transparent; cursor: pointer; padding: 0; margin: 0;">{{list_words.following}}</button> </p> 
                             </span>
                             <button onclick="show_following()" style="border: none; background-color: transparent; cursor: pointer; padding: 0;">
                                 <span class="Teko-Light record-counter">  
@@ -253,21 +373,16 @@
         <!-- Global rank container code -->
             </div>
             
-
-            <!-- Table code -->            
-            <div class="col-12" style="padding-top: 0; margin-top: 3rem; ">
-                <!-- Custom styled table -->
-                <table class="table custom-table" id="tablePlayers">
-                    <!-- Table header -->
-                    <thead style="border: none;">
+            <div class="table-responsive">
+                <table class="table custom-table" id="tablePlayers" style="margin-top: 40px; border-collapse: separate; border-spacing: 10px 0; background-color: transparent; border: none;">
+                    <thead>
                         <tr>
-                            <th class="Teko-Light title-container title table-header" style="padding-right: 1rem; border-right: 0px solid transparent; border: none;">Demon</th>
-                            <th class="Teko-Light title-container title table-header" style="padding-right: 1rem; border-right: 0px solid transparent; border: none;">Best Time</th>
-                            <th class="Teko-Light title-container title table-header" style="padding-right: 1rem; border-right: 0px solid transparent; border: none;">Top</th>
-                            <th class="Teko-Light title-container title table-header" style="padding-right: 1rem; border-right: 0px solid transparent; border: none;">Video Proof</th>
+                            <th class="Teko-Light title-container shadow text-center" style="border-radius: 10px; border: none;">DEMON</th> <!-- DELETE STYLE -->
+                            <th class="Teko-Light title-container shadow text-center" style="border-radius: 10px; border: none;">BEST TIME</th>
+                            <th class="Teko-Light title-container shadow text-center" style="border-radius: 10px; border: none;">TOP</th>
+                            <th class="Teko-Light title-container text-center" style="border-radius: 10px; border: none;">VIDEO PROOF</th>
                         </tr>
                     </thead>
-                    <!-- Table body -->
                     <tbody>
                         <!-- Check if there are records to display -->
                         {% if records %}
@@ -332,14 +447,72 @@
                             </tr>
                         {% endif %}
                     </tbody>
-                </table>                        
+                </table>
             </div>
-            <!-- Table code -->  
-
 
             </div>
         </div>
     </section>
+
+    <script>
+        let list_users = []
+        function show_followers() {
+          document.body.classList.add('popup-open_followers');
+          document.getElementById('popup_followers').style.display = 'block';
+          document.getElementById('overlay_followers').style.display = 'block';
+        }
+
+        function show_following() {
+            document.body.classList.add('popup-open_following');
+            document.getElementById('popup_following').style.display = 'block';
+            document.getElementById('overlay_following').style.display = 'block';
+          }
+      
+        function hide_followers() {
+          document.body.classList.remove('popup-open_followers');
+          document.getElementById('popup_followers').style.display = 'none';
+          document.getElementById('overlay_followers').style.display = 'none';
+        }
+
+        function hide_following() {
+            document.body.classList.remove('popup-open_following');
+            document.getElementById('popup_following').style.display = 'none';
+            document.getElementById('overlay_following').style.display = 'none';
+          }
+
+        function search_user(user, option)
+        {
+        console.log("aver");
+        data = {}
+        data.user = user.value;
+        data.option = option;
+        $.ajax({
+            type: "post", // "post" "get" "delete" "put"
+            data: data, // PREFERIBLEMENTE JSON
+            cache: false,
+            headers: {
+            "X-CSRFToken": Cookies.get("csrftoken")
+                    },
+                    success: function (response) {
+                    console.log($("#user-container_" + option))
+                    $("#user-container_" + option).empty();
+
+                    $(response).each(function (index, user) {
+                        fila=`<div class="user-element" id="user_` + user.user__id + `">`
+                        if (user.picture){
+                            fila+=`<img src="/media/` + user.picture + `" width="50" height="50" class="d-inline-block align-top rounded-circle user-picture"/>`
+                        }
+                        else {
+                            fila+=`<img src="{% static 'img/default-profile.png' %}" width="50" height="50" class="d-inline-block align-top rounded-circle user-picture"/>`
+                        }
+                        fila+=`<div class="user-info"><a href="{% url 'users:detail' 1234 %}" target="_blank" class="user-link">`.replace(/1234/, user.user__id) + user.user__username + `</a></div></div>`
+                        $('#user-container_' + option).append(fila);
+                        
+                    })
+                }
+            })
+        }
+    </script>
 
     <script src="{% static 'js/changeColor/detail.js' %}" defer></script>
 </body>

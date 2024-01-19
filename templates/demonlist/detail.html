@@ -133,60 +133,66 @@
 
     <script>
         $(document).ready(function () {
-        $("#changelogTable").hide();
-
-        $("#toggleTable").click(function () {
-            $("#changelogTable").toggle();
-            $(this).find("i").toggleClass("fa-chevron-down fa-chevron-up");
+            $("#changelogTable").hide();
+    
+            $("#toggleTable").click(function () {
+                $("#changelogTable").toggle();
+                $(this).find("i").toggleClass("fa-chevron-down fa-chevron-up");
+            });
+    
         });
-
-    });
-
-    function update_table(option)
-    {
-    console.log(option.value);
-    data = {}
-    data.option = option.value;
-    $.ajax({
-        type: "post", // "post" "get" "delete" "put"
-        data: data, // PREFERIBLEMENTE JSON
-        cache: false,
-        headers: {
-        "X-CSRFToken": Cookies.get("csrftoken")
-        },
-        success: function (response) {
-        $('#tableRecords > tbody').empty();
-        $(response).each(function (index, record) {
-            if (record.player__country__picture) {
-                var fila=`<tr class="table-row"><td class="player-cell">
-                    <img src="/media/` + record.player__country__picture + `" title="` + record.player__country__country + `" height="20" class="d-inline-block align-top" style="margin-right: 15px;"/>
-                </td>`
-            }
-            else {
-                var fila=`<tr class="table-row"><td class="player-cell"></td>`
-            }
-
-            fila += `<td class="player-cell">
-                <a href="{% url 'users:detail' 1234 %}"`.replace(/1234/, record.player__user__id) + ` target="_blank">` + record.player__user__username + `</a>
-            </td>`;
-            fila+=`<td class="best-time-cell">` + record.best_time + `</td>`
-            if (record.video == '') {
-                fila+=`<td class="video-link-cell"></td></tr>`;
-            }
-            else {
-                fila+=`<td class="video-link-cell"><a class="btn btn-primary" href="` + record.video + `" target="_blank">` + record.video_platform + `</a></td></tr>`;
-            }
+    
+        function update_table(option)
+        {
+        console.log(option.value);
+        data = {}
+        data.option = option.value;
+        $.ajax({
+            type: "post", // "post" "get" "delete" "put"
+            data: data, // PREFERIBLEMENTE JSON
+            cache: false,
+            headers: {
+            "X-CSRFToken": Cookies.get("csrftoken")
+            },
+            success: function (response) {
+            $('#tableRecords > tbody').empty();
+            $(response).each(function (index, record) {
+                if (record.player__country__picture) {
+                    var fila=`<tr class="table-row"><td class="player-cell">
+                        <img src="/media/` + record.player__country__picture + `" title="` + {% if request.user.is_anonymous %}record.player__country__country{% elif request.user.profile.language == "English" %}record.player__country__country{% elif request.user.profile.language == "Spanish" %}record.player__country__country_spanish{% elif request.user.profile.language == "Russian" %}record.player__country__country_russian{% elif request.user.profile.language == "German" %}record.player__country__country_german{% endif %} + `" height="20" class="d-inline-block align-top" style="margin-right: 15px;"/>
+                    </td>`
+                }
+                else {
+                    var fila=`<tr class="table-row"><td class="player-cell"></td>`
+                }
+                if (record.player__team__name){
+                    fila += `<td class="team-cell">` + record.player__team__name + `</td>`;
+                }
+                else {
+                    fila += `<td class="team-cell"></td>`;
+                }
+    
+                fila += `<td class="player-cell">
+                    <a href="{% url 'users:detail' 1234 %}"`.replace(/1234/, record.player__user__id) + ` target="_blank">` + record.player__user__username + `</a>
+                </td>`;
+                fila+=`<td class="best-time-cell">` + record.best_time + `</td>`
+                if (record.video == '') {
+                    fila+=`<td class="video-link-cell"></td></tr>`;
+                }
+                else {
+                    fila+=`<td class="video-link-cell"><a class="btn btn-primary" href="` + record.video + `" target="_blank">` + record.video_platform + `</a></td></tr>`;
+                }
+                $('#tableRecords > tbody').append(fila);
+            })
+            console.log(response.length)
+            if (response.length == 0){
+            var fila=`<tr class="table-row"><td colspan="5" class="player-cell">{{list_words.no_records}}</td></tr>`
             $('#tableRecords > tbody').append(fila);
+            }
+            }
         })
-        console.log(response.length)
-        if (response.length == 0){
-        var fila=`<tr class="table-row"><td colspan="4" class="player-cell">There have been no records yet</td></tr>`
-        $('#tableRecords > tbody').append(fila);
-        }
-        }
-    })
-}
-</script>
+    }   
+    </script>
 {% endblock %}
 
 {% block footer_margin %}100{% endblock  %}
