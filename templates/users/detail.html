@@ -183,6 +183,8 @@ body.popup-open_following {
                                     src="{% if user.profile.picture %}{{ user.profile.picture.url }}{% else %}{% static 'img/default-profile.png' %}{% endif %}"
                                     alt="@{{ user.username}}"
                                     class="rounded-circle"
+                                    width="200px;"
+                                    height="200px;"
                                 />
                             </div>
 
@@ -350,6 +352,11 @@ body.popup-open_following {
                 </div>
 
                 <!-- Space -->
+                <div class="row">
+                    <div class="col-6">
+                        hola
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="global-rank-user-data table-row Teko-Light shadow black-background" style="padding: 5px; border: none; margin-bottom: 3px;">
