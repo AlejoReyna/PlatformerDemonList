@@ -2,14 +2,32 @@
 
 {% block head_content %}
 <title>Submit new record</title>
+
 {% endblock %}
 
 {% block container %}
+    <style>
+        .table-header {
+            background-color:#54a1f8; 
+            border-radius: 10px;
+            color: white;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+    </style>
 
-    <section class="container">
+    <section class="container mt-5">
+
+        <div class="row align-items-center justify-content-center">
+            <div class="col-lg-3 col-md-4 mt-5">
+                <div class="d-flex align-items shadow justify-content-center title-container table-header " id="title-container">
+                    <p class="Teko-Light" style="margin: 0; padding: 10px; font-size: 25px;"> SUBMIT RECORD </p>
+                </div>
+            </div>
+        </div>
+
         <div class="row justify-content-md-center">
-            <div class="col-sm-10 col-md-10 col-lg-8 pt-3 pb-3 mx-auto" id="profile-box">
-                <h4 class="mb-4" style="text-align: center;">Submit new record</h4>
+            <div class="col-sm-10 col-md-10 col-lg-8 pb-3 mx-auto" id="profile-box" style="margin: 0; padding: 2rem;">
 
                 {% if request.user.profile %}
                     {% if not request.user.profile.verified %}
@@ -24,12 +42,12 @@
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
 
-                    <input type="hidden" name="user" value="{{ user.pk}}" />
+                    <input class="form-control value-color" type="hidden" name="user" value="{{ user.pk}}" />
                     <input type="hidden" name="profile" value="{{ user.profile.pk }}" />
 
                     <div class="form-group">
-                        <select class="form-control" style="border: 2px solid #ced4da;" id="demon" name="demon" required>
-                            <option selected disabled="disabled" value="">-- Demon --</option>
+                        <select class="Teko-Light form-control shadow" style="border: 2px solid #ced4da; border-radius: 10px;" id="demon" name="demon" required>
+                            <option selected disabled="disabled" value="" >-- DEMON --</option>
                             {% for demon in demons %}
                             <option value="{{demon.level}}">{{demon.level}}</option>
                             {% endfor %}
@@ -39,46 +57,46 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="hours">Hours:</label>
-                                <input class="form-control" type="number" id="hours" name="hours" min="0" max="1000" placeholder="HH" oninput="limitInput(this, 2)" required>
+                                <label class="Teko-Light" for="hours" style="font-weight: 500; margin: 0; border-radius: 10px;">HOURS:</label>
+                                <input class="shadow Teko-Light form-control" type="number" id="hours" name="hours" min="0" max="1000" placeholder="HH" oninput="limitInput(this, 2)" required>
                             </div> 
                             <div class="col-md-3">
-                                <label for="minutes">Minutes:</label>
-                                <input class="form-control" type="number" id="minutes" name="minutes" min="0" max="59" placeholder="MM" oninput="limitInput(this, 2)" required>
+                                <label class="Teko-Light" for="minutes"  style="font-weight: 500; margin: 0; border-radius: 10px;">MINUTES:</label>
+                                <input class="shadow Teko-Light form-control" type="number" id="minutes" name="minutes" min="0" max="59" placeholder="MM" oninput="limitInput(this, 2)" required>
                             </div> 
                             <div class="col-md-3">
-                                <label for="seconds">Seconds:</label>
-                                <input class="form-control" type="number" id="seconds" name="seconds" min="0" max="59" placeholder="SS" oninput="limitInput(this, 2)" required>
+                                <label class="Teko-Light" for="seconds" style="font-weight: 500; margin: 0; border-radius: 10px;">SECONDS:</label>
+                                <input class="shadow Teko-Light form-control" type="number" id="seconds" name="seconds" min="0" max="59" placeholder="SS" oninput="limitInput(this, 2)" required>
                             </div> 
                             <div class="col-md-3">
-                                <label for="milliseconds">Milliseconds:</label>
-                                <input class="form-control" type="number" id="milliseconds" name="milliseconds" min="0" max="999" placeholder="MS" oninput="limitInput(this, 3)" required>
+                                <label class="Teko-Light" for="milliseconds" style="font-weight: 500; margin: 0; border-radius: 10px;">MILLISECONDS:</label>
+                                <input class="shadow Teko-Light form-control" type="number" id="milliseconds" name="milliseconds" min="0" max="999" placeholder="MS" oninput="limitInput(this, 3)" required>
                             </div> 
                         </div> 
                     </div> 
 
                     <div class="form-group">
-                        <input class="form-control {% if form.title.errors %}is-invalid{% endif %}" type="text" name="video" placeholder="Video">
+                        <input class="shadow Teko-Light form-control {% if form.title.errors %}is-invalid{% endif %}" type="text" name="video" placeholder="VIDEO" style="border-radius: 10px;">
                         <div class="invalid-feedback">
                             {% for error in form.title.errors %}{{ error }}{% endfor %}
                         </div>
                     </div> 
 
                     <div class="form-group">
-                        <input class="form-control {% if form.title.errors %}is-invalid{% endif %}" type="text" name="raw_footage" placeholder="Raw Footage">
+                        <input class="shadow Teko-Light form-control {% if form.title.errors %}is-invalid{% endif %}" type="text" name="raw_footage" placeholder="RAW FOOTAGE" style="border-radius: 10px;">
                         <div class="invalid-feedback">
                             {% for error in form.title.errors %}{{ error }}{% endfor %}
                         </div>
                     </div> 
 
                     <div class="form-group">
-                        <input class="form-control {% if form.title.errors %}is-invalid{% endif %}" type="text" name="notes" placeholder="Notes">
+                        <input class="shadow Teko-Light form-control {% if form.title.errors %}is-invalid{% endif %}" type="text" name="notes" placeholder="NOTES" style="border-radius: 10px;">
                         <div class="invalid-feedback">
                             {% for error in form.title.errors %}{{ error }}{% endfor %}
                         </div>
                     </div> 
 
-                    <button type="submit" class="btn btn-primary btn-block mt-5">Submit!</button>
+                    <button type="submit" class="col-2 btn btn-primary btn-block mx-auto mt-5 Teko-Light" style="background-image: linear-gradient(to right, #00BFFF, #1E90FF);">Submit!</button>
                 </form>
                 {% endif %}
             </div>
